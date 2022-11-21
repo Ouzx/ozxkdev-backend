@@ -8,6 +8,8 @@ const Posts = () => {
     <div className="flex items-center justify-center">
       <div className="flex flex-col flex-1 justify-start max-w-2xl bg-gray-100 p-6 ">
         <p className="text-2xl mb-12">Posts</p>
+
+        {/* Posts */}
         {posts.length <= 0 ? (
           <div className="space-y-9">
             <p>Nothing found! Create new Instead</p>
@@ -20,6 +22,8 @@ const Posts = () => {
             ))}
           </div>
         )}
+
+        {/* Pagination */}
       </div>
     </div>
   );
