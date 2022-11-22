@@ -1,7 +1,6 @@
 import React from "react";
 
 const PostBox: React.FC<{ post: string }> = ({ post }) => {
-  console.log(post);
   return (
     <div className="max-w-md mx-auto md:max-h-48 bg-white hover:bg-slate-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       <div className="md:flex">

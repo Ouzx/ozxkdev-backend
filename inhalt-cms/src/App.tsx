@@ -11,7 +11,8 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/edit-post" element={<EditPost />} />
+        {/* <Route path="/?page_num" element={<Home />} /> */}
+        <Route path="/edit/:id" element={<EditPost />} />
         <Route path="*" element={<div>404</div>} />
       </Routes>
     </Router>

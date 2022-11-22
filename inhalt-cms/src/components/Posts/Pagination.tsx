@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import { useNavigate } from "react-router-dom";
 
 interface PaginationProps {
   itemsPerPage: number;
   dataLength: number;
-  onPageChange?: ((selectedItem: { selected: number }) => void) | undefined;
+  forcePage: number;
 }
 
 const Pagination = ({
   itemsPerPage,
   dataLength,
-  onPageChange,
+  forcePage,
 }: PaginationProps) => {
   const pageCount = Math.ceil(dataLength / itemsPerPage);
-
-  //   const handlePageClick: React.FC<{ selected: number }> = ({ selected }) => {
-  //     const newOffset = (selected * itemsPerPage) % dataLength;
-  //     console.log(
-  //       `User requested page number ${selected}, which is offset ${newOffset}`
-  //     );
-  //     return null;
-  //   };
+  const navigate = useNavigate();
 
   return (
     <ReactPaginate
       breakLabel="..."
       nextLabel=">"
-      onPageChange={onPageChange}
+      onPageChange={(selectedItem) => {
+        navigate(`/?page_num=${selectedItem.selected}`);
+      }}
       pageRangeDisplayed={5}
       pageCount={pageCount}
       previousLabel="<"
@@ -36,6 +32,7 @@ const Pagination = ({
       activeClassName="bg-gray-300 rounded-md px-2 py-1"
       previousClassName="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1"
       nextClassName="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1"
+      forcePage={forcePage}
     />
   );
 };
