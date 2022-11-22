@@ -1,8 +1,9 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 const CreateNewButton = () => {
+  const navigate = useNavigate();
   const onClick = () => {
-    console.log("Create New Clicked!");
+    navigate("/post");
   };
   return (
     <button

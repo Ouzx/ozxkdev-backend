@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Header from "./components/Header/Header";
-import EditPost from "./EditPost";
+import Post from "./pages/EditPost";
 import Home from "./pages/Home";
 
 const App = () => {
@@ -11,8 +11,8 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/?page_num" element={<Home />} /> */}
-        <Route path="/edit/:id" element={<EditPost />} />
+        <Route path="/post" element={<Post />} />
+        <Route path="/post/:id" element={<Post />} />
         <Route path="*" element={<div>404</div>} />
       </Routes>
     </Router>
