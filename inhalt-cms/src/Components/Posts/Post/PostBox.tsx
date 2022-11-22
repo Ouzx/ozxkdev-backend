@@ -1,8 +1,9 @@
 import React from "react";
 
-const PostBox = () => {
+const PostBox: React.FC<{ post: string }> = ({ post }) => {
+  console.log(post);
   return (
-    <div className="max-w-md mx-auto md:max-h-48 bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    <div className="max-w-md mx-auto md:max-h-48 bg-white hover:bg-slate-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       <div className="md:flex">
         <div className="flex justify-center md:justify-start">
           <img
@@ -13,7 +14,7 @@ const PostBox = () => {
         </div>
         <div className="p-8">
           <div className="truncate block text-[21px] text-black font-semibold">
-            Post Title
+            {`Post ${post}`}
           </div>
 
           <p className="mt-2 text-gray-500">28.10.2021 12:00</p>
@@ -22,7 +23,7 @@ const PostBox = () => {
               console.log("Post clicked!");
             }}
           >
-            <p className="mt-4 text-lg leading-tight font-medium text-gray-500 hover:underline">
+            <p className="underline italic mt-4 text-lg leading-tight font-medium text-gray-500 hover:underline">
               Edit Post {`>`}
             </p>
           </button>
