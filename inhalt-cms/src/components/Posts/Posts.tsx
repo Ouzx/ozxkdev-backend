@@ -38,13 +38,9 @@ const Posts = () => {
   const [offset, setOffset] = useState(0);
   const handlePageClick = (selectedItem: { selected: number }) => {
     const newOffset = (selectedItem.selected * ITEMS_PER_PAGE) % posts.length;
-    console.log(
-      `User requested page number ${selectedItem.selected}, which is offset ${newOffset}`
-    );
     setOffset(newOffset);
   };
 
-  // const [posts, setPosts] = useState([]);
   return (
     <div className="flex items-center justify-center mb-32">
       <div className="flex flex-col flex-1 justify-start max-w-2xl bg-gray-100 p-6 pb-12">
