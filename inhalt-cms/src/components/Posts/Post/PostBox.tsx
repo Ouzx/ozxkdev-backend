@@ -1,6 +1,7 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 const PostBox: React.FC<{ post: string }> = ({ post }) => {
+  const navigate = useNavigate();
   return (
     <div className="max-w-md mx-auto md:max-h-48 bg-white hover:bg-slate-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
       <div className="md:flex">
@@ -19,7 +20,7 @@ const PostBox: React.FC<{ post: string }> = ({ post }) => {
           <p className="mt-2 text-gray-500">28.10.2021 12:00</p>
           <button
             onClick={() => {
-              console.log("Post clicked!");
+              navigate(`/post/${2}`); // TODO: Change to post id
             }}
           >
             <p className="underline italic mt-4 text-lg leading-tight font-medium text-gray-500 hover:underline">
