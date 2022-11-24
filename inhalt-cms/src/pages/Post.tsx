@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import RichTextBox from "../components/Posts/Post/RichTextBox";
 import { Jodit } from "jodit-react";
 
 const Post = () => {
+  const [image, setImage] = useState("");
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
   const richTextBox = useRef<Jodit>(null);
@@ -10,6 +11,12 @@ const Post = () => {
     console.log(categories?.current?.value);
     console.log(tags?.current?.value);
     console.log(richTextBox?.current?.value);
+  };
+  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      setImage(URL.createObjectURL(img));
+    }
   };
   return (
     <div className="lg:flex lg:justify-center lg:space-x-12 lg:flex-1 lg:items-start">
@@ -36,8 +43,15 @@ const Post = () => {
           </div>
           <div>
             <p>Cover Image:</p>
-            <input type="file" className=" border border-gray-400 rounded-md" />
-            {/* TODO: Show uploaded image */}
+            {image && <img alt="cover" src={image} />}
+            <input
+              type="file"
+              id="img"
+              name="img"
+              accept="image/*"
+              className=" border border-gray-400 rounded-md"
+              onChange={onImageChange}
+            />
           </div>
           <button
             onClick={onClick}
