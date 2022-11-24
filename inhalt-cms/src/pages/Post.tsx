@@ -2,6 +2,8 @@ import React, { useState, useRef } from "react";
 import RichTextBox from "../components/Posts/Post/RichTextBox";
 import { Jodit } from "jodit-react";
 
+// TODO: Split tags and categories into separate components
+
 const Post = () => {
   const [image, setImage] = useState("");
   const categories = useRef<HTMLInputElement>(null);
@@ -21,7 +23,7 @@ const Post = () => {
   return (
     <div className="lg:flex lg:justify-center lg:space-x-12 lg:flex-1 lg:items-start">
       <div className="flex  items-center justify-center mb-12 ">
-        <div className="flex flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12">
+        <div className="flex flex-1 justify-start items-start w-full bg-gray-100 p-6 pb-12">
           <div className="flex flex-col flex-1">
             <p>Content:</p>
             <RichTextBox height={400} ref={richTextBox} />
