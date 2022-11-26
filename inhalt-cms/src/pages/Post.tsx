@@ -21,9 +21,9 @@ const Post = () => {
     }
   };
   return (
-    <div className="lg:flex lg:justify-center lg:space-x-12 lg:flex-1 lg:items-start">
-      <div className="flex  items-center justify-center mb-12 ">
-        <div className="flex flex-1 justify-start items-start w-full bg-gray-100 p-6 pb-12">
+    <div className="lg:flex lg:justify-center lg:space-x-12 lg:px-12 lg:flex-1 lg:items-start">
+      <div className="flex border lg:w-full items-center justify-center mb-12 ">
+        <div className="flex flex-1 justify-start items-start   bg-gray-100 p-6 pb-12">
           <div className="flex flex-col flex-1">
             <p>Content:</p>
             <RichTextBox height={400} ref={richTextBox} />
@@ -32,6 +32,8 @@ const Post = () => {
       </div>
       <div className="flex items-center justify-center mb-32">
         <div className="flex flex-col flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12 lg:w-80 space-y-3  ">
+          {/* TODO: Make this div a component. */}
+          {/* TODO: Add title section */}
           <div>
             <p>Categories:</p>
             <input
