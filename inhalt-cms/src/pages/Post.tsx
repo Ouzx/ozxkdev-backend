@@ -6,6 +6,7 @@ import {
   Post as PostType,
   useCreatePostMutation,
 } from "../redux/services/cmsCore";
+import InputBox from "../components/Posts/Post/InputBox";
 
 // TODO: Split tags and categories into separate components
 
@@ -16,7 +17,6 @@ const Post = () => {
   const title = useRef<HTMLInputElement>(null);
   const richTextBox = useRef<Jodit>(null);
 
-  // const dispatch = useAppDispatch();
   const [createPost, result] = useCreatePostMutation();
 
   const onClick = () => {
@@ -46,23 +46,9 @@ const Post = () => {
       </div>
       <div className="flex items-center justify-center mb-32">
         <div className="flex flex-col flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12 lg:w-80 space-y-3  ">
-          {/* TODO: Make this div a component. */}
-          {/* TODO: Add title section */}
-          <div>
-            <p>Title:</p>
-            <input ref={title} className=" border border-gray-400 rounded-md" />
-          </div>
-          <div>
-            <p>Categories:</p>
-            <input
-              ref={categories}
-              className=" border border-gray-400 rounded-md"
-            />
-          </div>
-          <div>
-            <p>Tags:</p>
-            <input ref={tags} className=" border border-gray-400 rounded-md" />
-          </div>
+          <InputBox ref={title} title="Title:" />
+          <InputBox ref={categories} title="Categories:" />
+          <InputBox ref={tags} title="Tags:" />
           <div>
             <p>Cover Image:</p>
             {image && <img alt="cover" src={image} />}
