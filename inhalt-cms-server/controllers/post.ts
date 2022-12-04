@@ -15,7 +15,6 @@ export const getPosts = async (req: Request, res: Response) => {
 
 export const getPost = async (req: Request, res: Response) => {
   const { id } = req.params;
-
   try {
     const post = await Post.findById(id);
     res.status(200).json(post);
@@ -35,7 +34,6 @@ export const createPost = async (req: Request, res: Response) => {
     tags,
     coverImage,
   });
-
   try {
     await newPost.save();
     res.status(201).json(newPost);
