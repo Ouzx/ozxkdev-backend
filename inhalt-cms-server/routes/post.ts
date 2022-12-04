@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-router.get("/", getPosts);
+router.get("/page/:id", getPosts);
 router.get("/:id", getPost);
 router.post("/", createPost);
 router.patch("/:id", updatePost);
