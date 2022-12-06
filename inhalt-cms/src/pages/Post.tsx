@@ -1,14 +1,9 @@
 import React, { useState, useRef } from "react";
 import RichTextBox from "../components/Posts/Post/RichTextBox";
 import { Jodit } from "jodit-react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import {
-  Post as PostType,
-  useCreatePostMutation,
-} from "../redux/services/cmsCore";
+import { useCreatePostMutation } from "../redux/services/cmsCore";
+import { Post as PostType } from "../redux/types";
 import InputBox from "../components/Posts/Post/InputBox";
-
-// TODO: Split tags and categories into separate components
 
 const Post = () => {
   const [image, setImage] = useState("");
@@ -20,14 +15,29 @@ const Post = () => {
   const [createPost, result] = useCreatePostMutation();
 
   const onClick = () => {
-    createPost({
-      title: title?.current?.value,
-      category: categories?.current?.value,
-      tags: [tags?.current?.value],
-      img: "",
-      content: richTextBox?.current?.value,
-    } as PostType);
+    if (
+      !title?.current?.value ||
+      !categories?.current?.value ||
+      !tags?.current?.value ||
+      !richTextBox?.current?.value
+    )
+      return;
+
+    const post: PostType = {
+      title: title.current?.value,
+      content: richTextBox.current?.value,
+      category: categories.current?.value,
+      tags: tags.current?.value.split(","),
+      coverImage: image,
+      _id: undefined,
+      createdAt: undefined,
+      updatedAt: undefined,
+      __v: undefined,
+    };
+
+    createPost(post);
   };
+
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];

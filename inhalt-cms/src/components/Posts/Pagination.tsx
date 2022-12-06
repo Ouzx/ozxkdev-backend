@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 
@@ -13,8 +12,8 @@ const Pagination = ({
   dataLength,
   forcePage,
 }: PaginationProps) => {
-  const pageCount = Math.ceil(dataLength / itemsPerPage);
   const navigate = useNavigate();
+  const pageCount = Math.ceil(dataLength / itemsPerPage);
 
   return (
     <ReactPaginate
@@ -22,6 +21,7 @@ const Pagination = ({
       nextLabel=">"
       onPageChange={(selectedItem) => {
         navigate(`/?page_num=${selectedItem.selected}`);
+        navigate(0);
       }}
       pageRangeDisplayed={5}
       pageCount={pageCount}

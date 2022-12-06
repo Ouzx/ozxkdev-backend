@@ -1,13 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export interface Post {
-  _id: string | null;
-  title: string;
-  content: string;
-  category: string;
-  tags: string[];
-  img: string;
-}
+import { Post, Posts } from "../types";
 
 export const cmsCoreApi = createApi({
   reducerPath: "cmsCoreApi",
@@ -37,7 +29,7 @@ export const cmsCoreApi = createApi({
       query: (id) => `/posts/${id}`,
     }),
     fetchAllPosts: builder.query({
-      query: () => "/posts",
+      query: (id) => `/posts/page/${id}`,
     }),
   }),
 });

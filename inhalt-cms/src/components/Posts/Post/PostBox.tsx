@@ -21,6 +21,7 @@ const PostBox: React.FC<{ post: string }> = ({ post }) => {
           <button
             onClick={() => {
               navigate(`/post/${2}`); // TODO: Change to post id
+              navigate(0);
             }}
           >
             <p className="underline italic mt-4 text-lg leading-tight font-medium text-gray-500 hover:underline">

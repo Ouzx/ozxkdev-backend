@@ -4,6 +4,7 @@ const CreateNewButton = () => {
   const navigate = useNavigate();
   const onClick = () => {
     navigate("/post");
+    navigate(0);
   };
   return (
     <button
