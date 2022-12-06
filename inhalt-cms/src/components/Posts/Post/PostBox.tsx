@@ -1,32 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hooks";
-import {
-  setPost,
-  PostAction,
-  PostState,
-} from "../../../redux/features/postSlice";
-import { Post } from "../../../redux/types";
+
+import { Post, PostActionTypes } from "../../../redux/types";
 
 const PostBox: React.FC<{ post: Post }> = ({ post }) => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const onClick = () => {
-    navigate("/post");
+    navigate(`/post?action=${PostActionTypes.EDIT}&id=${post._id}`);
     navigate(0);
-    dispatch(
-      setPost({
-        postAction: PostAction.UPDATE,
-        post: post,
-      } as PostState)
-    );
   };
 
   // TODO: Add a short content section to Post Page
   const shortContent = () => {
-    // post.content is a string of html
-    // extract text from between html/p tags
     const content = post.content?.split("<p>").join("").split("</p>").join("");
     return content?.slice(0, 100);
   };

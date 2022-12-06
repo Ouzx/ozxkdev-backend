@@ -1,13 +1,30 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
 import RichTextBox from "../components/Posts/Post/RichTextBox";
 import { Jodit } from "jodit-react";
-import { useCreatePostMutation } from "../redux/services/cmsCore";
-import { Post as PostType } from "../redux/types";
 import InputBox from "../components/Posts/Post/InputBox";
-import { useNavigate } from "react-router-dom";
+
+import useQuery from "../hooks/useQuery";
+
+import { Post as PostType, PostActionTypes } from "../redux/types";
+import {
+  useCreatePostMutation,
+  useFetchPostQuery,
+} from "../redux/services/cmsCore";
 
 const Post = () => {
   const navigate = useNavigate();
+  const query = useQuery();
+
+  const actionType = query.get("action");
+  if (actionType == PostActionTypes.EDIT.toString()) {
+    const id = query.get("id");
+    if (id) {
+      const { data: post } = useFetchPostQuery(id);
+      console.log(post);
+    }
+  }
 
   const [image, setImage] = useState("");
   const categories = useRef<HTMLInputElement>(null);
@@ -18,6 +35,16 @@ const Post = () => {
   const [createPost, { isLoading, isError, isSuccess }] =
     useCreatePostMutation();
 
+  // if (postAction === PostAction.EDIT) {
+  //   if (post) {
+  //     title.current!.value = post.title || "";
+  //     categories.current!.value = post.category || "";
+  //     tags.current!.value = post.tags?.join(",") || "";
+  //     richTextBox.current!.value = post.content || "";
+  //     setImage(post.coverImage || "");
+  //   }
+  // }
+
   const onClick = () => {
     if (
       !title?.current?.value ||
@@ -27,7 +54,7 @@ const Post = () => {
     )
       return;
 
-    const post: PostType = {
+    const newPost: PostType = {
       title: title.current?.value,
       content: richTextBox.current?.value,
       category: categories.current?.value,
@@ -39,7 +66,7 @@ const Post = () => {
       __v: undefined,
     };
 
-    createPost(post);
+    createPost(newPost);
   };
 
   const buttonContent = () => {

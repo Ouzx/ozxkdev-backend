@@ -14,3 +14,9 @@ export interface Post {
   updatedAt: string | undefined;
   __v: number | undefined;
 }
+
+export enum PostActionTypes {
+  FETCH = "F",
+  NEW = "N",
+  EDIT = "E",
+}

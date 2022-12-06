@@ -1,18 +1,12 @@
-import { useAppDispatch } from "../../redux/hooks";
-import { setPost, PostAction, PostState } from "../../redux/features/postSlice";
 import { useNavigate } from "react-router-dom";
+import { PostActionTypes } from "../../redux/types";
+
 const CreateNewButton = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const onClick = () => {
-    navigate("/post");
+    navigate(`/post?action=${PostActionTypes.NEW}`);
     navigate(0);
-    dispatch(
-      setPost({
-        postAction: PostAction.CREATE,
-      } as PostState)
-    );
   };
   return (
     <button
