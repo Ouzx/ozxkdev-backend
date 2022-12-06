@@ -4,15 +4,19 @@ import { Jodit } from "jodit-react";
 import { useCreatePostMutation } from "../redux/services/cmsCore";
 import { Post as PostType } from "../redux/types";
 import InputBox from "../components/Posts/Post/InputBox";
+import { useNavigate } from "react-router-dom";
 
 const Post = () => {
+  const navigate = useNavigate();
+
   const [image, setImage] = useState("");
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
   const title = useRef<HTMLInputElement>(null);
   const richTextBox = useRef<Jodit>(null);
 
-  const [createPost, result] = useCreatePostMutation();
+  const [createPost, { isLoading, isError, isSuccess }] =
+    useCreatePostMutation();
 
   const onClick = () => {
     if (
@@ -36,6 +40,17 @@ const Post = () => {
     };
 
     createPost(post);
+  };
+
+  const buttonContent = () => {
+    if (isLoading) return "Loading...";
+    if (isError) return "Something went wrong";
+    if (isSuccess) {
+      navigate("/");
+
+      return "Created!";
+    }
+    return "Create";
   };
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +90,7 @@ const Post = () => {
             onClick={onClick}
             className="lg:visible w-24 h-9 bg-purple-700 rounded-md text-white"
           >
-            Submit
+            {buttonContent()}
           </button>
         </div>
       </div>
