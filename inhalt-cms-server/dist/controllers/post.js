@@ -19,12 +19,13 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // wait 2 seconds to simulate a slow connection
     // await new Promise((resolve) => setTimeout(resolve, 2000));
     const { id } = req.params;
+    const page = +id + 1;
     const ITEMS_PER_PAGE = 5;
     try {
         const totalItems = yield post_js_1.default.find().countDocuments();
         const posts = yield post_js_1.default.find()
             .sort({ createdAt: -1 })
-            .skip((+id - 1) * ITEMS_PER_PAGE)
+            .skip((+page - 1) * ITEMS_PER_PAGE)
             .limit(ITEMS_PER_PAGE);
         res.status(200).json({ posts, totalItems });
     }
