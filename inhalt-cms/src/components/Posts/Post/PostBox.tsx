@@ -1,7 +1,36 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-const PostBox: React.FC<{ post: string }> = ({ post }) => {
+import { useAppDispatch } from "../../../redux/hooks";
+import {
+  setPost,
+  PostAction,
+  PostState,
+} from "../../../redux/features/postSlice";
+import { Post } from "../../../redux/types";
+
+const PostBox: React.FC<{ post: Post }> = ({ post }) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const onClick = () => {
+    navigate("/post");
+    navigate(0);
+    dispatch(
+      setPost({
+        postAction: PostAction.UPDATE,
+        post: post,
+      } as PostState)
+    );
+  };
+
+  // TODO: Add a short content section to Post Page
+  const shortContent = () => {
+    // post.content is a string of html
+    // extract text from between html/p tags
+    const content = post.content?.split("<p>").join("").split("</p>").join("");
+    return content?.slice(0, 100);
+  };
+
   return (
     <div className="max-w-md mx-auto md:max-h-48 bg-white hover:bg-slate-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl md:min-w-full">
       <div className="md:flex">
@@ -14,16 +43,11 @@ const PostBox: React.FC<{ post: string }> = ({ post }) => {
         </div>
         <div className="p-8">
           <div className="truncate block text-[21px] text-black font-semibold">
-            {`Post ${post}`}
+            {post.title}
           </div>
 
-          <p className="mt-2 text-gray-500">28.10.2021 12:00</p>
-          <button
-            onClick={() => {
-              navigate(`/post/${2}`); // TODO: Change to post id
-              navigate(0);
-            }}
-          >
+          <div className="mt-2 text-gray-500">{shortContent()} ...</div>
+          <button onClick={onClick}>
             <p className="underline italic mt-4 text-lg leading-tight font-medium text-gray-500 hover:underline">
               Edit Post {`>`}
             </p>

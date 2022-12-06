@@ -41,7 +41,7 @@ const Posts = () => {
       content = (
         <div className="flex flex-col space-y-9">
           {data.posts.map((post: PostType) => (
-            <PostBox key={post._id} post={post._id || ""} />
+            <PostBox key={post._id} post={post} />
           ))}
           {data.totalItems >= ITEMS_PER_PAGE && (
             <Pagination
