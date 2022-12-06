@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const PostBox: React.FC<{ post: string }> = ({ post }) => {
   const navigate = useNavigate();
   return (
-    <div className="max-w-md mx-auto md:max-h-48 bg-white hover:bg-slate-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    <div className="max-w-md mx-auto md:max-h-48 bg-white hover:bg-slate-100 rounded-xl shadow-md overflow-hidden md:max-w-2xl md:min-w-full">
       <div className="md:flex">
         <div className="flex justify-center md:justify-start">
           <img
