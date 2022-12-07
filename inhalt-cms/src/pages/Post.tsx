@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useLayoutEffect,
-  useCallback,
-  useEffect,
-} from "react";
+import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import RichTextBox from "../components/Posts/Post/RichTextBox";
@@ -18,6 +12,7 @@ import {
   useCreatePostMutation,
   useFetchPostQuery,
   useUpdatePostMutation,
+  useDeletePostMutation,
 } from "../redux/services/cmsCore";
 
 const Post = () => {
@@ -51,6 +46,16 @@ const Post = () => {
     },
   ] = useCreatePostMutation();
 
+  // For deleting the post
+  const [
+    deletePost,
+    {
+      isLoading: isLoadingDelete,
+      isError: isErrorDelete,
+      isSuccess: isSuccessDelete,
+    },
+  ] = useDeletePostMutation();
+
   const [image, setImage] = useState("");
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
@@ -59,7 +64,7 @@ const Post = () => {
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
   const isError = isErrorCreate || isErrorUpdate;
-  const isSuccess = isSuccessCreate || isSuccessUpdate;
+  const isSuccess = isSuccessCreate || isSuccessUpdate || isSuccessDelete;
   const isEdit = actionType === PostActionTypes.EDIT.toString();
 
   // I used useLayoutEffect because I want to set the values of the input boxes via refs
@@ -77,9 +82,7 @@ const Post = () => {
 
   // For preventing the user from navigating away from the page when the post is being created or updated // bad-state management
   useEffect(() => {
-    if (isSuccess) {
-      navigate("/");
-    }
+    if (isSuccess) navigate("/");
   }, [isSuccess]);
 
   const onClick = () => {
@@ -127,19 +130,11 @@ const Post = () => {
     if (isEdit) {
       if (isLoading) return "Updating...";
       if (isError) return "Something went wrong";
-      //   if (isSuccess) {
-      //     navigate("/");
-      //     return "Updated!";
-      //   }
       return "Update";
-      // } else {
+    } else {
       if (isLoading) return "Creating...";
       if (isError) return "Something went wrong";
-      //   if (isSuccess) {
-      //     navigate("/");
       return "Created!";
-      //   }
-      //   return "Create";
     }
   };
 
@@ -149,6 +144,7 @@ const Post = () => {
       setImage(URL.createObjectURL(img));
     }
   };
+
   return (
     <div className="lg:flex lg:justify-center lg:space-x-12 lg:px-12 lg:flex-1 lg:items-start">
       <div className="flex border lg:w-full items-center justify-center mb-12 ">
@@ -176,12 +172,22 @@ const Post = () => {
               onChange={onImageChange}
             />
           </div>
-          <button
-            onClick={onClick}
-            className="lg:visible w-24 h-9 bg-purple-700 rounded-md text-white"
-          >
-            {buttonContent()}
-          </button>
+          <div>
+            <button
+              onClick={onClick}
+              className="w-24 h-9 bg-purple-700 rounded-md text-white mr-3"
+            >
+              {buttonContent()}
+            </button>
+            {isEdit && (
+              <button
+                onClick={() => deletePost(postData._id)}
+                className=" text-red-500 underline"
+              >
+                Delete
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
