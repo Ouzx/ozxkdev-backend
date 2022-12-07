@@ -138,6 +138,12 @@ const Post = () => {
     }
   };
 
+  const deleteContent = () => {
+    if (isLoadingDelete) return "Deleting...";
+    if (isErrorDelete) return "Something went wrong";
+    return "Delete";
+  };
+
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
@@ -184,7 +190,7 @@ const Post = () => {
                 onClick={() => deletePost(postData._id)}
                 className=" text-red-500 underline"
               >
-                Delete
+                {deleteContent()}
               </button>
             )}
           </div>
