@@ -5,12 +5,14 @@ interface PaginationProps {
   itemsPerPage: number;
   dataLength: number;
   forcePage: number;
+  route: string;
 }
 
 const Pagination = ({
   itemsPerPage,
   dataLength,
   forcePage,
+  route,
 }: PaginationProps) => {
   const navigate = useNavigate();
   const pageCount = Math.ceil(dataLength / itemsPerPage);
@@ -20,7 +22,7 @@ const Pagination = ({
       breakLabel="..."
       nextLabel=">"
       onPageChange={(selectedItem) => {
-        navigate(`/?page_num=${selectedItem.selected}`);
+        navigate(`${route}?page_num=${selectedItem.selected}`);
         navigate(0);
       }}
       pageRangeDisplayed={5}

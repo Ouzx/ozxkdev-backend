@@ -8,4 +8,5 @@ router.get("/:id", post_js_1.getPost);
 router.post("/", post_js_1.createPost);
 router.patch("/:id", post_js_1.updatePost);
 router.delete("/:id", post_js_1.deletePost);
+router.get("/search/:searchTerm/:pageIndex", post_js_1.searchPosts);
 exports.default = router;

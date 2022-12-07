@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePost = exports.updatePost = exports.createPost = exports.getPost = exports.getPosts = void 0;
+exports.searchPosts = exports.deletePost = exports.updatePost = exports.createPost = exports.getPost = exports.getPosts = void 0;
 const mongoose_1 = require("mongoose");
 const post_js_1 = __importDefault(require("../models/post.js"));
 const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,3 +93,28 @@ const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     res.json({ message: "Post deleted successfully." });
 });
 exports.deletePost = deletePost;
+// via pagination
+const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { searchTerm, pageIndex } = req.params;
+    const page = +pageIndex + 1;
+    const ITEMS_PER_PAGE = 5;
+    const title = new RegExp(searchTerm, "i");
+    try {
+        const totalItems = yield post_js_1.default.find({ $or: [{ title }] }).countDocuments();
+        const posts = yield post_js_1.default.find({ $or: [{ title }] })
+            .sort({ createdAt: -1 })
+            .skip((+page - 1) * ITEMS_PER_PAGE)
+            .limit(ITEMS_PER_PAGE);
+        if (!posts.length)
+            throw new Error("No posts found");
+        res.status(200).json({ posts, totalItems });
+    }
+    catch (e) {
+        if (e instanceof Error) {
+            res.status(404).json({ message: e.message });
+        }
+        else
+            res.status(500).json({ message: "Something went wrong" });
+    }
+});
+exports.searchPosts = searchPosts;

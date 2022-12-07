@@ -31,6 +31,14 @@ export const cmsCoreApi = createApi({
     fetchAllPosts: builder.query({
       query: (id) => `/posts/page/${id}`,
     }),
+    // with pagination
+    searchPosts: builder.query({
+      query: (searchTermWithPageIndex) => ({
+        url: `/posts/search/${searchTermWithPageIndex.split("&")[0]}/${
+          searchTermWithPageIndex.split("&")[1]
+        }`,
+      }),
+    }),
   }),
 });
 
@@ -40,4 +48,5 @@ export const {
   useUpdatePostMutation,
   useFetchPostQuery,
   useFetchAllPostsQuery,
+  useSearchPostsQuery,
 } = cmsCoreApi;

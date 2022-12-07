@@ -15,6 +15,12 @@ export interface Post {
   __v: number | undefined;
 }
 
+export interface PostQueryResult {
+  data: Posts;
+  isLoading: boolean;
+  isError: boolean;
+}
+
 export enum PostActionTypes {
   FETCH = "F",
   CREATE = "N",

@@ -77,3 +77,24 @@ export const deletePost = async (req: Request, res: Response) => {
 
   res.json({ message: "Post deleted successfully." });
 };
+
+// via pagination
+export const searchPosts = async (req: Request, res: Response) => {
+  const { searchTerm, pageIndex } = req.params;
+  const page: number = +pageIndex + 1;
+  const ITEMS_PER_PAGE = 5;
+  const title = new RegExp(searchTerm, "i");
+  try {
+    const totalItems = await Post.find({ $or: [{ title }] }).countDocuments();
+    const posts = await Post.find({ $or: [{ title }] })
+      .sort({ createdAt: -1 })
+      .skip((+page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE);
+    if (!posts.length) throw new Error("No posts found");
+    res.status(200).json({ posts, totalItems });
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(404).json({ message: e.message });
+    } else res.status(500).json({ message: "Something went wrong" });
+  }
+};
