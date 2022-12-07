@@ -22,8 +22,9 @@ const Post = () => {
   // For fetching the post if the action type is edit
   const actionType = query.get("action");
   const id = query.get("id");
-  const { data: postData } = useFetchPostQuery(id) as {
+  const { data: postData, isError: isErrorFetch } = useFetchPostQuery(id) as {
     data: PostType;
+    isError: boolean;
   };
 
   // For updating the post
@@ -134,7 +135,7 @@ const Post = () => {
     } else {
       if (isLoading) return "Creating...";
       if (isError) return "Something went wrong";
-      return "Created!";
+      return "Create";
     }
   };
 
@@ -151,53 +152,62 @@ const Post = () => {
     }
   };
 
-  return (
-    <div className="lg:flex lg:justify-center lg:space-x-12 lg:px-12 lg:flex-1 lg:items-start">
-      <div className="flex border lg:w-full items-center justify-center mb-12 ">
-        <div className="flex flex-1 justify-start items-start   bg-gray-100 p-6 pb-12">
-          <div className="flex flex-col flex-1">
-            <p>Content:</p>
-            <RichTextBox height={400} ref={richTextBox} />
+  const content = () => {
+    if (isEdit) {
+      // TODO: Add a loading UI
+      if (isErrorFetch) return <p>Something went wrong</p>;
+      if (!postData) return <p>Loading...</p>;
+    }
+    return (
+      <div className="lg:flex lg:justify-center lg:space-x-12 lg:px-12 lg:flex-1 lg:items-start">
+        <div className="flex border lg:w-full items-center justify-center mb-12 ">
+          <div className="flex flex-1 justify-start items-start   bg-gray-100 p-6 pb-12">
+            <div className="flex flex-col flex-1">
+              <p>Content:</p>
+              <RichTextBox height={400} ref={richTextBox} />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="flex items-center justify-center mb-32">
-        <div className="flex flex-col flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12 lg:w-80 space-y-3  ">
-          <InputBox ref={title} title="Title:" />
-          <InputBox ref={categories} title="Categories:" />
-          <InputBox ref={tags} title="Tags:" />
-          <div>
-            <p>Cover Image:</p>
-            {image && <img alt="cover" src={image} />}
-            <input
-              type="file"
-              id="img"
-              name="img"
-              accept="image/*"
-              className=" border border-gray-400 rounded-md"
-              onChange={onImageChange}
-            />
-          </div>
-          <div>
-            <button
-              onClick={onClick}
-              className="w-24 h-9 bg-purple-700 rounded-md text-white mr-3"
-            >
-              {buttonContent()}
-            </button>
-            {isEdit && (
+        <div className="flex items-center justify-center mb-32">
+          <div className="flex flex-col flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12 lg:w-80 space-y-3  ">
+            <InputBox ref={title} title="Title:" />
+            <InputBox ref={categories} title="Categories:" />
+            <InputBox ref={tags} title="Tags:" />
+            <div>
+              <p>Cover Image:</p>
+              {image && <img alt="cover" src={image} />}
+              <input
+                type="file"
+                id="img"
+                name="img"
+                accept="image/*"
+                className=" border border-gray-400 rounded-md"
+                onChange={onImageChange}
+              />
+            </div>
+            <div>
               <button
-                onClick={() => deletePost(postData._id)}
-                className=" text-red-500 underline"
+                onClick={onClick}
+                className="w-24 h-9 bg-purple-700 rounded-md text-white mr-3"
               >
-                {deleteContent()}
+                {buttonContent()}
               </button>
-            )}
+              {isEdit && (
+                <button
+                  onClick={() => deletePost(postData._id)}
+                  className=" text-red-500 underline"
+                >
+                  {deleteContent()}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
+
+  return content();
 };
 
 export default Post;
