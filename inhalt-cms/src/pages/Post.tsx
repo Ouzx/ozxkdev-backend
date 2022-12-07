@@ -181,7 +181,7 @@ const Post = () => {
                 id="img"
                 name="img"
                 accept="image/*"
-                className=" border border-gray-400 rounded-md"
+                className=" border p-1 border-gray-400 rounded-md"
                 onChange={onImageChange}
               />
             </div>
