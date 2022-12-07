@@ -1,4 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, {
+  useState,
+  useRef,
+  useLayoutEffect,
+  useCallback,
+  useEffect,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
 import RichTextBox from "../components/Posts/Post/RichTextBox";
@@ -11,20 +17,39 @@ import { Post as PostType, PostActionTypes } from "../redux/types";
 import {
   useCreatePostMutation,
   useFetchPostQuery,
+  useUpdatePostMutation,
 } from "../redux/services/cmsCore";
 
 const Post = () => {
   const navigate = useNavigate();
   const query = useQuery();
 
+  // For fetching the post if the action type is edit
   const actionType = query.get("action");
-  if (actionType == PostActionTypes.EDIT.toString()) {
-    const id = query.get("id");
-    if (id) {
-      const { data: post } = useFetchPostQuery(id);
-      console.log(post);
-    }
-  }
+  const id = query.get("id");
+  const { data: postData } = useFetchPostQuery(id) as {
+    data: PostType;
+  };
+
+  // For updating the post
+  const [
+    updatePost,
+    {
+      isLoading: isLoadingUpdate,
+      isError: isErrorUpdate,
+      isSuccess: isSuccessUpdate,
+    },
+  ] = useUpdatePostMutation();
+
+  // For creating the post
+  const [
+    createPost,
+    {
+      isLoading: isLoadingCreate,
+      isError: isErrorCreate,
+      isSuccess: isSuccessCreate,
+    },
+  ] = useCreatePostMutation();
 
   const [image, setImage] = useState("");
   const categories = useRef<HTMLInputElement>(null);
@@ -32,18 +57,30 @@ const Post = () => {
   const title = useRef<HTMLInputElement>(null);
   const richTextBox = useRef<Jodit>(null);
 
-  const [createPost, { isLoading, isError, isSuccess }] =
-    useCreatePostMutation();
+  const isLoading = isLoadingCreate || isLoadingUpdate;
+  const isError = isErrorCreate || isErrorUpdate;
+  const isSuccess = isSuccessCreate || isSuccessUpdate;
+  const isEdit = actionType === PostActionTypes.EDIT.toString();
 
-  // if (postAction === PostAction.EDIT) {
-  //   if (post) {
-  //     title.current!.value = post.title || "";
-  //     categories.current!.value = post.category || "";
-  //     tags.current!.value = post.tags?.join(",") || "";
-  //     richTextBox.current!.value = post.content || "";
-  //     setImage(post.coverImage || "");
-  //   }
-  // }
+  // I used useLayoutEffect because I want to set the values of the input boxes via refs
+  useLayoutEffect(() => {
+    if (isEdit) {
+      if (postData) {
+        title.current!.value = postData.title || "";
+        categories.current!.value = postData.category || "";
+        tags.current!.value = postData.tags?.join(",") || "";
+        richTextBox.current!.value = postData.content || "";
+        setImage(postData.coverImage || "");
+      }
+    }
+  }, [postData]);
+
+  // For preventing the user from navigating away from the page when the post is being created or updated // bad-state management
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/");
+    }
+  }, [isSuccess]);
 
   const onClick = () => {
     if (
@@ -53,6 +90,23 @@ const Post = () => {
       !richTextBox?.current?.value
     )
       return;
+
+    if (actionType === PostActionTypes.EDIT.toString()) {
+      const updatedPost: PostType = {
+        title: title.current?.value,
+        content: richTextBox.current?.value,
+        category: categories.current?.value,
+        tags: tags.current?.value.split(","),
+        coverImage: image,
+        _id: postData._id,
+        createdAt: postData.createdAt,
+        updatedAt: postData.updatedAt,
+        __v: postData.__v,
+      };
+
+      updatePost(updatedPost);
+      return;
+    }
 
     const newPost: PostType = {
       title: title.current?.value,
@@ -70,14 +124,23 @@ const Post = () => {
   };
 
   const buttonContent = () => {
-    if (isLoading) return "Loading...";
-    if (isError) return "Something went wrong";
-    if (isSuccess) {
-      navigate("/");
-
+    if (isEdit) {
+      if (isLoading) return "Updating...";
+      if (isError) return "Something went wrong";
+      //   if (isSuccess) {
+      //     navigate("/");
+      //     return "Updated!";
+      //   }
+      return "Update";
+      // } else {
+      if (isLoading) return "Creating...";
+      if (isError) return "Something went wrong";
+      //   if (isSuccess) {
+      //     navigate("/");
       return "Created!";
+      //   }
+      //   return "Create";
     }
-    return "Create";
   };
 
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {

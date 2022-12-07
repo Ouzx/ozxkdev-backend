@@ -5,7 +5,7 @@ const CreateNewButton = () => {
   const navigate = useNavigate();
 
   const onClick = () => {
-    navigate(`/post?action=${PostActionTypes.NEW}`);
+    navigate(`/post?action=${PostActionTypes.CRATE}`);
     navigate(0);
   };
   return (

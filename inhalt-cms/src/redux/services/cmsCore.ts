@@ -20,8 +20,8 @@ export const cmsCoreApi = createApi({
     }),
     updatePost: builder.mutation({
       query: (body: Post) => ({
-        url: "/posts",
-        method: "PUT",
+        url: `/posts/${body._id}`,
+        method: "PATCH",
         body,
       }),
     }),

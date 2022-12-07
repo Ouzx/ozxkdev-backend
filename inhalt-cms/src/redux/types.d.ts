@@ -17,6 +17,6 @@ export interface Post {
 
 export enum PostActionTypes {
   FETCH = "F",
-  NEW = "N",
+  CREATE = "N",
   EDIT = "E",
 }
