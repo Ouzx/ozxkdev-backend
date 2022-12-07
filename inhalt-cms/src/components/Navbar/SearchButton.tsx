@@ -19,26 +19,25 @@ const SearchIcon = () => (
 const SearchButton = () => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+
   const onClick = () => {
-    console.log("clicked");
     const searchValue = inputRef.current?.value;
     if (searchValue!.length < 3) return;
     navigate(`/search/${searchValue}`);
     inputRef.current!.value = "";
   };
 
-  const onFocus = () => {
-    inputRef.current?.focus();
-  };
   return (
     <div
-      onClick={onFocus}
+      onClick={() => {
+        inputRef.current?.focus();
+      }}
       className="relative self-center flex flex-1 flex-row justify-center items-center [&>*:nth-child(even)]:focus-within:scale-125 [&>*:nth-child(even)]:focus-within:animate-pulse [&>*:nth-child(even)]:focus-within:translate-x-24 child:focus-within:scale-100 child:focus-within:translate-x-0 "
     >
       <div className="scale-x-0 translate-x-20 transition ease-in duration-300 delay-300">
         <input
           ref={inputRef}
-          className="w-40 h-5 border border-black rounded-sm p-1"
+          className="w-40 h-5 border border-black rounded-sm p-1 animate-pulse "
           onKeyDown={(e) => {
             if (e.key === "Enter") onClick();
           }}
