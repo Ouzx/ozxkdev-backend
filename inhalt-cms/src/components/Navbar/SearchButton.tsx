@@ -1,5 +1,3 @@
-import React from "react";
-
 const SearchIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -20,9 +18,18 @@ const SearchButton = () => {
     console.log("Search Button Clicked!");
   };
   return (
-    <button className="hover:animate-bounce " onClick={onClick} title="Search">
-      <SearchIcon />
-    </button>
+    <div className="relative self-center flex flex-1 flex-row justify-center items-center [&>*:nth-child(even)]:focus-within:scale-125 [&>*:nth-child(even)]:focus-within:animate-pulse [&>*:nth-child(even)]:focus-within:translate-x-24 child:focus-within:scale-100 child:focus-within:translate-x-0 ">
+      <div className="scale-x-0 translate-x-20 transition ease-in duration-300 delay-300">
+        <input className="w-40 h-5 border border-black rounded-sm p-1" />
+      </div>
+      <button
+        className="absolute self-center transition ease-in duration-300 z-10 "
+        onClick={onClick}
+        title="Search"
+      >
+        <SearchIcon />
+      </button>
+    </div>
   );
 };
 

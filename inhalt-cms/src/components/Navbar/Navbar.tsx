@@ -10,9 +10,7 @@ const Navbar = () => {
       <div className=" flex flex-1 justify-between items-center px-4 py-6 max-w-6xl ">
         <Logo />
         <SearchButton />
-        <div className="flex items-center justify-center space-x-5">
-          <CreateNewButton />
-        </div>
+        <CreateNewButton />
       </div>
     </nav>
   );
