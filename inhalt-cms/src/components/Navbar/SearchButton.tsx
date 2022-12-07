@@ -20,7 +20,7 @@ const SearchButton = () => {
     console.log("Search Button Clicked!");
   };
   return (
-    <button onClick={onClick} title="Search">
+    <button className="hover:animate-bounce " onClick={onClick} title="Search">
       <SearchIcon />
     </button>
   );
