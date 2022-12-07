@@ -1,3 +1,6 @@
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
 const SearchIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -14,13 +17,32 @@ const SearchIcon = () => (
 );
 
 const SearchButton = () => {
+  const navigate = useNavigate();
+  const inputRef = useRef<HTMLInputElement>(null);
   const onClick = () => {
-    console.log("Search Button Clicked!");
+    console.log("clicked");
+    const searchValue = inputRef.current?.value;
+    if (searchValue!.length < 3) return;
+    navigate(`/search/${searchValue}`);
+    inputRef.current!.value = "";
+  };
+
+  const onFocus = () => {
+    inputRef.current?.focus();
   };
   return (
-    <div className="relative self-center flex flex-1 flex-row justify-center items-center [&>*:nth-child(even)]:focus-within:scale-125 [&>*:nth-child(even)]:focus-within:animate-pulse [&>*:nth-child(even)]:focus-within:translate-x-24 child:focus-within:scale-100 child:focus-within:translate-x-0 ">
+    <div
+      onClick={onFocus}
+      className="relative self-center flex flex-1 flex-row justify-center items-center [&>*:nth-child(even)]:focus-within:scale-125 [&>*:nth-child(even)]:focus-within:animate-pulse [&>*:nth-child(even)]:focus-within:translate-x-24 child:focus-within:scale-100 child:focus-within:translate-x-0 "
+    >
       <div className="scale-x-0 translate-x-20 transition ease-in duration-300 delay-300">
-        <input className="w-40 h-5 border border-black rounded-sm p-1" />
+        <input
+          ref={inputRef}
+          className="w-40 h-5 border border-black rounded-sm p-1"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") onClick();
+          }}
+        />
       </div>
       <button
         className="absolute self-center transition ease-in duration-300 z-10 "
