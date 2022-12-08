@@ -1,9 +1,9 @@
-import { InfinitySpin } from "react-loader-spinner";
 import CreateNewButton from "../Navbar/CreateNewButton";
 import Pagination from "./Pagination";
 import PostBox from "./Post/PostBox";
 
 import { Post as PostType, PostQueryResult } from "../../redux/types";
+import LoadIngdicator from "../LoadIngdicator";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -17,11 +17,7 @@ interface PostsProps {
 const Posts = (props: PostsProps) => {
   let content;
   if (props.postQueryResult.isLoading) {
-    content = (
-      <div className="flex justify-center items-center">
-        <InfinitySpin color="black" />
-      </div>
-    );
+    content = <LoadIngdicator />;
   } else if (props.postQueryResult.isError) {
     content = <div>Something went wrong</div>;
   } else {
