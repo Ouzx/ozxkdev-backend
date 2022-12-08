@@ -14,7 +14,9 @@ import {
   useUpdatePostMutation,
   useDeletePostMutation,
 } from "../redux/services/cmsCore";
+import LoadIngdicator from "../components/LoadIngdicator";
 
+// TODO: Most of part of the code I'm using updates without state management. I should use useState!
 const Post = () => {
   const navigate = useNavigate();
   const query = useQuery();
@@ -57,10 +59,15 @@ const Post = () => {
     },
   ] = useDeletePostMutation();
 
+  const [titleInput, setTitleInput] = useState("");
+  const [categoryInput, setCategoryInput] = useState("");
+  const [tagsInput, setTagsInput] = useState("");
+  const [richContent, setRichContent] = useState("");
   const [image, setImage] = useState("");
+
+  const title = useRef<HTMLInputElement>(null);
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
-  const title = useRef<HTMLInputElement>(null);
   const richTextBox = useRef<Jodit>(null);
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
@@ -68,18 +75,40 @@ const Post = () => {
   const isSuccess = isSuccessCreate || isSuccessUpdate || isSuccessDelete;
   const isEdit = actionType === PostActionTypes.EDIT.toString();
 
-  // I used useLayoutEffect because I want to set the values of the input boxes via refs
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isEdit) {
-      if (postData) {
-        title.current!.value = postData.title || "";
-        categories.current!.value = postData.category || "";
-        tags.current!.value = postData.tags?.join(",") || "";
-        richTextBox.current!.value = postData.content || "";
-        setImage(postData.coverImage || "");
-      }
+      if (postData === undefined) return;
+      setTitleInput(postData.title || "");
+      setCategoryInput(postData.category || "");
+      setTagsInput(postData.tags?.join(",") || "");
+      setRichContent(postData.content || "");
+      setImage(postData.coverImage || "");
     }
   }, [postData]);
+
+  // It's a real sh!t but it works
+  useLayoutEffect(() => {
+    if (isEdit) {
+      if (title.current !== null) title.current.value = titleInput;
+
+      if (categories.current !== null)
+        categories.current!.value = categoryInput;
+
+      if (tags.current !== null) tags.current!.value = tagsInput;
+
+      if (richTextBox.current !== null)
+        richTextBox.current!.value = richContent;
+    }
+  }, [
+    title,
+    categories,
+    tags,
+    richTextBox,
+    titleInput,
+    categoryInput,
+    tagsInput,
+    richContent,
+  ]);
 
   // For preventing the user from navigating away from the page when the post is being created or updated // bad-state management
   useEffect(() => {
@@ -154,9 +183,8 @@ const Post = () => {
 
   const content = () => {
     if (isEdit) {
-      // TODO: Add a loading UI
       if (isErrorFetch) return <p>Something went wrong</p>;
-      if (!postData) return <p>Loading...</p>;
+      if (!postData) return <LoadIngdicator />;
     }
     return (
       <div className="lg:flex lg:justify-center lg:space-x-12 lg:px-12 lg:flex-1 lg:items-start">
