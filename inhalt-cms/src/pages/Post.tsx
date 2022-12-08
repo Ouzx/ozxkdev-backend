@@ -78,11 +78,13 @@ const Post = () => {
   useEffect(() => {
     if (isEdit) {
       if (postData === undefined) return;
+      console.log(postData);
       setTitleInput(postData.title || "");
       setCategoryInput(postData.category || "");
       setTagsInput(postData.tags?.join(",") || "");
       setRichContent(postData.content || "");
       setImage(postData.coverImage || "");
+      document.title = `Edit Post | ${postData.title}`;
     }
   }, [postData]);
 

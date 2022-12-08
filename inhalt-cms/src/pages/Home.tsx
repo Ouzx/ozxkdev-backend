@@ -15,6 +15,7 @@ const Home = () => {
   useEffect(() => {
     if (postQueryResult.data)
       setTitle(`Latest Posts (${postQueryResult.data.totalItems} posts found)`);
+    document.title = "Inhalt CMS";
   }, [postQueryResult.data]);
 
   return (

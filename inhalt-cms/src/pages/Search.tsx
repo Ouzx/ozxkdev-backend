@@ -18,6 +18,7 @@ const Search = () => {
       setTitle(
         `Results for ${searchValue} (${postQueryResult.data.totalItems} posts found)`
       );
+    document.title = title;
   }, [postQueryResult.data]);
 
   return (
