@@ -88,30 +88,6 @@ const Post = () => {
     }
   }, [postData]);
 
-  // It's a real sh!t but it works
-  useLayoutEffect(() => {
-    if (isEdit) {
-      if (title.current !== null) title.current.value = titleInput;
-
-      if (categories.current !== null)
-        categories.current!.value = categoryInput;
-
-      if (tags.current !== null) tags.current!.value = tagsInput;
-
-      if (richTextBox.current !== null)
-        richTextBox.current!.value = richContent;
-    }
-  }, [
-    title,
-    categories,
-    tags,
-    richTextBox,
-    titleInput,
-    categoryInput,
-    tagsInput,
-    richContent,
-  ]);
-
   // For preventing the user from navigating away from the page when the post is being created or updated // bad-state management
   useEffect(() => {
     if (isSuccess) navigate("/");
@@ -194,15 +170,19 @@ const Post = () => {
           <div className="flex flex-1 justify-start items-start   bg-gray-100 p-6 pb-12">
             <div className="flex flex-col flex-1">
               <p>Content:</p>
-              <RichTextBox height={400} ref={richTextBox} />
+              <RichTextBox value={richContent} height={400} ref={richTextBox} />
             </div>
           </div>
         </div>
         <div className="flex items-center justify-center mb-32">
           <div className="flex flex-col flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12 lg:w-80 space-y-3  ">
-            <InputBox ref={title} title="Title:" />
-            <InputBox ref={categories} title="Categories:" />
-            <InputBox ref={tags} title="Tags:" />
+            <InputBox value={titleInput} ref={title} title="Title:" />
+            <InputBox
+              value={categoryInput}
+              ref={categories}
+              title="Categories:"
+            />
+            <InputBox value={tagsInput} ref={tags} title="Tags:" />
             <div>
               <p>Cover Image:</p>
               {image && <img alt="cover" src={image} />}

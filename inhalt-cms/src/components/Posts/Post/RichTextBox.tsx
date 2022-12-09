@@ -3,6 +3,7 @@ import JoditEditor, { Jodit } from "jodit-react";
 
 interface props {
   height: number;
+  value: string;
 }
 // TODO: Bullet points are not working
 const RichTextBox = React.forwardRef((prop: props, ref: Ref<Jodit>) => {
@@ -11,7 +12,7 @@ const RichTextBox = React.forwardRef((prop: props, ref: Ref<Jodit>) => {
   return (
     <JoditEditor
       ref={ref}
-      value={content}
+      value={content || prop.value}
       config={{
         readonly: false,
         height,
