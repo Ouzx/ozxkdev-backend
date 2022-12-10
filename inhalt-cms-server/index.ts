@@ -8,6 +8,7 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import postRoutes from "./routes/post.js";
+import authRoutes from "./routes/auth.js";
 
 /* Config */
 dotenv.config();
@@ -42,6 +43,7 @@ const upload = multer({ storage: storage });
 
 /* Routes */
 app.use("/posts", postRoutes);
+app.use("/auth", authRoutes);
 
 /* MongoDB Connection */
 mongoose
