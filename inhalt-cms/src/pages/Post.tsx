@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import RichTextBox from "../components/Posts/Post/RichTextBox";
 import { Jodit } from "jodit-react";
-import InputBox from "../components/Posts/Post/InputBox";
+import InputBox from "../components/InputBox";
 
 import useQuery from "../hooks/useQuery";
 
