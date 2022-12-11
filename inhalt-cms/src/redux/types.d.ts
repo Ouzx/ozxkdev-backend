@@ -26,3 +26,20 @@ export enum PostActionTypes {
   CREATE = "N",
   EDIT = "E",
 }
+
+export interface User {
+  _id: string;
+  name: string;
+  surname: string;
+  email: string;
+}
+
+export interface AuthLoginResponse {
+  user: User;
+  token: string;
+}
+
+export interface AuthLoginRequest {
+  username: string;
+  password: string;
+}
