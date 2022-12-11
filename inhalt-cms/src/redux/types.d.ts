@@ -35,8 +35,8 @@ export interface User {
 }
 
 export interface AuthLoginResponse {
-  user: User;
-  accessToken: string;
+  user: User | null;
+  accessToken: string | null;
 }
 
 export interface AuthLoginRequest {

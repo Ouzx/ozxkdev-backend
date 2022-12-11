@@ -1,6 +1,8 @@
 import { useRef, useEffect } from "react";
 import { useLoginMutation } from "../redux/services/userCore";
 import { AuthLoginResponse } from "../redux/types";
+import { useAppDispatch } from "../redux/hooks";
+import { setLogin } from "../redux/features/authSlice";
 
 import InputBox from "../components/InputBox";
 
@@ -11,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -38,6 +41,16 @@ const Login = () => {
     }
   };
 
+  const logme = () => {
+    const authData: AuthLoginResponse = data;
+
+    if (authData.accessToken)
+      localStorage.setItem("accessToken", authData.accessToken);
+
+    dispatch(setLogin(authData));
+    navigate("/");
+  };
+
   useEffect(() => {
     if (isError) {
       toast.update(toastMsg(), {
@@ -52,10 +65,7 @@ const Login = () => {
         isLoading: false,
       });
       if (data) {
-        const authData: AuthLoginResponse = data;
-        console.log(authData);
-        localStorage.setItem("accessToken", authData.accessToken);
-        navigate("/");
+        logme();
       }
     }
   }, [isError, isSuccess, isLoading]);
