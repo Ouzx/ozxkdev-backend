@@ -54,7 +54,7 @@ export const login = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             surname: user.surname,
             email: user.email,
         };
-        res.status(200).json({ accessToken, tempUser });
+        res.status(200).json({ accessToken, user: tempUser });
     }
     catch (error) {
         if (error instanceof Error) {

@@ -47,7 +47,7 @@ export const login = async (req: Request, res: Response) => {
       surname: user.surname,
       email: user.email,
     };
-    res.status(200).json({ accessToken, tempUser });
+    res.status(200).json({ accessToken, user: tempUser });
   } catch (error) {
     if (error instanceof Error) {
       res.status(409).json({ message: error.message });
