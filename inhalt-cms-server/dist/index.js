@@ -37,6 +37,7 @@ const upload = multer({ storage: storage });
 app.use("/posts", postRoutes);
 app.use("/auth", authRoutes);
 /* MongoDB Connection */
+mongoose.set("strictQuery", false);
 mongoose
     .connect(CONNECTION_URL, {
     useNewUrlParser: true,
