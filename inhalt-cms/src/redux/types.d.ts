@@ -34,6 +34,11 @@ export interface User {
   email: string;
 }
 
+export interface AuthData {
+  user: string;
+  accessToken: string;
+}
+
 export interface AuthLoginResponse {
   user: User | null;
   accessToken: string | null;

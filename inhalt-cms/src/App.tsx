@@ -1,21 +1,29 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 
-import Navbar from "./components/Navbar/Navbar";
+import GeneralLayout from "./GeneralLayout";
 import { Login, Home, Post, Search } from "./pages";
+import ProtectedLayout from "./ProtectedLayout";
 
-const App = () => {
-  return (
-    <Router>
-      <Navbar />
-      <Routes>
+export const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route element={<ProtectedLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/post" element={<Post />} />
-        <Route path="/santacruze" element={<Login />} />
         <Route path="/search/:searchValue" element={<Search />} />
-        <Route path="*" element={<div>404 {}</div>} />
-      </Routes>
-    </Router>
-  );
-};
+      </Route>
 
-export default App;
+      <Route element={<GeneralLayout />}>
+        <Route path="/santacruze" element={<Login />} />
+      </Route>
+
+      <Route path="*" element={<div>404 {}</div>} />
+    </>
+  )
+);
