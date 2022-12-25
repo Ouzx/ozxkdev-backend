@@ -1,40 +1,51 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Post, Posts } from "../types";
+import { RootState } from "../store";
+import { Post } from "../types";
 
 export const cmsCoreApi = createApi({
   reducerPath: "cmsCoreApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:8000/posts/",
+    // add authorization header from local storage
+    prepareHeaders: (headers, { getState }) => {
+      const token = (getState() as RootState).auth.accessToken;
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     createPost: builder.mutation({
       query: (body: Post) => ({
-        url: "/posts",
+        url: "/",
         method: "POST",
         body,
       }),
     }),
     deletePost: builder.mutation({
       query: (id) => ({
-        url: `/posts/${id}`,
+        url: `/${id}`,
         method: "DELETE",
       }),
     }),
     updatePost: builder.mutation({
       query: (body: Post) => ({
-        url: `/posts/${body._id}`,
+        url: `/${body._id}`,
         method: "PATCH",
         body,
       }),
     }),
     fetchPost: builder.query({
-      query: (id) => `/posts/${id}`,
+      query: (id) => `/${id}`,
     }),
     fetchAllPosts: builder.query({
-      query: (id) => `/posts/page/${id}`,
+      query: (id) => `/page/${id}`,
     }),
     // with pagination
     searchPosts: builder.query({
       query: (searchTermWithPageIndex) => ({
-        url: `/posts/search/${searchTermWithPageIndex.split("&")[0]}/${
+        url: `/search/${searchTermWithPageIndex.split("&")[0]}/${
           searchTermWithPageIndex.split("&")[1]
         }`,
       }),
