@@ -4,16 +4,13 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-import GeneralLayout from "./GeneralLayout";
 import { Login, Home, Post, Search } from "./pages";
 import ProtectedLayout from "./ProtectedLayout";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route element={<GeneralLayout />}>
-        <Route path="/santacruze" element={<Login />} />
-      </Route>
+      <Route path="/santacruze" element={<Login />} />
       <Route element={<ProtectedLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/post" element={<Post />} />
