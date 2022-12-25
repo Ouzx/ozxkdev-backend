@@ -10,6 +10,7 @@ const ProtectedLayout = () => {
 
   if (!user) return <Navigate to="/404" replace={true} />;
 
+  // TODO: throw error if token is invalid
   const validator = async () => {
     try {
       const result = await fetch("http://localhost:8000/auth/validate-token", {
