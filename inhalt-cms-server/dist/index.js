@@ -2,13 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import multer from "multer";
+import imager from "./middlewares/imager.js";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import postRoutes from "./routes/post.js";
 import authRoutes from "./routes/auth.js";
+import { verifyToken } from "./middlewares/auth.js";
 /* Config */
 dotenv.config();
 const CONNECTION_URL = process.env.CONNECTION_URL || "";
@@ -23,18 +24,8 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "/public/assets")));
-/* File Storage */
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/assets");
-    },
-    filename: (req, file, cb) => {
-        cb(null, req.body.name);
-    },
-});
-const upload = multer({ storage: storage });
 /* Routes */
-app.use("/posts", postRoutes);
+app.use("/posts", verifyToken, imager, postRoutes);
 app.use("/auth", authRoutes);
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
