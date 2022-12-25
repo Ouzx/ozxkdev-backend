@@ -1,6 +1,8 @@
 import { useRef, useEffect } from "react";
 import { useLoginMutation } from "../redux/services/userCore";
 import { AuthLoginResponse } from "../redux/types";
+import { useAppDispatch } from "../redux/hooks";
+import { setLogin } from "../redux/features/authSlice";
 
 import InputBox from "../components/InputBox";
 
@@ -12,6 +14,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [user, setUser] = useLocalStorage("user");
 
@@ -47,6 +50,7 @@ const Login = () => {
     if (authData.accessToken) {
       setUser(authData);
     }
+    dispatch(setLogin(authData));
     navigate("/");
   };
 
