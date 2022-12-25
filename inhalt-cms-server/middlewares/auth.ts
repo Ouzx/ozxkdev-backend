@@ -1,24 +1,27 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import User from "../models/user.js";
 
-export const verifyToken = (
+export const verifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    let token = req.header("Authorization");
+    const token = req.headers.authorization?.split(" ")[1];
 
     if (!token) return res.status(401).json({ message: "Unauthorized" });
-
-    if (token.startsWith("Bearer "))
-      token = token.slice(7, token.length).trimLeft();
 
     const secret = process.env.JWT_SECRET as string;
     if (!secret) throw new Error("JWT_SECRET is not defined");
 
     const decoded = jwt.verify(token, secret);
-    req.body.user = decoded;
+    const _data = decoded as { id: string };
+    const user = await User.findById(_data.id as string).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    req.body.user = user;
+    console.log(req.body.user);
 
     next();
   } catch (error) {
