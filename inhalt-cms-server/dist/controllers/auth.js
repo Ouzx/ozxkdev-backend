@@ -77,7 +77,7 @@ export const validate = (req, res) => __awaiter(void 0, void 0, void 0, function
         const user = yield User.findById(_data.id).select("-password");
         if (!user)
             return res.status(404).json({ message: "User not found" });
-        res.status(200).json({ message: "Valid Token" });
+        res.status(200).json({ token });
     }
     catch (error) {
         if (error instanceof Error) {

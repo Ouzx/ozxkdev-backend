@@ -1,6 +1,4 @@
 import {
-  BrowserRouter as Router,
-  Routes,
   Route,
   createBrowserRouter,
   createRoutesFromElements,
@@ -13,16 +11,14 @@ import ProtectedLayout from "./ProtectedLayout";
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
+      <Route element={<GeneralLayout />}>
+        <Route path="/santacruze" element={<Login />} />
+      </Route>
       <Route element={<ProtectedLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/post" element={<Post />} />
         <Route path="/search/:searchValue" element={<Search />} />
       </Route>
-
-      <Route element={<GeneralLayout />}>
-        <Route path="/santacruze" element={<Login />} />
-      </Route>
-
       <Route path="*" element={<div>404 {}</div>} />
     </>
   )

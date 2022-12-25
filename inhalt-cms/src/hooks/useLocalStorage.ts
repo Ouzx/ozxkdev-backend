@@ -17,7 +17,7 @@ export const useLocalStorage = (keyName: string) => {
       return null;
     }
   });
-  const setValue = (newValue: AuthLoginResponse) => {
+  const setValue = (newValue: AuthLoginResponse | null) => {
     try {
       window.localStorage.setItem(keyName, JSON.stringify(newValue));
     } catch (err) {}

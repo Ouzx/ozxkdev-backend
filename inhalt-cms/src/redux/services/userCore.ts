@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AuthLoginRequest } from "../types";
+import { AuthLoginRequest, AuthLoginResponse } from "../types";
 
 export const userCoreApi = createApi({
   reducerPath: "userCoreApi",
@@ -12,7 +12,16 @@ export const userCoreApi = createApi({
         body,
       }),
     }),
+    validateToken: builder.query({
+      query: (token: string) => ({
+        url: "/validate-token",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = userCoreApi;
+export const { useLoginMutation, useLazyValidateTokenQuery } = userCoreApi;

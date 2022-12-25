@@ -78,7 +78,6 @@ const Post = () => {
   useEffect(() => {
     if (isEdit) {
       if (postData === undefined) return;
-      console.log(postData);
       setTitleInput(postData.title || "");
       setCategoryInput(postData.category || "");
       setTagsInput(postData.tags?.join(",") || "");

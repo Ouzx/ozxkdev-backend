@@ -65,7 +65,8 @@ export const validate = async (req: Request, res: Response) => {
     const _data = decodedData as { id: string };
     const user = await User.findById(_data.id as string).select("-password");
     if (!user) return res.status(404).json({ message: "User not found" });
-    res.status(200).json({ message: "Valid Token" });
+
+    res.status(200).json({ token });
   } catch (error) {
     if (error instanceof Error) {
       res.status(409).json({ message: error.message });
