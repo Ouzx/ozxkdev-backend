@@ -53,6 +53,7 @@ export default function multerMiddleware(
       (file: any) => `${process.env.SERVER_URL}/assets/${file.filename}`
     );
 
+    console.log(req.body.fileUrls);
     next();
   });
 }

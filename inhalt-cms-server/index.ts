@@ -3,8 +3,6 @@ import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import imager from "./middlewares/imager.js";
-
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
@@ -34,7 +32,7 @@ app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "/public/assets")));
 
 /* Routes */
-app.use("/posts", verifyToken, imager, postRoutes);
+app.use("/posts", verifyToken, postRoutes);
 app.use("/auth", authRoutes);
 
 /* MongoDB Connection */

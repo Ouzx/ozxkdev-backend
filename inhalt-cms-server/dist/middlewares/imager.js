@@ -27,6 +27,7 @@ export default function multerMiddleware(req, res, next) {
         }
         // Everything went fine.
         req.body.fileUrls = req.files.map((file) => `${process.env.SERVER_URL}/assets/${file.filename}`);
+        console.log(req.body.fileUrls);
         next();
     });
 }
