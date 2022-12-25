@@ -1,6 +1,7 @@
 import CreateNewButton from "./CreateNewButton";
 import SearchButton from "./SearchButton";
 import Logo from "./Logo";
+import Logout from "./Logout";
 const Navbar = () => {
   return (
     <nav className="flex items-center justify-center drop-shadow-xl bg-white mb-32">
@@ -8,6 +9,7 @@ const Navbar = () => {
         <Logo />
         <SearchButton />
         <CreateNewButton />
+        <Logout />
       </div>
     </nav>
   );
