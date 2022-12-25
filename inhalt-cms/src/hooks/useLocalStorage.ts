@@ -1,21 +1,23 @@
 import { useState } from "react";
-import { AuthData } from "../redux/types";
+import { AuthLoginResponse } from "../redux/types";
 
-export const useLocalStorage = (keyName: string, defaultValue?: AuthData) => {
+export const useLocalStorage = (keyName: string) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {
       const value = window.localStorage.getItem(keyName);
       if (value) {
-        return JSON.parse(value) as AuthData;
+        return JSON.parse(value) as AuthLoginResponse;
       } else {
-        window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
-        return defaultValue;
+        // window.localStorage.setItem(keyName, JSON.stringify(defaultValue));
+        // return defaultValue;
+        return null;
       }
     } catch (err) {
-      return defaultValue;
+      // return defaultValue;
+      return null;
     }
   });
-  const setValue = (newValue: AuthData) => {
+  const setValue = (newValue: AuthLoginResponse) => {
     try {
       window.localStorage.setItem(keyName, JSON.stringify(newValue));
     } catch (err) {}

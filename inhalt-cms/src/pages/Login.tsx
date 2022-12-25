@@ -10,10 +10,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useNavigate } from "react-router-dom";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const [user, setUser] = useLocalStorage("user");
 
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -44,9 +47,9 @@ const Login = () => {
   const logme = () => {
     const authData: AuthLoginResponse = data;
 
-    if (authData.accessToken)
-      localStorage.setItem("accessToken", authData.accessToken);
-
+    if (authData.accessToken) {
+      setUser(authData);
+    }
     dispatch(setLogin(authData));
     navigate("/");
   };
