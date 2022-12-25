@@ -64,3 +64,26 @@ export const login = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             res.status(500).json({ message: "Something went wrong" });
     }
 });
+/* Validate Token */
+export const validate = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
+        const secret = process.env.JWT_SECRET;
+        if (!secret)
+            throw new Error("JWT_SECRET is not defined");
+        const decodedData = jwt.verify(token, secret);
+        const _data = decodedData;
+        const user = yield User.findById(_data.id).select("-password");
+        if (!user)
+            return res.status(404).json({ message: "User not found" });
+        res.status(200).json({ message: "Valid Token" });
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            res.status(409).json({ message: error.message });
+        }
+        else
+            res.status(500).json({ message: "Something went wrong" });
+    }
+});

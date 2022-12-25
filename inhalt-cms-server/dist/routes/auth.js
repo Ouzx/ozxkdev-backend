@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { login } from "../controllers/auth.js";
+import { login, validate } from "../controllers/auth.js";
 const router = Router();
 // router.post("/register", register); // REGISTER DISABLED
 router.post("/login", login);
+router.get("/validate-token", validate);
 export default router;

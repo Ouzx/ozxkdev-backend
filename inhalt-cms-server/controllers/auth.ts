@@ -54,3 +54,21 @@ export const login = async (req: Request, res: Response) => {
     } else res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+/* Validate Token */
+export const validate = async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    const secret = process.env.JWT_SECRET as string;
+    if (!secret) throw new Error("JWT_SECRET is not defined");
+    const decodedData = jwt.verify(token as string, secret);
+    const _data = decodedData as { id: string };
+    const user = await User.findById(_data.id as string).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json({ message: "Valid Token" });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(409).json({ message: error.message });
+    } else res.status(500).json({ message: "Something went wrong" });
+  }
+};
