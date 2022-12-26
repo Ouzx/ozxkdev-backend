@@ -9,6 +9,7 @@ export interface Post {
   content: string | undefined;
   category: string | undefined;
   tags: string[] | undefined;
+  images: string[] | undefined;
   coverImage: string | undefined;
   createdAt: string | undefined;
   updatedAt: string | undefined;

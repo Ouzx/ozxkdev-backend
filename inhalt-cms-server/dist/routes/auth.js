@@ -5,3 +5,4 @@ const router = Router();
 router.post("/login", login);
 router.get("/validate-token", validate);
 export default router;
+//# sourceMappingURL=auth.js.map

@@ -24,7 +24,7 @@ export const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0,
         if (!user)
             return res.status(404).json({ message: "User not found" });
         req.body.user = user;
-        console.log(req.body.user);
+        // console.log(req.body.user);
         next();
     }
     catch (error) {
@@ -35,3 +35,4 @@ export const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0,
             res.status(500).json({ message: "Something went wrong" });
     }
 });
+//# sourceMappingURL=auth.js.map

@@ -9,3 +9,4 @@ router.patch("/:id", imager, updatePost);
 router.delete("/:id", deletePost);
 router.get("/search/:searchTerm/:pageIndex", searchPosts);
 export default router;
+//# sourceMappingURL=post.js.map

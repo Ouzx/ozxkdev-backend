@@ -87,3 +87,4 @@ export const validate = (req, res) => __awaiter(void 0, void 0, void 0, function
             res.status(500).json({ message: "Something went wrong" });
     }
 });
+//# sourceMappingURL=auth.js.map

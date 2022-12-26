@@ -52,16 +52,15 @@ export const createPost = (req, res) => __awaiter(void 0, void 0, void 0, functi
         content,
         category,
         tags,
-        coverImage,
+        // coverImage,
     });
     try {
         yield newPost.save();
         res.status(201).json(newPost);
     }
     catch (e) {
-        if (e instanceof Error) {
+        if (e instanceof Error)
             res.status(409).json({ message: e.message });
-        }
         else
             res.status(500).json({ message: "Something went wrong" });
     }
@@ -106,3 +105,4 @@ export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(500).json({ message: "Something went wrong" });
     }
 });
+//# sourceMappingURL=post.js.map

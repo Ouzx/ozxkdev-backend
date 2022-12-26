@@ -14,26 +14,15 @@ const fileFilter = (
 };
 
 const storage = multer.diskStorage({
-  destination: (
-    req: Request,
-    file: Express.Multer.File,
-    cb: (error: Error | null, destination: string) => void
-  ) => {
-    cb(null, "public/assets");
+  destination: function (req, file, cb) {
+    cb(null, process.cwd() + "/uploads/");
   },
-  filename: (
-    req: Request,
-    file: Express.Multer.File,
-    cb: (error: Error | null, filename: string) => void
-  ) => {
-    cb(null, req.body.name);
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname.replace(/\s+/g, "-"));
   },
 });
 
-const upload = multer({ storage: storage, fileFilter: fileFilter }).array(
-  "images",
-  12
-);
+const upload = multer({ fileFilter: fileFilter, storage }).array("images", 12);
 
 export default function multerMiddleware(
   req: Request,
@@ -43,17 +32,16 @@ export default function multerMiddleware(
   upload(req, res, (err: any) => {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
-      res.send({ status: "error" });
+      res.send({ status: err });
     } else if (err) {
       // An unknown error occurred when uploading.
-      res.send({ status: "error" });
+      res.send({ status: err });
     }
     // Everything went fine.
     req.body.fileUrls = (req.files as Express.Multer.File[]).map(
-      (file: any) => `${process.env.SERVER_URL}/assets/${file.filename}`
+      (file: any) => `${process.env.SERVER_URL}/uploads/${file.filename}`
     );
 
-    console.log(req.body.fileUrls);
     next();
   });
 }

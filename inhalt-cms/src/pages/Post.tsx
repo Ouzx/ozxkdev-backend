@@ -108,6 +108,7 @@ const Post = () => {
         category: categories.current?.value,
         tags: tags.current?.value.split(","),
         coverImage: image,
+        images: [image],
         _id: postData._id,
         createdAt: postData.createdAt,
         updatedAt: postData.updatedAt,
@@ -123,6 +124,7 @@ const Post = () => {
       content: richTextBox.current?.value,
       category: categories.current?.value,
       tags: tags.current?.value.split(","),
+      images: [image], // TODO: Add images
       coverImage: image,
       _id: undefined,
       createdAt: undefined,
@@ -154,7 +156,8 @@ const Post = () => {
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
-      setImage(URL.createObjectURL(img));
+      // setImage(URL.createObjectURL(img));
+      setImage(JSON.stringify(img));
     }
   };
 

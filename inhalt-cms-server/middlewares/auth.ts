@@ -21,7 +21,7 @@ export const verifyToken = async (
     if (!user) return res.status(404).json({ message: "User not found" });
 
     req.body.user = user;
-    console.log(req.body.user);
+    // console.log(req.body.user);
 
     next();
   } catch (error) {

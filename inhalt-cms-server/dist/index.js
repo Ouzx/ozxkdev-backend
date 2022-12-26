@@ -8,7 +8,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import postRoutes from "./routes/post.js";
 import authRoutes from "./routes/auth.js";
-import { verifyToken } from "./middlewares/auth.js";
 /* Config */
 dotenv.config();
 const CONNECTION_URL = process.env.CONNECTION_URL || "";
@@ -24,7 +23,8 @@ app.use(morgan("common"));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "/public/assets")));
 /* Routes */
-app.use("/posts", verifyToken, postRoutes);
+// app.use("/posts", verifyToken, postRoutes);
+app.use("/posts", postRoutes);
 app.use("/auth", authRoutes);
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
@@ -35,3 +35,4 @@ mongoose
 })
     .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
     .catch((error) => console.log(`${error} did not connect`));
+//# sourceMappingURL=index.js.map

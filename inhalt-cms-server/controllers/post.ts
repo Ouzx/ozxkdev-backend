@@ -42,15 +42,14 @@ export const createPost = async (req: Request, res: Response) => {
     content,
     category,
     tags,
-    coverImage,
+    // coverImage,
   });
   try {
     await newPost.save();
     res.status(201).json(newPost);
   } catch (e) {
-    if (e instanceof Error) {
-      res.status(409).json({ message: e.message });
-    } else res.status(500).json({ message: "Something went wrong" });
+    if (e instanceof Error) res.status(409).json({ message: e.message });
+    else res.status(500).json({ message: "Something went wrong" });
   }
 };
 
