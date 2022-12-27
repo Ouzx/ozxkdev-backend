@@ -39,7 +39,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid Creadentials" });
 
     const secret = process.env.JWT_SECRET as string;
-    if (!secret) throw new Error("JWT_SECRET is not defined");
+    if (!secret) throw new Error("Unknown error J.23");
     const accessToken = jwt.sign({ id: user._id }, secret);
     const tempUser = {
       username: user.username,
@@ -60,7 +60,7 @@ export const validate = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
     const secret = process.env.JWT_SECRET as string;
-    if (!secret) throw new Error("JWT_SECRET is not defined");
+    if (!secret) throw new Error("Unknown error J.23");
     const decodedData = jwt.verify(token as string, secret);
     const _data = decodedData as { id: string };
     const user = await User.findById(_data.id as string).select("-password");

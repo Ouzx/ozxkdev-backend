@@ -24,7 +24,6 @@ export const verifyToken = (req, res, next) => __awaiter(void 0, void 0, void 0,
         if (!user)
             return res.status(404).json({ message: "User not found" });
         req.body.user = user;
-        // console.log(req.body.user);
         next();
     }
     catch (error) {
