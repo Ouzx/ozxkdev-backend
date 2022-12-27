@@ -1,5 +1,7 @@
-import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
 
 import RichTextBox from "../components/Posts/Post/RichTextBox";
 import { Jodit } from "jodit-react";
@@ -16,7 +18,7 @@ import {
 } from "../redux/services/cmsCore";
 import LoadIngdicator from "../components/LoadIngdicator";
 
-// TODO: Most of part of the code I'm using updates without state management. I should use useState!
+// TODO: Change loading indicator
 const Post = () => {
   const navigate = useNavigate();
   const query = useQuery();
@@ -98,9 +100,10 @@ const Post = () => {
       !categories?.current?.value ||
       !tags?.current?.value ||
       !richTextBox?.current?.value
-    )
+    ) {
+      toastMsg();
       return;
-
+    }
     if (actionType === PostActionTypes.EDIT.toString()) {
       const updatedPost: PostType = {
         title: title.current?.value,
@@ -161,6 +164,18 @@ const Post = () => {
     }
   };
 
+  const toastMsg = () =>
+    toast.error("🦄 Fill all fields!", {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
   const content = () => {
     if (isEdit) {
       if (isErrorFetch) return <p>Something went wrong</p>;
@@ -214,6 +229,18 @@ const Post = () => {
               )}
             </div>
           </div>
+          <ToastContainer
+            position="top-center"
+            autoClose={1000}
+            hideProgressBar={false}
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false}
+            theme="light"
+          />
         </div>
       </div>
     );
