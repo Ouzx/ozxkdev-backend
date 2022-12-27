@@ -48,8 +48,9 @@ export const createPost = async (req: Request, res: Response) => {
   const { title, content, category, tags, coverImage, contentImages } =
     req.body;
 
-  if (!title || !content || !category || !tags || !coverImage)
-    throw new Error("Please fill all fields");
+  // TODO: Uncomment this to make the fields required
+  // if (!title || !content || !category || !tags || !coverImage)
+  //   throw new Error("Please fill all fields");
 
   const newPost = new Post({
     title,

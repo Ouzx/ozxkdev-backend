@@ -52,8 +52,9 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 export const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, content, category, tags, coverImage, contentImages } = req.body;
-    if (!title || !content || !category || !tags || !coverImage)
-        throw new Error("Please fill all fields");
+    // TODO: Uncomment this to make the fields required
+    // if (!title || !content || !category || !tags || !coverImage)
+    //   throw new Error("Please fill all fields");
     const newPost = new Post({
         title,
         content,
