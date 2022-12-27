@@ -44,11 +44,12 @@ export default function multerMiddleware(
     if (err instanceof multer.MulterError) return res.send({ status: err });
     else if (err) return res.send({ status: err });
 
-    req.body.fileUrls = (req.files as Express.Multer.File[]).map(
+    req.body.contentImages = (req.files as Express.Multer.File[]).map(
       (file: any) => `${process.env.SERVER_URL}/uploads/${file.filename}`
     );
 
-    req.body.coverImage = req.body.fileUrls.shift();
+    if (req.body.fileUrls && req.body.fileUrls.length > 0)
+      req.body.coverImage = req.body.fileUrls.shift();
 
     next();
   });

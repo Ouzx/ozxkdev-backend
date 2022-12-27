@@ -13,10 +13,13 @@ export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function
     // wait 2 seconds to simulate a slow connection
     // await new Promise((resolve) => setTimeout(resolve, 2000));
     const { id } = req.params;
+    if (!id)
+        return res.status(404).send(`No page with id: ${id}`);
     const page = +id + 1;
     const ITEMS_PER_PAGE = 5;
     try {
         const totalItems = yield Post.find().countDocuments();
+        // if (!totalItems) throw new Error("No posts found");
         const posts = yield Post.find()
             .sort({ createdAt: -1 })
             .skip((+page - 1) * ITEMS_PER_PAGE)
@@ -33,6 +36,8 @@ export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    if (!Types.ObjectId.isValid(id))
+        throw new Error(`No post with id: ${id}`);
     try {
         const post = yield Post.findById(id);
         res.status(200).json(post);
@@ -46,13 +51,15 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 export const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, content, category, tags, coverImage } = req.body;
+    const { title, content, category, tags, coverImage, contentImages } = req.body;
+    if (!title || !content || !category || !tags || !coverImage)
+        throw new Error("Please fill all fields");
     const newPost = new Post({
         title,
         content,
         category,
         tags,
-        // coverImage,
+        coverImage,
     });
     try {
         yield newPost.save();
@@ -67,19 +74,37 @@ export const createPost = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 export const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { title, content, category, tags, coverImage } = req.body;
     if (!Types.ObjectId.isValid(id))
-        return res.status(404).send(`No post with id: ${id}`);
+        throw new Error(`No post with id: ${id}`);
+    const { title, content, category, tags, coverImage, contentImages } = req.body;
+    if (!title || !content || !category || !tags || !coverImage)
+        throw new Error("Please fill all fields");
     const updatedPost = { title, content, category, tags, coverImage, _id: id };
-    yield Post.findByIdAndUpdate(id, updatedPost, { new: true });
-    res.json(updatedPost);
+    try {
+        yield Post.findByIdAndUpdate(id, updatedPost, { new: true });
+        res.json(updatedPost);
+    }
+    catch (e) {
+        if (e instanceof Error)
+            res.status(404).json({ message: e.message });
+        else
+            res.status(500).json({ message: "Something went wrong" });
+    }
 });
 export const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (!Types.ObjectId.isValid(id))
         return res.status(404).send(`No post with id: ${id}`);
-    yield Post.findByIdAndRemove(id);
-    res.json({ message: "Post deleted successfully." });
+    try {
+        yield Post.findByIdAndRemove(id);
+        res.json({ message: "Post deleted successfully." });
+    }
+    catch (e) {
+        if (e instanceof Error)
+            res.status(404).json({ message: e.message });
+        else
+            res.status(500).json({ message: "Something went wrong" });
+    }
 });
 // via pagination
 export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -28,8 +28,9 @@ export default function multerMiddleware(req, res, next) {
             return res.send({ status: err });
         else if (err)
             return res.send({ status: err });
-        req.body.fileUrls = req.files.map((file) => `${process.env.SERVER_URL}/uploads/${file.filename}`);
-        req.body.coverImage = req.body.fileUrls.shift();
+        req.body.contentImages = req.files.map((file) => `${process.env.SERVER_URL}/uploads/${file.filename}`);
+        if (req.body.fileUrls && req.body.fileUrls.length > 0)
+            req.body.coverImage = req.body.fileUrls.shift();
         next();
     });
 }

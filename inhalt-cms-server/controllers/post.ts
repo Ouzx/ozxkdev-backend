@@ -6,10 +6,16 @@ export const getPosts = async (req: Request, res: Response) => {
   // wait 2 seconds to simulate a slow connection
   // await new Promise((resolve) => setTimeout(resolve, 2000));
   const { id } = req.params;
+
+  if (!id) return res.status(404).send(`No page with id: ${id}`);
+
   const page: number = +id + 1;
   const ITEMS_PER_PAGE = 5;
   try {
     const totalItems = await Post.find().countDocuments();
+
+    // if (!totalItems) throw new Error("No posts found");
+
     const posts = await Post.find()
       .sort({ createdAt: -1 })
       .skip((+page - 1) * ITEMS_PER_PAGE)
@@ -25,6 +31,9 @@ export const getPosts = async (req: Request, res: Response) => {
 
 export const getPost = async (req: Request, res: Response) => {
   const { id } = req.params;
+
+  if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
+
   try {
     const post = await Post.findById(id);
     res.status(200).json(post);
@@ -36,13 +45,18 @@ export const getPost = async (req: Request, res: Response) => {
 };
 
 export const createPost = async (req: Request, res: Response) => {
-  const { title, content, category, tags, coverImage } = req.body;
+  const { title, content, category, tags, coverImage, contentImages } =
+    req.body;
+
+  if (!title || !content || !category || !tags || !coverImage)
+    throw new Error("Please fill all fields");
+
   const newPost = new Post({
     title,
     content,
     category,
     tags,
-    // coverImage,
+    coverImage,
   });
   try {
     await newPost.save();
@@ -55,15 +69,23 @@ export const createPost = async (req: Request, res: Response) => {
 
 export const updatePost = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { title, content, category, tags, coverImage } = req.body;
 
-  if (!Types.ObjectId.isValid(id))
-    return res.status(404).send(`No post with id: ${id}`);
+  if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
+
+  const { title, content, category, tags, coverImage, contentImages } =
+    req.body;
+
+  if (!title || !content || !category || !tags || !coverImage)
+    throw new Error("Please fill all fields");
 
   const updatedPost = { title, content, category, tags, coverImage, _id: id };
-
-  await Post.findByIdAndUpdate(id, updatedPost, { new: true });
-  res.json(updatedPost);
+  try {
+    await Post.findByIdAndUpdate(id, updatedPost, { new: true });
+    res.json(updatedPost);
+  } catch (e) {
+    if (e instanceof Error) res.status(404).json({ message: e.message });
+    else res.status(500).json({ message: "Something went wrong" });
+  }
 };
 
 export const deletePost = async (req: Request, res: Response) => {
@@ -72,9 +94,13 @@ export const deletePost = async (req: Request, res: Response) => {
   if (!Types.ObjectId.isValid(id))
     return res.status(404).send(`No post with id: ${id}`);
 
-  await Post.findByIdAndRemove(id);
-
-  res.json({ message: "Post deleted successfully." });
+  try {
+    await Post.findByIdAndRemove(id);
+    res.json({ message: "Post deleted successfully." });
+  } catch (e) {
+    if (e instanceof Error) res.status(404).json({ message: e.message });
+    else res.status(500).json({ message: "Something went wrong" });
+  }
 };
 
 // via pagination
