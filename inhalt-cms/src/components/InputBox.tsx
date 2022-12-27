@@ -11,7 +11,9 @@ const InputBox = React.forwardRef(
   (props: Props, ref: Ref<HTMLInputElement>) => {
     return (
       <div>
-        <label htmlFor={props.id}>{props.title}</label>
+        <label className="block" htmlFor={props.id}>
+          {props.title}
+        </label>
         <input
           type={props.type || "text"}
           id={props.id}
