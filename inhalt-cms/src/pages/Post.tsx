@@ -159,8 +159,7 @@ const Post = () => {
   const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       let img = event.target.files[0];
-      // setImage(URL.createObjectURL(img));
-      setImage(JSON.stringify(img));
+      setImage(URL.createObjectURL(img));
     }
   };
 
