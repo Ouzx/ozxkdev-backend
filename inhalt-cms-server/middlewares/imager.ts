@@ -1,4 +1,3 @@
-import console from "console";
 import { Request, Response, NextFunction } from "express";
 import multer, { FileFilterCallback } from "multer";
 
@@ -42,22 +41,15 @@ export default function multerMiddleware(
   next: NextFunction
 ) {
   upload(req, res, (err: any) => {
-    if (err instanceof multer.MulterError) {
-      // A Multer error occurred when uploading.
-      return res.send({ status: err });
-    } else if (err) {
-      // An unknown error occurred when uploading.
-      return res.send({ status: err });
-    }
-    // Everything went fine.
+    if (err instanceof multer.MulterError) return res.send({ status: err });
+    else if (err) return res.send({ status: err });
+
     req.body.fileUrls = (req.files as Express.Multer.File[]).map(
       (file: any) => `${process.env.SERVER_URL}/uploads/${file.filename}`
     );
 
-    if (req.body.fileUrls.length > 0)
-      req.body.coverImage = req.body.fileUrls.shift();
+    req.body.coverImage = req.body.fileUrls.shift();
 
-    console.log(req.body.coverImage);
     next();
   });
 }
