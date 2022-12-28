@@ -17,7 +17,7 @@ import {
   useDeletePostMutation,
 } from "../redux/services/cmsCore";
 import LoadIngdicator from "../components/LoadIngdicator";
-import Editor from "../components/Posts/Post/Editor";
+import Editor from "../components/Editor/Editor";
 
 // TODO: Change loading indicator
 const Post = () => {

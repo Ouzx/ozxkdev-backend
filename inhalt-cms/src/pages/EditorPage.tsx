@@ -1,5 +1,5 @@
 import React from "react";
-import Editor from "../components/Posts/Post/Editor";
+import Editor from "../components/Editor/Editor";
 
 const EditorPage = () => {
   return (
