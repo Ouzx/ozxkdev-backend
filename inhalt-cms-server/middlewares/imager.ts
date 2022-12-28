@@ -20,7 +20,7 @@ const fileFilter = (
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, process.cwd() + "/uploads/");
+    cb(null, process.cwd() + "/public/uploads/");
   },
   filename: function (req, file, cb) {
     cb(
@@ -61,10 +61,14 @@ export function multerMiddlewareSingle(
   next: NextFunction
 ) {
   uploadSingle(req, res, (err: any) => {
-    if (err instanceof multer.MulterError) return res.send({ status: err });
-    else if (err) return res.send({ status: err });
-
-    req.body.image = `${process.env.SERVER_URL}/uploads/${
+    if (err instanceof multer.MulterError) {
+      // console.log(err);
+      return res.send({ status: err });
+    } else if (err) {
+      // console.log(err);
+      return res.send({ status: err });
+    }
+    req.body.image = `${process.env.SERVER_URL}/media/${
       (req.file as Express.Multer.File).filename
     }`;
 

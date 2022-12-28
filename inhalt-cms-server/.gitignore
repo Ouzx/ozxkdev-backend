@@ -2,5 +2,4 @@ node_modules
 build
 .env
 
-!uploads
-uploads/*
+public/uploads/
