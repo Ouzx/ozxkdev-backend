@@ -4,7 +4,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 
-import { Login, Home, Post, Search } from "./pages";
+import { Login, Home, Post, Search, EditorPage } from "./pages";
 import ProtectedLayout from "./ProtectedLayout";
 
 export const router = createBrowserRouter(
@@ -17,6 +17,7 @@ export const router = createBrowserRouter(
         <Route path="/search/:searchValue" element={<Search />} />
       </Route>
       <Route path="*" element={<div>404 {}</div>} />
+      <Route path="editor" element={<EditorPage />} />
     </>
   )
 );

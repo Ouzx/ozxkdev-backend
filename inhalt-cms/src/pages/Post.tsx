@@ -17,6 +17,7 @@ import {
   useDeletePostMutation,
 } from "../redux/services/cmsCore";
 import LoadIngdicator from "../components/LoadIngdicator";
+import Editor from "../components/Posts/Post/Editor";
 
 // TODO: Change loading indicator
 const Post = () => {
@@ -186,7 +187,7 @@ const Post = () => {
           <div className="flex flex-1 justify-start items-start   bg-gray-100 p-6 pb-12">
             <div className="flex flex-col flex-1">
               <p>Content:</p>
-              <RichTextBox value={richContent} height={400} ref={richTextBox} />
+              {/* <RichTextBox value={richContent} height={400} ref={richTextBox} /> */}
             </div>
           </div>
         </div>
