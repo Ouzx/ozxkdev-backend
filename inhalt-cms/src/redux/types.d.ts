@@ -8,12 +8,8 @@ export interface Post {
   title: string | undefined;
   content: string | undefined;
   category: string | undefined;
+  thumbnail: string | undefined; // link to image
   tags: string[] | undefined;
-  images: string[] | undefined;
-  coverImage: string | undefined;
-  createdAt: string | undefined;
-  updatedAt: string | undefined;
-  __v: number | undefined;
 }
 
 export interface PostQueryResult {
