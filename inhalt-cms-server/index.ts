@@ -7,8 +7,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-import postRoutes from "./routes/post.js";
-import authRoutes from "./routes/auth.js";
+import { image, post, auth } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
 
 /* Config */
@@ -29,12 +28,13 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(cors());
 
-app.use("/assets", express.static(path.join(__dirname, "/public/assets")));
+// app.use("/assets", express.static(path.join(__dirname, "/public/assets")));
 
 /* Routes */
-app.use("/posts", verifyToken, postRoutes);
+app.use("/posts", verifyToken, post);
 // app.use("/posts", postRoutes);
-app.use("/auth", authRoutes);
+app.use("/auth", auth);
+app.use("/media/imgs", auth, image);
 
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);

@@ -14,17 +14,6 @@ import CheckList from "@editorjs/checklist";
 import Delimiter from "@editorjs/delimiter";
 import InlineCode from "@editorjs/inline-code";
 
-class Uploader {
-  uploadSelectedFile() {}
-  uploadByUrl(url, { setPreview }) {
-    console.log("uploadByUrl", url);
-
-    setPreview(url);
-    return api.uploadFileByURL(url);
-  }
-  uploadByFile() {}
-}
-
 export default {
   // NOTE: Paragraph is default tool. Declare only when you want to change paragraph option.
   // paragraph: Paragraph,
