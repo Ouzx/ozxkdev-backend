@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 
-import RichTextBox from "../components/Posts/Post/RichTextBox";
-import { Jodit } from "jodit-react";
 import InputBox from "../components/InputBox";
 
 import useQuery from "../hooks/useQuery";
@@ -62,16 +60,12 @@ const Post = () => {
     },
   ] = useDeletePostMutation();
 
-  const [titleInput, setTitleInput] = useState("");
+  const editor = useRef<any>(null);
   const [categoryInput, setCategoryInput] = useState("");
   const [tagsInput, setTagsInput] = useState("");
-  const [richContent, setRichContent] = useState("");
-  const [image, setImage] = useState("");
 
-  const title = useRef<HTMLInputElement>(null);
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
-  const richTextBox = useRef<Jodit>(null);
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
   const isError = isErrorCreate || isErrorUpdate;
@@ -81,11 +75,8 @@ const Post = () => {
   useEffect(() => {
     if (isEdit) {
       if (postData === undefined) return;
-      setTitleInput(postData.title || "");
       setCategoryInput(postData.category || "");
       setTagsInput(postData.tags?.join(",") || "");
-      setRichContent(postData.content || "");
-      setImage(postData.coverImage || "");
       document.title = `Edit Post | ${postData.title}`;
     }
   }, [postData]);
@@ -97,46 +88,27 @@ const Post = () => {
 
   const onClick = () => {
     if (
-      !title?.current?.value ||
       !categories?.current?.value ||
       !tags?.current?.value ||
-      !richTextBox?.current?.value
+      !editor?.current?.title
     ) {
       toastMsg();
       return;
     }
-    if (actionType === PostActionTypes.EDIT.toString()) {
-      const updatedPost: PostType = {
-        title: title.current?.value,
-        content: richTextBox.current?.value,
-        category: categories.current?.value,
-        tags: tags.current?.value.split(","),
-        coverImage: image,
-        images: [image],
-        _id: postData._id,
-        createdAt: postData.createdAt,
-        updatedAt: postData.updatedAt,
-        __v: postData.__v,
-      };
 
-      updatePost(updatedPost);
-      return;
-    }
-
-    const newPost: PostType = {
-      title: title.current?.value,
-      content: richTextBox.current?.value,
+    const currentPostData = {
+      title: editor?.current?.title,
+      content: editor?.current?.content,
       category: categories.current?.value,
       tags: tags.current?.value.split(","),
-      images: [image], // TODO: Add images
-      coverImage: image,
-      _id: undefined,
-      createdAt: undefined,
-      updatedAt: undefined,
-      __v: undefined,
+      thumbnail: editor?.current?.thumbnail,
+      _id: id || "",
     };
 
-    createPost(newPost);
+    if (actionType === PostActionTypes.EDIT.toString())
+      return updatePost(currentPostData);
+
+    createPost(currentPostData);
   };
 
   const buttonContent = () => {
@@ -155,13 +127,6 @@ const Post = () => {
     if (isLoadingDelete) return "Deleting...";
     if (isErrorDelete) return "Something went wrong";
     return "Delete";
-  };
-
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setImage(URL.createObjectURL(img));
-    }
   };
 
   const toastMsg = () =>
@@ -188,30 +153,19 @@ const Post = () => {
             <div className="flex flex-col flex-1">
               <p>Content:</p>
               {/* <RichTextBox value={richContent} height={400} ref={richTextBox} /> */}
+              <Editor ref={editor} />
             </div>
           </div>
         </div>
         <div className="flex items-center justify-center mb-32">
           <div className="flex flex-col flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12 lg:w-80 space-y-3  ">
-            <InputBox value={titleInput} ref={title} title="Title:" />
             <InputBox
               value={categoryInput}
               ref={categories}
               title="Categories:"
             />
             <InputBox value={tagsInput} ref={tags} title="Tags:" />
-            <div>
-              <p>Cover Image:</p>
-              {image && <img alt="cover" src={image} />}
-              <input
-                type="file"
-                id="img"
-                name="img"
-                accept="image/*"
-                className=" border p-1 border-gray-400 rounded-md"
-                onChange={onImageChange}
-              />
-            </div>
+
             <div>
               <button
                 onClick={onClick}
@@ -221,7 +175,7 @@ const Post = () => {
               </button>
               {isEdit && (
                 <button
-                  onClick={() => deletePost(postData._id)}
+                  onClick={() => deletePost(id)}
                   className=" text-red-500 underline"
                 >
                   {deleteContent()}
