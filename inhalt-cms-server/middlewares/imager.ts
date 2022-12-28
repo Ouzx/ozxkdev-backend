@@ -64,7 +64,7 @@ export function multerMiddlewareSingle(
     if (err instanceof multer.MulterError) return res.send({ status: err });
     else if (err) return res.send({ status: err });
 
-    req.body.coverImage = `${process.env.SERVER_URL}/uploads/${
+    req.body.image = `${process.env.SERVER_URL}/uploads/${
       (req.file as Express.Multer.File).filename
     }`;
 
