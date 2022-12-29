@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import EditorJS, { OutputData } from "@editorjs/editorjs";
 import configuration from "./configuration";
-import { stripHtml } from "string-strip-html";
+import { parse } from "./parser";
 
 const DEFAULT_INITIAL_DATA = (): OutputData => {
   return {
@@ -23,8 +23,6 @@ const DEFAULT_INITIAL_DATA = (): OutputData => {
     ],
   };
 };
-
-//TODO: editorjs-parser
 
 const getTitle = (content: OutputData) => {
   for (let i = 0; i < content.blocks.length; i++) {
@@ -51,7 +49,6 @@ interface props {
 
 const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   const ejInstance = useRef<EditorJS | null>();
-
   useImperativeHandle(
     ref,
     () => {
@@ -59,7 +56,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
         instance: ejInstance?.current,
         title: getTitle(editorData),
         thumbnail: getThumbnail(editorData),
-        content: JSON.stringify(editorData),
+        content: getContent,
       };
     },
     [ejInstance.current]
@@ -84,12 +81,18 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
       onReady: () => {
         ejInstance.current = editor;
       },
-      onChange: async () => {
-        const content = await editor.saver.save();
-        setEditorData(content);
-      },
+      // onChange: async () => {
+      //   const content = await editor.saver.save();
+      //   console.log(content);
+      //   setEditorData(content);
+      // },
     };
     const editor = new EditorJS(config);
+  };
+  const getContent = () => {
+    if (!ejInstance.current) return;
+    console.log("getContent");
+    return ejInstance.current.save();
   };
 
   return (
