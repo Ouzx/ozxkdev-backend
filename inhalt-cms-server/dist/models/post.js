@@ -1,10 +1,47 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 const postSchema = new Schema({
-    title: String,
-    content: String,
-    category: String,
-    tags: [String],
-    thumbnail: String,
+    title: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 3,
+    },
+    content: {
+        type: String,
+        required: true,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    tags: {
+        type: [String],
+    },
+    thumbnail: {
+        type: String,
+        required: true,
+    },
+    raw: {
+        type: String,
+        required: true,
+    },
+    shared: {
+        type: Boolean,
+        required: true,
+    },
+    urlSuffix: {
+        type: String,
+        required: true,
+    },
+    shortContent: {
+        type: String,
+        required: true,
+    },
+    user: {
+        required: true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
     createdAt: {
         type: Date,
         default: new Date(),

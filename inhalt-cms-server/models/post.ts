@@ -1,4 +1,5 @@
-import { Document, Schema, model } from "mongoose";
+import mongoose, { Document, Schema, model } from "mongoose";
+import User from "./user.js";
 
 export interface iPost extends Document {
   title: string;
@@ -6,16 +7,58 @@ export interface iPost extends Document {
   category: string;
   tags?: string[] | null;
   thumbnail: string;
+  raw: string;
+  shared: boolean;
+  urlSuffix: string;
+  shortContent: string;
   createdAt: Date;
   updatedAt: Date;
+  user: typeof User;
 }
 
 const postSchema = new Schema<iPost>({
-  title: String,
-  content: String,
-  category: String,
-  tags: [String],
-  thumbnail: String,
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 3,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  tags: {
+    type: [String],
+  },
+  thumbnail: {
+    type: String,
+    required: true,
+  },
+  raw: {
+    type: String,
+    required: true,
+  },
+  shared: {
+    type: Boolean,
+    required: true,
+  },
+  urlSuffix: {
+    type: String,
+    required: true,
+  },
+  shortContent: {
+    type: String,
+    required: true,
+  },
+  user: {
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   createdAt: {
     type: Date,
     default: new Date(),
