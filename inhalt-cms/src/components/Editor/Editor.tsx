@@ -39,6 +39,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
         title: getTitle(),
         thumbnail: getThumbnail(),
         content: getContent(),
+        raw: editorData,
       };
     },
     [ejInstance.current, editorData]
