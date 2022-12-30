@@ -24,14 +24,12 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(cors());
 
-// TODO: TEST THIS
 app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 
 /* Routes */
-app.use("/posts", verifyToken, post);
-
 app.use("/auth", auth);
-app.use("/media/imgs", auth, image);
+app.use("/posts", verifyToken, post);
+app.use("/media/imgs", verifyToken, image);
 
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
