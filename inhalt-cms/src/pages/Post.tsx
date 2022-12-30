@@ -63,6 +63,7 @@ const Post = () => {
   const editor = useRef<any>(null);
   const [categoryInput, setCategoryInput] = useState("");
   const [tagsInput, setTagsInput] = useState("");
+  const [richContent, setRichContent] = useState("");
 
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
@@ -77,6 +78,7 @@ const Post = () => {
       if (postData === undefined) return;
       setCategoryInput(postData.category || "");
       setTagsInput(postData.tags?.join(",") || "");
+      setRichContent(postData.raw || "");
       document.title = `Edit Post | ${postData.title}`;
     }
   }, [postData]);
@@ -87,9 +89,6 @@ const Post = () => {
   }, [isSuccess]);
 
   const onClick = () => {
-    console.log(editor.current.content);
-
-    return;
     if (
       !categories?.current?.value ||
       !tags?.current?.value ||
@@ -105,6 +104,7 @@ const Post = () => {
       category: categories.current?.value,
       tags: tags.current?.value.split(","),
       thumbnail: editor?.current?.thumbnail,
+      raw: editor?.current?.raw,
       _id: id || "",
     };
 
@@ -155,8 +155,7 @@ const Post = () => {
           <div className="flex flex-1 justify-start items-start   bg-gray-100 p-6 pb-12">
             <div className="flex flex-col flex-1">
               <p>Content:</p>
-              {/* <RichTextBox value={richContent} height={400} ref={richTextBox} /> */}
-              <Editor ref={editor} />
+              <Editor ref={editor} content={richContent} />
             </div>
           </div>
         </div>

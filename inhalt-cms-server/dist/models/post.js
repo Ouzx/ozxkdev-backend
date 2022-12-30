@@ -4,7 +4,7 @@ const postSchema = new Schema({
     content: String,
     category: String,
     tags: [String],
-    coverImage: String,
+    thumbnail: String,
     createdAt: {
         type: Date,
         default: new Date(),

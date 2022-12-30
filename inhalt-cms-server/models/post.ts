@@ -5,7 +5,7 @@ export interface iPost extends Document {
   content: string;
   category: string;
   tags?: string[] | null;
-  coverImage: string;
+  thumbnail: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,7 +15,7 @@ const postSchema = new Schema<iPost>({
   content: String,
   category: String,
   tags: [String],
-  coverImage: String,
+  thumbnail: String,
   createdAt: {
     type: Date,
     default: new Date(),

@@ -45,19 +45,18 @@ export const getPost = async (req: Request, res: Response) => {
 };
 
 export const createPost = async (req: Request, res: Response) => {
-  const { title, content, category, tags, coverImage, contentImages } =
-    req.body;
+  const { title, content, category, tags, thumbnail, raw } = req.body;
 
   // TODO: Uncomment this to make the fields required
-  // if (!title || !content || !category || !tags || !coverImage)
-  //   throw new Error("Please fill all fields");
+  if (!title || !content || !category || !tags || !thumbnail)
+    throw new Error("Please fill all fields");
 
   const newPost = new Post({
     title,
     content,
     category,
     tags,
-    coverImage,
+    thumbnail,
   });
   try {
     await newPost.save();
@@ -73,13 +72,12 @@ export const updatePost = async (req: Request, res: Response) => {
 
   if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
 
-  const { title, content, category, tags, coverImage, contentImages } =
-    req.body;
+  const { title, content, category, tags, thumbnail, raw } = req.body;
 
-  if (!title || !content || !category || !tags || !coverImage)
+  if (!title || !content || !category || !tags || !thumbnail)
     throw new Error("Please fill all fields");
 
-  const updatedPost = { title, content, category, tags, coverImage, _id: id };
+  const updatedPost = { title, content, category, tags, thumbnail, _id: id };
   try {
     await Post.findByIdAndUpdate(id, updatedPost, { new: true });
     res.json(updatedPost);

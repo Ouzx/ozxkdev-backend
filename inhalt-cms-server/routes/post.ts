@@ -14,8 +14,8 @@ const router = Router();
 
 router.get("/page/:id", getPosts);
 router.get("/:id", getPost);
-router.post("/", multerMiddlewareSingle, createPost);
-router.patch("/:id", multerMiddlewareSingle, updatePost);
+router.post("/", createPost);
+router.patch("/:id", updatePost);
 router.delete("/:id", deletePost);
 router.get("/search/:searchTerm/:pageIndex", searchPosts);
 

@@ -8,7 +8,8 @@ export interface Post {
   title: string | undefined;
   content: string | undefined;
   category: string | undefined;
-  thumbnail: string | undefined; // link to image
+  thumbnail: string | undefined;
+  raw: string | undefined;
   tags: string[] | undefined;
 }
 

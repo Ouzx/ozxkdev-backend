@@ -24,13 +24,15 @@ const DEFAULT_INITIAL_DATA: OutputData = {
 
 interface props {
   height?: number;
-  value?: string;
+  content: string;
 }
 
 const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   const ejInstance = useRef<EditorJS | null>();
-  const [editorData, setEditorData] =
-    useState<OutputData>(DEFAULT_INITIAL_DATA);
+  const [editorData, setEditorData] = useState<OutputData>(() => {
+    if (prop.content) return JSON.parse(prop.content);
+    else return DEFAULT_INITIAL_DATA;
+  });
 
   useImperativeHandle(
     ref,
@@ -39,7 +41,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
         title: getTitle(),
         thumbnail: getThumbnail(),
         content: getContent(),
-        raw: editorData,
+        raw: JSON.stringify(editorData),
       };
     },
     [ejInstance.current, editorData]
@@ -77,7 +79,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   };
 
   const getTitle = () => {
-    for (let i = 0; i < editorData.blocks.length; i++) {
+    for (let i = 0; i < editorData?.blocks?.length; i++) {
       if (
         editorData.blocks[i].type == "header" &&
         editorData.blocks[i].data.text
@@ -89,7 +91,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   };
 
   const getThumbnail = () => {
-    for (let i = 0; i < editorData.blocks.length; i++) {
+    for (let i = 0; i < editorData?.blocks?.length; i++) {
       if (
         editorData.blocks[i].type == "image" &&
         editorData.blocks[i].data.file.url
@@ -101,8 +103,8 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   };
 
   const getContent = () => {
-    const x = parse(editorData);
-    return x;
+    if (!editorData) return "";
+    return parse(editorData);
   };
 
   return (

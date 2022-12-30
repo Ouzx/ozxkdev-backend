@@ -51,16 +51,16 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 export const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, content, category, tags, coverImage, contentImages } = req.body;
+    const { title, content, category, tags, thumbnail, raw } = req.body;
     // TODO: Uncomment this to make the fields required
-    // if (!title || !content || !category || !tags || !coverImage)
-    //   throw new Error("Please fill all fields");
+    if (!title || !content || !category || !tags || !thumbnail)
+        throw new Error("Please fill all fields");
     const newPost = new Post({
         title,
         content,
         category,
         tags,
-        coverImage,
+        thumbnail,
     });
     try {
         yield newPost.save();
@@ -77,10 +77,10 @@ export const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, functi
     const { id } = req.params;
     if (!Types.ObjectId.isValid(id))
         throw new Error(`No post with id: ${id}`);
-    const { title, content, category, tags, coverImage, contentImages } = req.body;
-    if (!title || !content || !category || !tags || !coverImage)
+    const { title, content, category, tags, thumbnail, raw } = req.body;
+    if (!title || !content || !category || !tags || !thumbnail)
         throw new Error("Please fill all fields");
-    const updatedPost = { title, content, category, tags, coverImage, _id: id };
+    const updatedPost = { title, content, category, tags, thumbnail, _id: id };
     try {
         yield Post.findByIdAndUpdate(id, updatedPost, { new: true });
         res.json(updatedPost);
