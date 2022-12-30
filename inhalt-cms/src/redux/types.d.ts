@@ -8,9 +8,12 @@ export interface Post {
   title: string | undefined;
   content: string | undefined;
   category: string | undefined;
-  thumbnail: string | undefined;
-  raw: string | undefined;
   tags: string[] | undefined;
+  raw: string | undefined;
+  shared: boolean | undefined;
+  urlSuffix: string | undefined;
+  shortContent: string | undefined;
+  thumbnail: string | undefined;
 }
 
 export interface PostQueryResult {
