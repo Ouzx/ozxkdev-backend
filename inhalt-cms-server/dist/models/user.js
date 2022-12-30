@@ -37,6 +37,13 @@ const userSchema = new Schema({
         minlength: 6,
         maxlength: 1024,
     },
+    picture: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 3,
+        maxlength: 1024,
+    },
     createdAt: {
         type: Date,
         default: new Date(),
