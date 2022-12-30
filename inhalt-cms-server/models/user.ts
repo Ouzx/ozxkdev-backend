@@ -6,7 +6,7 @@ export interface iUser extends Document {
   surname: string;
   email: string;
   password: string;
-  picture: string;
+  image: string;
   createdAt: Date;
 }
 
@@ -49,7 +49,7 @@ const userSchema = new Schema<iUser>(
       minlength: 6,
       maxlength: 1024,
     },
-    picture: {
+    image: {
       type: String,
       required: true,
       trim: true,

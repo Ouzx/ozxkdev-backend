@@ -37,7 +37,7 @@ const userSchema = new Schema({
         minlength: 6,
         maxlength: 1024,
     },
-    picture: {
+    image: {
         type: String,
         required: true,
         trim: true,

@@ -13,7 +13,7 @@ import User from "../models/user.js";
 /* Register */
 export const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { username, name, surname, email, password } = req.body;
+        const { username, name, surname, email, password, image } = req.body;
         const salt = yield bcrypt.genSalt(10);
         const hashedPassword = yield bcrypt.hash(password, salt);
         const newUser = new User({
@@ -22,6 +22,7 @@ export const register = (req, res) => __awaiter(void 0, void 0, void 0, function
             surname,
             email,
             password: hashedPassword,
+            image,
         });
         const user = yield newUser.save();
         res.status(201).json(user);
