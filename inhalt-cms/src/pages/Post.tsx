@@ -16,7 +16,6 @@ import {
 } from "../redux/services/cmsCore";
 import LoadIngdicator from "../components/LoadIngdicator";
 import Editor from "../components/Editor/Editor";
-import { parse } from "../components/Editor/parser";
 
 // TODO: Change loading indicator
 const Post = () => {
@@ -88,18 +87,8 @@ const Post = () => {
   }, [isSuccess]);
 
   const onClick = () => {
-    editor?.current
-      ?.content()
-      .then((outputData: any) => {
-        // console.log("Article data: asd", outputData);
-        let x = parse(outputData);
-        console.log(x);
-      })
-      .catch((error: any) => {
-        console.log("Saving failed: ", error);
-      });
+    console.log(editor.current.content);
 
-    // console.log(x);
     return;
     if (
       !categories?.current?.value ||
