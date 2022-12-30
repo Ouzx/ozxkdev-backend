@@ -53,6 +53,8 @@ const postSchema = new Schema<iPost>({
   shortContent: {
     type: String,
     required: true,
+    minlength: 3,
+    maxlength: 100,
   },
   user: {
     required: true,

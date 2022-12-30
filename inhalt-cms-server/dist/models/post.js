@@ -36,6 +36,8 @@ const postSchema = new Schema({
     shortContent: {
         type: String,
         required: true,
+        minlength: 3,
+        maxlength: 100,
     },
     user: {
         required: true,
