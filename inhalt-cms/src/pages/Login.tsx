@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -74,9 +75,12 @@ const Login = () => {
   }, [isError, isSuccess, isLoading]);
 
   return (
-    <div className="flex flex-1 justify-center items-center">
-      <div className="flex flex-1 max-w-2xl flex-col space-y-3 justify-center items-center mb-32 p-6 pb-12  bg-gray-100 ">
+    <div className="flex flex-1 justify-center items-center h-screen">
+      <div className="flex flex-1 max-w-2xl relative flex-col space-y-3 justify-center items-center mb-32 p-6 pb-12 dark:bg-dblackOver dark:text-white bg-gray-100 ">
         <h2>Inhalt Login</h2>
+        <div className="absolute top-4 right-4">
+          <DarkModeToggle />
+        </div>
         <InputBox
           type="email"
           id="username"
@@ -90,7 +94,7 @@ const Login = () => {
           ref={passwordRef}
         />
         <button
-          className=" text-slate-50 text-center bg-green-500 hover:bg-green-600 w-24 h-8 rounded-md "
+          className=" text-slate-50 text-center dark:bg-purple-700 dark:hover:bg-purple-800 bg-purple-500 hover:bg-purple-600 w-24 h-8 rounded-md "
           onClick={onClickLogin}
         >
           Login

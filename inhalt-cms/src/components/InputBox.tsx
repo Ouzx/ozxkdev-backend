@@ -21,7 +21,7 @@ const InputBox = React.forwardRef(
           ref={ref}
           defaultValue={props.value}
           required
-          className="p-1 pl-2 border border-gray-400 rounded-md"
+          className="p-1 pl-2 border text-black border-gray-400 rounded-md"
         />
       </div>
     );
