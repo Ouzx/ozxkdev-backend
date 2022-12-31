@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SearchIcon = () => (
@@ -19,6 +19,7 @@ const SearchIcon = () => (
 const SearchButton = () => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [searchValue, setSearchValue] = useState<string>("");
 
   const onClick = () => {
     const searchValue = inputRef.current?.value;
@@ -37,9 +38,15 @@ const SearchButton = () => {
       <div className="scale-x-0 translate-x-20 transition ease-in duration-300 delay-300">
         <input
           ref={inputRef}
-          className="w-40 h-5 border border-black rounded-sm p-1 animate-pulse "
+          className={
+            "w-40 h-5   rounded-sm p-1 " +
+            (searchValue.length < 3 ? "" : "animate-pulse")
+          }
           onKeyDown={(e) => {
             if (e.key === "Enter") onClick();
+          }}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
           }}
         />
       </div>
