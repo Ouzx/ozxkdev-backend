@@ -4,7 +4,6 @@ interface ToggleProps {
   enabled: boolean;
 }
 
-// TODO: Known issue: It shows the true data but not switching trully
 export const Toggle = forwardRef((props: ToggleProps, ref: Ref<any>) => {
   const [enabled, setEnabled] = useState(props.enabled);
   const [status, setStatus] = useState("Public");

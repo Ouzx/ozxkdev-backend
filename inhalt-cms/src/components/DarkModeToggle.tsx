@@ -5,9 +5,11 @@ import { setDarkMode } from "../redux/features/themeSlice";
 // import { useLocalStorage } from "../hooks/useLocalStorage";
 import moon from "../assets/moon.svg";
 import sun from "../assets/sun.svg";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface ToggleProps {
   enabled: boolean;
+  setEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const Toggle = forwardRef((props: ToggleProps, ref: Ref<any>) => {
   const [enabled, setEnabled] = useState(props.enabled);
@@ -37,6 +39,7 @@ export const Toggle = forwardRef((props: ToggleProps, ref: Ref<any>) => {
         } `}
         onClick={() => {
           setEnabled(!enabled);
+          props.setEnabled(!enabled);
         }}
       >
         {
@@ -54,10 +57,8 @@ export const Toggle = forwardRef((props: ToggleProps, ref: Ref<any>) => {
 });
 
 const DarkModeToggle = () => {
-  const [enabled, setEnabled] = useState(false);
-  // TODO: add local storage
-
-  return <Toggle enabled={enabled} />;
+  const [enabled, setEnabled] = useLocalStorage("darkMode");
+  return <Toggle enabled={enabled || false} setEnabled={setEnabled} />;
 };
 
 export default DarkModeToggle;
