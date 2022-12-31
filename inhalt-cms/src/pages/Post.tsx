@@ -16,6 +16,7 @@ import {
 } from "../redux/services/cmsCore";
 import LoadIngdicator from "../components/LoadIngdicator";
 import Editor from "../components/Editor/Editor";
+import { Toggle } from "../components/Switch";
 
 // TODO: Change loading indicator
 const Post = () => {
@@ -64,9 +65,11 @@ const Post = () => {
   const [categoryInput, setCategoryInput] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [richContent, setRichContent] = useState("");
+  const [isShared, setIsShared] = useState(true);
 
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
+  const toggle = useRef<HTMLInputElement>(null);
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
   const isError = isErrorCreate || isErrorUpdate;
@@ -79,6 +82,7 @@ const Post = () => {
       setCategoryInput(postData.category || "");
       setTagsInput(postData.tags?.join(",") || "");
       setRichContent(postData.raw || "");
+      setIsShared(postData.shared || true);
       document.title = `Edit Post | ${postData.title}`;
     }
   }, [postData]);
@@ -105,8 +109,11 @@ const Post = () => {
       tags: tags.current?.value.split(","),
       thumbnail: editor?.current?.thumbnail,
       raw: editor?.current?.raw,
+      shared: toggle.current?.checked,
+      urlSuffix: editor?.current?.urlSuffix,
+      shortContent: editor?.current?.shortContent,
       _id: id || "",
-    };
+    } as PostType;
 
     if (actionType === PostActionTypes.EDIT.toString())
       return updatePost(currentPostData);
@@ -167,7 +174,7 @@ const Post = () => {
               title="Categories:"
             />
             <InputBox value={tagsInput} ref={tags} title="Tags:" />
-
+            <Toggle enabled={isShared} ref={toggle} />
             <div>
               <button
                 onClick={onClick}
