@@ -12,8 +12,6 @@ export const cmsCoreApi = createApi({
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
-      headers.set("Content-Type", "multipart/form-data"); // TODO: TEST THIS
-
       return headers;
     },
   }),

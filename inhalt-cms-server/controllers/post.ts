@@ -1,17 +1,18 @@
 import { Types } from "mongoose";
 import { Request, Response } from "express";
-import Post from "../models/post.js";
+import Post, { iPost } from "../models/post.js";
 
 export const getPosts = async (req: Request, res: Response) => {
   // wait 2 seconds to simulate a slow connection
   // await new Promise((resolve) => setTimeout(resolve, 2000));
   const { id } = req.params;
 
-  if (!id) return res.status(404).send(`No page with id: ${id}`);
-
-  const page: number = +id + 1;
-  const ITEMS_PER_PAGE = 5;
   try {
+    if (!id) throw `No page with id: ${id}`;
+
+    const page: number = +id + 1;
+    const ITEMS_PER_PAGE = 5;
+
     const totalItems = await Post.find().countDocuments();
 
     // if (!totalItems) throw new Error("No posts found");
@@ -32,9 +33,9 @@ export const getPosts = async (req: Request, res: Response) => {
 export const getPost = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
-
   try {
+    if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
+
     const post = await Post.findById(id);
     res.status(200).json(post);
   } catch (e) {
@@ -45,21 +46,34 @@ export const getPost = async (req: Request, res: Response) => {
 };
 
 export const createPost = async (req: Request, res: Response) => {
-  const { title, content, category, tags, coverImage, contentImages } =
-    req.body;
-
-  // TODO: Uncomment this to make the fields required
-  // if (!title || !content || !category || !tags || !coverImage)
-  //   throw new Error("Please fill all fields");
-
-  const newPost = new Post({
+  const {
     title,
     content,
     category,
     tags,
-    coverImage,
-  });
+    thumbnail,
+    raw,
+    shared,
+    urlSuffix,
+    shortContent,
+    user,
+  } = req.body;
+
   try {
+    if (!title || !content || !category || !tags || !thumbnail)
+      throw new Error("Please fill all fields");
+    const newPost = new Post({
+      title,
+      content,
+      category,
+      tags,
+      thumbnail,
+      raw,
+      shared,
+      urlSuffix,
+      shortContent,
+      user,
+    } as iPost);
     await newPost.save();
     res.status(201).json(newPost);
   } catch (e) {
@@ -71,16 +85,36 @@ export const createPost = async (req: Request, res: Response) => {
 export const updatePost = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
-
-  const { title, content, category, tags, coverImage, contentImages } =
-    req.body;
-
-  if (!title || !content || !category || !tags || !coverImage)
-    throw new Error("Please fill all fields");
-
-  const updatedPost = { title, content, category, tags, coverImage, _id: id };
   try {
+    if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
+
+    const {
+      title,
+      content,
+      category,
+      tags,
+      thumbnail,
+      raw,
+      shared,
+      shortContent,
+      user,
+    } = req.body;
+
+    if (!title || !content || !category || !tags || !thumbnail)
+      throw new Error("Please fill all fields");
+
+    const updatedPost = {
+      title,
+      content,
+      category,
+      tags,
+      thumbnail,
+      raw,
+      shared,
+      shortContent,
+      user,
+    } as iPost;
+
     await Post.findByIdAndUpdate(id, updatedPost, { new: true });
     res.json(updatedPost);
   } catch (e) {
@@ -92,10 +126,8 @@ export const updatePost = async (req: Request, res: Response) => {
 export const deletePost = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  if (!Types.ObjectId.isValid(id))
-    return res.status(404).send(`No post with id: ${id}`);
-
   try {
+    if (!Types.ObjectId.isValid(id)) throw `No post with id: ${id}`;
     await Post.findByIdAndRemove(id);
     res.json({ message: "Post deleted successfully." });
   } catch (e) {

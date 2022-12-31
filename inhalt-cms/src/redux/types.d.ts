@@ -9,11 +9,11 @@ export interface Post {
   content: string | undefined;
   category: string | undefined;
   tags: string[] | undefined;
-  images: string[] | undefined;
-  coverImage: string | undefined;
-  createdAt: string | undefined;
-  updatedAt: string | undefined;
-  __v: number | undefined;
+  raw: string | undefined;
+  shared: boolean | undefined;
+  urlSuffix: string | undefined;
+  shortContent: string | undefined;
+  thumbnail: string | undefined;
 }
 
 export interface PostQueryResult {

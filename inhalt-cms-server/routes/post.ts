@@ -1,5 +1,5 @@
 import { Router } from "express";
-import imager from "../middlewares/imager.js";
+import { multerMiddlewareSingle } from "../middlewares/imager.js";
 
 import {
   getPosts,
@@ -14,8 +14,8 @@ const router = Router();
 
 router.get("/page/:id", getPosts);
 router.get("/:id", getPost);
-router.post("/", imager, createPost);
-router.patch("/:id", imager, updatePost);
+router.post("/", createPost);
+router.patch("/:id", updatePost);
 router.delete("/:id", deletePost);
 router.get("/search/:searchTerm/:pageIndex", searchPosts);
 

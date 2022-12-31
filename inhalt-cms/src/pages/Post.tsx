@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 
-import RichTextBox from "../components/Posts/Post/RichTextBox";
-import { Jodit } from "jodit-react";
 import InputBox from "../components/InputBox";
 
 import useQuery from "../hooks/useQuery";
@@ -17,6 +15,8 @@ import {
   useDeletePostMutation,
 } from "../redux/services/cmsCore";
 import LoadIngdicator from "../components/LoadIngdicator";
+import Editor from "../components/Editor/Editor";
+import { Toggle } from "../components/Switch";
 
 // TODO: Change loading indicator
 const Post = () => {
@@ -61,16 +61,15 @@ const Post = () => {
     },
   ] = useDeletePostMutation();
 
-  const [titleInput, setTitleInput] = useState("");
   const [categoryInput, setCategoryInput] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [richContent, setRichContent] = useState("");
-  const [image, setImage] = useState("");
+  const [isShared, setIsShared] = useState(true);
 
-  const title = useRef<HTMLInputElement>(null);
+  const editor = useRef<any>(null);
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
-  const richTextBox = useRef<Jodit>(null);
+  const toggle = useRef<HTMLInputElement>(null);
 
   const isLoading = isLoadingCreate || isLoadingUpdate;
   const isError = isErrorCreate || isErrorUpdate;
@@ -80,11 +79,11 @@ const Post = () => {
   useEffect(() => {
     if (isEdit) {
       if (postData === undefined) return;
-      setTitleInput(postData.title || "");
       setCategoryInput(postData.category || "");
       setTagsInput(postData.tags?.join(",") || "");
-      setRichContent(postData.content || "");
-      setImage(postData.coverImage || "");
+      setRichContent(postData.raw || "");
+      if (postData.shared !== undefined) setIsShared(postData.shared);
+      else console.log("Shared is undefined");
       document.title = `Edit Post | ${postData.title}`;
     }
   }, [postData]);
@@ -95,47 +94,34 @@ const Post = () => {
   }, [isSuccess]);
 
   const onClick = () => {
+    console.log(isShared);
+    return;
     if (
-      !title?.current?.value ||
       !categories?.current?.value ||
       !tags?.current?.value ||
-      !richTextBox?.current?.value
+      !editor?.current?.title
     ) {
       toastMsg();
       return;
     }
-    if (actionType === PostActionTypes.EDIT.toString()) {
-      const updatedPost: PostType = {
-        title: title.current?.value,
-        content: richTextBox.current?.value,
-        category: categories.current?.value,
-        tags: tags.current?.value.split(","),
-        coverImage: image,
-        images: [image],
-        _id: postData._id,
-        createdAt: postData.createdAt,
-        updatedAt: postData.updatedAt,
-        __v: postData.__v,
-      };
 
-      updatePost(updatedPost);
-      return;
-    }
-
-    const newPost: PostType = {
-      title: title.current?.value,
-      content: richTextBox.current?.value,
+    const currentPostData = {
+      title: editor?.current?.title,
+      content: editor?.current?.content,
       category: categories.current?.value,
       tags: tags.current?.value.split(","),
-      images: [image], // TODO: Add images
-      coverImage: image,
-      _id: undefined,
-      createdAt: undefined,
-      updatedAt: undefined,
-      __v: undefined,
-    };
+      thumbnail: editor?.current?.thumbnail,
+      raw: editor?.current?.raw,
+      shared: toggle.current?.checked,
+      urlSuffix: editor?.current?.urlSuffix,
+      shortContent: editor?.current?.shortContent,
+      _id: id || "",
+    } as PostType;
 
-    createPost(newPost);
+    if (actionType === PostActionTypes.EDIT.toString())
+      return updatePost(currentPostData);
+
+    createPost(currentPostData);
   };
 
   const buttonContent = () => {
@@ -154,13 +140,6 @@ const Post = () => {
     if (isLoadingDelete) return "Deleting...";
     if (isErrorDelete) return "Something went wrong";
     return "Delete";
-  };
-
-  const onImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setImage(URL.createObjectURL(img));
-    }
   };
 
   const toastMsg = () =>
@@ -186,31 +165,19 @@ const Post = () => {
           <div className="flex flex-1 justify-start items-start   bg-gray-100 p-6 pb-12">
             <div className="flex flex-col flex-1">
               <p>Content:</p>
-              <RichTextBox value={richContent} height={400} ref={richTextBox} />
+              <Editor ref={editor} content={richContent} />
             </div>
           </div>
         </div>
         <div className="flex items-center justify-center mb-32">
           <div className="flex flex-col flex-1 justify-start items-start max-w-2xl bg-gray-100 p-6 pb-12 lg:w-80 space-y-3  ">
-            <InputBox value={titleInput} ref={title} title="Title:" />
             <InputBox
               value={categoryInput}
               ref={categories}
               title="Categories:"
             />
             <InputBox value={tagsInput} ref={tags} title="Tags:" />
-            <div>
-              <p>Cover Image:</p>
-              {image && <img alt="cover" src={image} />}
-              <input
-                type="file"
-                id="img"
-                name="img"
-                accept="image/*"
-                className=" border p-1 border-gray-400 rounded-md"
-                onChange={onImageChange}
-              />
-            </div>
+            <Toggle enabled={isShared} ref={toggle} />
             <div>
               <button
                 onClick={onClick}
@@ -220,7 +187,7 @@ const Post = () => {
               </button>
               {isEdit && (
                 <button
-                  onClick={() => deletePost(postData._id)}
+                  onClick={() => deletePost(id)}
                   className=" text-red-500 underline"
                 >
                   {deleteContent()}

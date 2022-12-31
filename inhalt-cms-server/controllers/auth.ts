@@ -6,7 +6,8 @@ import User, { iUser } from "../models/user.js";
 /* Register */
 export const register = async (req: Request, res: Response) => {
   try {
-    const { username, name, surname, email, password } = req.body as iUser;
+    const { username, name, surname, email, password, image } =
+      req.body as iUser;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -16,6 +17,7 @@ export const register = async (req: Request, res: Response) => {
       surname,
       email,
       password: hashedPassword,
+      image,
     });
 
     const user = await newUser.save();
