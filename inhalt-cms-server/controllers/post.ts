@@ -7,11 +7,12 @@ export const getPosts = async (req: Request, res: Response) => {
   // await new Promise((resolve) => setTimeout(resolve, 2000));
   const { id } = req.params;
 
-  if (!id) return res.status(404).send(`No page with id: ${id}`);
-
-  const page: number = +id + 1;
-  const ITEMS_PER_PAGE = 5;
   try {
+    if (!id) throw `No page with id: ${id}`;
+
+    const page: number = +id + 1;
+    const ITEMS_PER_PAGE = 5;
+
     const totalItems = await Post.find().countDocuments();
 
     // if (!totalItems) throw new Error("No posts found");
@@ -32,9 +33,9 @@ export const getPosts = async (req: Request, res: Response) => {
 export const getPost = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
-
   try {
+    if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
+
     const post = await Post.findById(id);
     res.status(200).json(post);
   } catch (e) {
@@ -125,10 +126,8 @@ export const updatePost = async (req: Request, res: Response) => {
 export const deletePost = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  if (!Types.ObjectId.isValid(id))
-    return res.status(404).send(`No post with id: ${id}`);
-
   try {
+    if (!Types.ObjectId.isValid(id)) throw `No post with id: ${id}`;
     await Post.findByIdAndRemove(id);
     res.json({ message: "Post deleted successfully." });
   } catch (e) {
