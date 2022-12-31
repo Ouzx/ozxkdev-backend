@@ -82,7 +82,9 @@ const Post = () => {
       setCategoryInput(postData.category || "");
       setTagsInput(postData.tags?.join(",") || "");
       setRichContent(postData.raw || "");
-      setIsShared(postData.shared || true);
+      if (postData.shared !== undefined) setIsShared(postData.shared);
+      console.log(typeof postData.shared);
+      console.log(postData.shared);
 
       document.title = `Edit Post | ${postData.title}`;
     }
@@ -94,6 +96,8 @@ const Post = () => {
   }, [isSuccess]);
 
   const onClick = () => {
+    console.log(isShared);
+    return;
     if (
       !categories?.current?.value ||
       !tags?.current?.value ||
@@ -116,7 +120,6 @@ const Post = () => {
       _id: id || "",
     } as PostType;
 
-    console.log(currentPostData);
     if (actionType === PostActionTypes.EDIT.toString())
       return updatePost(currentPostData);
 
