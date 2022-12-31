@@ -26,7 +26,7 @@ const Logout = () => {
   return (
     <button
       onClick={logout}
-      className="ml-2 flex justify-center items-center font-semibold text-sm align-middle text-slate-50 text-center bg-red-500 hover:bg-red-600  w-8 h-8 rounded-full"
+      className="ml-2 flex justify-center items-center font-semibold text-sm align-middle text-slate-50 text-center dark:bg-red-600 dark:hover:bg-red-700 bg-red-500 hover:bg-red-600  w-8 h-8 rounded-full"
     >
       <p className="font-bold text-xl ">{icon}</p>
     </button>

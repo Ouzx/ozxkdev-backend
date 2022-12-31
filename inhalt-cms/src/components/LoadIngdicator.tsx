@@ -9,7 +9,7 @@ const LoadIngdicator: React.FC<{
     <div
       className={`flex flex-1 self-center items-center justify-center ${backgroundColor}`}
     >
-      <InfinitySpin color={color} width={width} />
+      <InfinitySpin color={color ? color : "black"} width={width} />
     </div>
   );
 };

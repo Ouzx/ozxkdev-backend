@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AuthLoginResponse } from "../redux/types";
 
+// TODO: Make it generic
 export const useLocalStorage = (keyName: string) => {
   const [storedValue, setStoredValue] = useState(() => {
     try {

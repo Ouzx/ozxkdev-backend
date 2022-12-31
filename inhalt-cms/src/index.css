@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer base {
-    html {
-        font-family: serif, system-ui, sans-serif;
-    }
+  html {
+    font-family: serif, system-ui, sans-serif;
+  }
 }
 
-body{
+/* body{
     background-color: #ffffff;
-}
+} */
