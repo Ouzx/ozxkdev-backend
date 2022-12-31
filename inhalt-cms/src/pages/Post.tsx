@@ -116,6 +116,7 @@ const Post = () => {
       _id: id || "",
     } as PostType;
 
+    console.log(currentPostData);
     if (actionType === PostActionTypes.EDIT.toString())
       return updatePost(currentPostData);
 

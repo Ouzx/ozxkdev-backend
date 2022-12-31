@@ -11,15 +11,7 @@ import { parse } from "./parser";
 
 const DEFAULT_INITIAL_DATA: OutputData = {
   time: new Date().getTime(),
-  blocks: [
-    {
-      type: "header",
-      data: {
-        text: "Your title goes here",
-        level: 1,
-      },
-    },
-  ],
+  blocks: [],
 };
 
 interface props {
@@ -72,7 +64,23 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
     setIsReady(true);
     const parsed = JSON.parse(prop.content) as OutputData;
 
-    ejInstance.current.blocks.render(parsed);
+    ejInstance.current.blocks.clear();
+    ejInstance.current?.blocks.render(parsed);
+
+    //SAVE
+    ejInstance.current.saver
+      .save()
+      .then((outputData: OutputData) => {
+        parsed.blocks.forEach((block: any) => {
+          outputData.blocks.push(block);
+        });
+        console.log("Saving success: ", outputData);
+        setEditorData(outputData);
+        // ejInstance.current?.blocks.render(parsed);
+      })
+      .catch((error: any) => {
+        console.log("Saving failed: ", error);
+      });
   }, [count]);
 
   const initEditor = () => {
