@@ -1,36 +1,43 @@
-import { useState, forwardRef, Ref } from "react";
+import { useState, forwardRef, Ref, useEffect } from "react";
 
 interface ToggleProps {
   enabled: boolean;
 }
 
+// TODO: Known issue: It shows the true data but not switching trully
 export const Toggle = forwardRef((props: ToggleProps, ref: Ref<any>) => {
-  const [enabled, setEnabled] = useState(props.enabled);
+  const [enabled, setEnabled] = useState(true);
   const [status, setStatus] = useState("Public");
+
+  useEffect(() => {
+    setStatus(enabled ? "Public" : "Private");
+  }, [enabled]);
+
   return (
-    <div className="flex relative items-center justify-center overflow-hidden">
-      <div className="flex">
-        <label className="inline-flex relative items-center mr-5 cursor-pointer">
-          <input
-            type="checkbox"
-            className="sr-only peer"
-            checked={enabled}
-            readOnly
-            ref={ref}
-          />
-          <div
-            onClick={() => {
-              setEnabled(!enabled);
-              if (enabled) setStatus("Private");
-              else setStatus("Public");
-            }}
-            className="w-11 h-6 bg-gray-200 rounded-full peer  peer-focus:ring-green-300  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-700"
-          ></div>
-          <span className="ml-2 text-sm font-medium text-gray-900">
-            {status}
-          </span>
-        </label>
+    <div className="flex  justify-center items-center ">
+      <input
+        type="checkbox"
+        className="sr-only peer"
+        checked={enabled}
+        readOnly
+        ref={ref}
+      />
+      <div
+        className={`w-11 h-6 flex items-center rounded-full p-1 cursor-pointer mr-3 ${
+          enabled ? "bg-purple-700" : "bg-purple-200"
+        } `}
+        onClick={() => {
+          setEnabled(!enabled);
+        }}
+      >
+        <div
+          className={
+            "bg-white h-5 w-5 rounded-full shadow-md transform duration-300 ease-in-out" +
+            (!enabled ? null : "transform translate-x-5")
+          }
+        />
       </div>
+      <div>{status}</div>
     </div>
   );
 });
