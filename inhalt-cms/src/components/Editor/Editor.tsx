@@ -42,6 +42,8 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
         thumbnail: getThumbnail(),
         content: getContent(),
         raw: JSON.stringify(editorData),
+        shortContent: shortContent(),
+        urlSuffix: urlSuffix(),
       };
     },
     [ejInstance.current, editorData]
@@ -105,6 +107,26 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   const getContent = () => {
     if (!editorData) return "";
     return parse(editorData);
+  };
+
+  const shortContent = () => {
+    for (let i = 0; i < editorData?.blocks?.length; i++)
+      if (
+        editorData.blocks[i].type == "paragraph" &&
+        editorData.blocks[i].data.text
+      )
+        return editorData.blocks[i].data.text;
+  };
+
+  const urlSuffix = () => {
+    // create from title
+    let title = getTitle();
+    // parse title to url
+    let url = title
+      .toLowerCase()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
+    return url;
   };
 
   return (
