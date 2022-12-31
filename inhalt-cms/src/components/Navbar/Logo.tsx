@@ -9,7 +9,7 @@ const Logo = () => {
         navigate("/");
         navigate(0);
       }}
-      className="font-sans text-xl hover:animate-pulse"
+      className="font-sans text-xl hover:animate-pulse dark:text-white"
     >
       INHALT.
     </button>

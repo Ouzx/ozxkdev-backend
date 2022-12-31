@@ -5,8 +5,8 @@ const SearchIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
-    fill="currentColor"
-    className="w-8 h-8 hover:bg-slate-400 hover:bg-opacity-10 rounded-full p-1"
+    // fill="currentColor"
+    className="w-8 h-8 hover:bg-slate-400 hover:bg-opacity-10 rounded-full p-1 dark:fill-white"
   >
     <path
       fillRule="evenodd"
@@ -40,7 +40,7 @@ const SearchButton = () => {
         <input
           ref={inputRef}
           className={
-            "w-40 h-5   rounded-sm p-1 " +
+            "w-40 h-5 mr-3 dark:outline-none rounded-sm p-1 " +
             (searchValue.length < 3 ? "" : "animate-pulse")
           }
           onKeyDown={(e) => {

@@ -49,8 +49,8 @@ const Posts = (props: PostsProps) => {
 
   return (
     <div className="flex items-center justify-center mb-32">
-      <div className="flex flex-col flex-1 justify-start max-w-2xl bg-gray-100 p-6 pb-12">
-        <p className="text-2xl mb-12">{props.title}</p>
+      <div className="flex flex-col flex-1 justify-start max-w-2xl bg-gray-100 dark:bg-dblack dark:border-white dark:border p-6 pb-12">
+        <p className="text-2xl mb-12 dark:text-white">{props.title}</p>
         {content}
       </div>
     </div>
