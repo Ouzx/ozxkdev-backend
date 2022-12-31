@@ -31,7 +31,7 @@ const Posts = (props: PostsProps) => {
     } else {
       content = (
         <div className="flex flex-col space-y-9">
-          {props.postQueryResult.data.posts.map((post: PostType) => (
+          {props.postQueryResult.data?.posts?.map((post: PostType) => (
             <PostBox key={post._id} post={post} />
           ))}
           {props.postQueryResult.data.totalItems >= ITEMS_PER_PAGE && (
