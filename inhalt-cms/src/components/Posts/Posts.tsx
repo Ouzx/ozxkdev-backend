@@ -19,12 +19,12 @@ const Posts = (props: PostsProps) => {
   if (props.postQueryResult.isLoading) {
     content = <LoadIngdicator />;
   } else if (props.postQueryResult.isError) {
-    content = <div>Something went wrong</div>;
+    content = <div className="dark:text-white">Something went wrong</div>;
   } else {
     if (props.postQueryResult.data.totalItems === 0) {
       content = (
         <div className="space-y-9">
-          <p>Nothing found! Create new Instead:</p>
+          <p className="dark:text-white">Nothing found! Create new Instead:</p>
           <CreateNewButton />
         </div>
       );
