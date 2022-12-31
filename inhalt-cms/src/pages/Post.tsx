@@ -152,7 +152,7 @@ const Post = () => {
       theme: "light",
     });
 
-  const content = () => {
+  let content = () => {
     if (isEdit) {
       if (isErrorFetch) return <p>Something went wrong</p>;
       if (!postData) return <LoadIngdicator />;
