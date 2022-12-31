@@ -18,7 +18,17 @@
     <title>Inhalt</title>
   </head>
   <body>
-    <div id="root" style="background-image: url(/topography.svg)"></div>
+    <div
+      id="root"
+      style="
+        background-image: url(/topography.svg);
+        background-size: auto;
+        background-position: center;
+        height: 100vh;
+        width: 100vw;
+        overflow: auto;
+      "
+    ></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
