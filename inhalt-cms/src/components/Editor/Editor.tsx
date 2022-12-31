@@ -153,7 +153,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   };
 
   return (
-    <div className="container">
+    <div className="container border">
       <div id="editor"></div>
     </div>
   );
