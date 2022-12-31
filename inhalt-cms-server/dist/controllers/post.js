@@ -123,14 +123,55 @@ export const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 // via pagination
 export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const { searchTerm, pageIndex } = req.params;
+    // const page: number = +pageIndex + 1;
+    // const ITEMS_PER_PAGE = 5;
+    // const title = new RegExp(searchTerm, "i");
+    // try {
+    //   const totalItems = await Post.find({ $or: [{ title }] }).countDocuments();
+    //   const posts = await Post.find({ $or: [{ title }] })
+    //     .sort({ createdAt: -1 })
+    //     .skip((+page - 1) * ITEMS_PER_PAGE)
+    //     .limit(ITEMS_PER_PAGE);
+    //   if (!posts.length) throw new Error("No posts found");
+    //   res.status(200).json({ posts, totalItems });
+    // } catch (e) {
+    //   if (e instanceof Error) {
+    //     res.status(404).json({ message: e.message });
+    //   } else res.status(500).json({ message: "Something went wrong" });
+    // }
+    /**
+     * first search for title
+     * then search for content
+     * then search for tags
+     * then search for category
+     * and then combine all results
+     *
+     */
     const { searchTerm, pageIndex } = req.params;
     const page = +pageIndex + 1;
     const ITEMS_PER_PAGE = 5;
     const title = new RegExp(searchTerm, "i");
+    const content = new RegExp(searchTerm, "i");
+    const tags = new RegExp(searchTerm, "i");
+    const category = new RegExp(searchTerm, "i");
     try {
-        const totalItems = yield Post.find({ $or: [{ title }] }).countDocuments();
-        const posts = yield Post.find({ $or: [{ title }] })
-            .sort({ createdAt: -1 })
+        const totalItems = yield Post.find({
+            $or: [{ title }, { content }, { tags }, { category }],
+        }).countDocuments();
+        const posts = yield Post.find({
+            $or: [
+                { title },
+                { content },
+                {
+                    tags,
+                },
+                {
+                    category,
+                },
+            ],
+        })
+            // .sort({ createdAt: -1 })
             .skip((+page - 1) * ITEMS_PER_PAGE)
             .limit(ITEMS_PER_PAGE);
         if (!posts.length)
