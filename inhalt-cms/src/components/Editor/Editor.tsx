@@ -60,7 +60,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
     }
     if (!prop.content) return;
     if (!ejInstance.current) return console.log("Editor not initialized");
-    else console.log("Editor initialized");
+
     setIsReady(true);
     const parsed = JSON.parse(prop.content) as OutputData;
 
@@ -74,7 +74,6 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
         parsed.blocks.forEach((block: any) => {
           outputData.blocks.push(block);
         });
-        console.log("Saving success: ", outputData);
         setEditorData(outputData);
         // ejInstance.current?.blocks.render(parsed);
       })

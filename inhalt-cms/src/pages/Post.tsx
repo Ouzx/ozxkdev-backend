@@ -83,9 +83,7 @@ const Post = () => {
       setTagsInput(postData.tags?.join(",") || "");
       setRichContent(postData.raw || "");
       if (postData.shared !== undefined) setIsShared(postData.shared);
-      console.log(typeof postData.shared);
-      console.log(postData.shared);
-
+      else console.log("Shared is undefined");
       document.title = `Edit Post | ${postData.title}`;
     }
   }, [postData]);
