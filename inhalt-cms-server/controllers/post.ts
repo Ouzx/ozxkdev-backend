@@ -95,7 +95,6 @@ export const updatePost = async (req: Request, res: Response) => {
       thumbnail,
       raw,
       shared,
-      urlSuffix,
       shortContent,
       user,
     } = req.body;
@@ -111,7 +110,6 @@ export const updatePost = async (req: Request, res: Response) => {
       thumbnail,
       raw,
       shared,
-      urlSuffix,
       shortContent,
       user,
     } as iPost;

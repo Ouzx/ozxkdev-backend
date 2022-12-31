@@ -82,7 +82,7 @@ export const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         if (!Types.ObjectId.isValid(id))
             throw new Error(`No post with id: ${id}`);
-        const { title, content, category, tags, thumbnail, raw, shared, urlSuffix, shortContent, user, } = req.body;
+        const { title, content, category, tags, thumbnail, raw, shared, shortContent, user, } = req.body;
         if (!title || !content || !category || !tags || !thumbnail)
             throw new Error("Please fill all fields");
         const updatedPost = {
@@ -93,7 +93,6 @@ export const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, functi
             thumbnail,
             raw,
             shared,
-            urlSuffix,
             shortContent,
             user,
         };
