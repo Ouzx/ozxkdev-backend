@@ -5,7 +5,7 @@ const initialState: AuthLoginResponse = {
   user: null,
   accessToken: null,
 };
-
+// TODO: Remove this
 export const authSlice = createSlice({
   name: "auth",
   initialState,
