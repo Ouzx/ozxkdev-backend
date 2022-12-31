@@ -94,8 +94,6 @@ const Post = () => {
   }, [isSuccess]);
 
   const onClick = () => {
-    console.log(isShared);
-    return;
     if (
       !categories?.current?.value ||
       !tags?.current?.value ||
