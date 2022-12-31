@@ -30,10 +30,11 @@ interface props {
 const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
   const ejInstance = useRef<EditorJS | null>();
   const [editorData, setEditorData] = useState<OutputData>(() => {
-    if (prop.content) return JSON.parse(prop.content);
+    if (prop.content) return JSON.parse(prop.content) as OutputData;
     else return DEFAULT_INITIAL_DATA;
   });
-
+  const [count, setCount] = useState(0);
+  const [isReady, setIsReady] = useState(false);
   useImperativeHandle(
     ref,
     () => {
@@ -58,6 +59,21 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
       ejInstance.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (!isReady) {
+      setTimeout(() => {
+        setCount(count + 1);
+      }, 1000); // 1000 milliseconds = 1 second
+    }
+    if (!prop.content) return;
+    if (!ejInstance.current) return console.log("Editor not initialized");
+    else console.log("Editor initialized");
+    setIsReady(true);
+    const parsed = JSON.parse(prop.content) as OutputData;
+
+    ejInstance.current.blocks.render(parsed);
+  }, [count]);
 
   const initEditor = () => {
     const config = {

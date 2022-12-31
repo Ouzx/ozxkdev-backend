@@ -61,12 +61,12 @@ const Post = () => {
     },
   ] = useDeletePostMutation();
 
-  const editor = useRef<any>(null);
   const [categoryInput, setCategoryInput] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [richContent, setRichContent] = useState("");
   const [isShared, setIsShared] = useState(true);
 
+  const editor = useRef<any>(null);
   const categories = useRef<HTMLInputElement>(null);
   const tags = useRef<HTMLInputElement>(null);
   const toggle = useRef<HTMLInputElement>(null);
@@ -83,6 +83,7 @@ const Post = () => {
       setTagsInput(postData.tags?.join(",") || "");
       setRichContent(postData.raw || "");
       setIsShared(postData.shared || true);
+
       document.title = `Edit Post | ${postData.title}`;
     }
   }, [postData]);
