@@ -9,6 +9,7 @@ import { useLocalStorage } from "./hooks/useLocalStorage";
 
 import Navbar from "./components/Navbar/Navbar";
 import LoadIngdicator from "./components/LoadIngdicator";
+import { FourOhFour } from "./pages";
 const ProtectedLayout = () => {
   const [user, setUser] = useLocalStorage("user");
 
@@ -46,7 +47,7 @@ const ProtectedLayout = () => {
     <Suspense fallback={<LoadIngdicator />}>
       <Await
         resolve={validator()}
-        errorElement={<div>404</div>}
+        errorElement={<FourOhFour />}
         children={
           <>
             <Navbar />
