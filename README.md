@@ -23,6 +23,10 @@
  For frontend: `cd inhalt-cms && npm install` <br>
  For backend:  `cd inhalt-cms-server && npm install`
  
+## Docs 📝
+ If you need documentation about project just switch the `docs` branch with `git switch jsDoc`
+ Or you can mail me 📬
+ 
 ## Frontend Development 🌞 
  ![Vite](https://img.shields.io/badge/vite-vite?style=for-the-badge&logo=vite&logoColor=white&color=purple) 
  ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) 
@@ -37,3 +41,6 @@
  ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) 
  ![Express](https://img.shields.io/badge/express-express?style=for-the-badge&logo=express&logoColor=white&color=black) 
  ![MongoDB](https://img.shields.io/badge/mongodb-mongodb?style=for-the-badge&logo=mongodb&logoColor=white&color=darkgreen)
+ 
+## Contributions 👐
+ I'm waiting your contributions for any features 😊
