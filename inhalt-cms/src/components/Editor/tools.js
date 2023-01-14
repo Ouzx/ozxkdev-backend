@@ -14,6 +14,14 @@ import CheckList from "@editorjs/checklist";
 import Delimiter from "@editorjs/delimiter";
 import InlineCode from "@editorjs/inline-code";
 
+const getLocalAccessToken = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    return user.accessToken;
+  }
+  return null;
+};
+
 export default {
   // NOTE: Paragraph is default tool. Declare only when you want to change paragraph option.
   // paragraph: Paragraph,
@@ -35,7 +43,7 @@ export default {
       additionalRequestHeaders: {
         // bearer localStorage > user > accessToken
         Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("user")).accessToken
+          getLocalAccessToken() ? getLocalAccessToken() : ""
         }`,
       },
     },
