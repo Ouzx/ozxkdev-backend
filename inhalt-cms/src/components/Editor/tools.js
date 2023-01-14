@@ -36,8 +36,8 @@ export default {
     config: {
       endpoints: {
         // TODO: Change link to env variable
-        byFile: "http://localhost:8000/media/imgs/by-file", // Your backend file uploader endpoint
-        byUrl: "http://localhost:8000//media/imgs/by-url", // Your endpoint that provides uploading by Url
+        byFile: import.meta.env.VITE_API + "/media/imgs/by-file", // Your backend file uploader endpoint
+        byUrl: import.meta.env.VITE_API + "/media/imgs/by-url", // Your endpoint that provides uploading by Url
         // uploader: new Uploader(),
       },
       additionalRequestHeaders: {
