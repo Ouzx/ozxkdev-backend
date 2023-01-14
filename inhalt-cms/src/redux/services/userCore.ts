@@ -3,7 +3,7 @@ import { AuthLoginRequest, AuthLoginResponse } from "../types";
 
 export const userCoreApi = createApi({
   reducerPath: "userCoreApi",
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.API + "/auth" }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API + "/auth" }),
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (body: AuthLoginRequest) => ({
