@@ -5,7 +5,7 @@ import { Post } from "../types";
 export const cmsCoreApi = createApi({
   reducerPath: "cmsCoreApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/posts/",
+    baseUrl: process.env.API + "/posts",
     // add authorization header from local storage
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.accessToken;
