@@ -1,5 +1,8 @@
 # INHALT - CMS 💻
 ## DEMO 🌍
+ Backend: https://inhalt-cms-backend.onrender.com
+ <br>
+ Frontend: https://master--sage-conkies-0a70b5.netlify.app/
 
 ## Description 📚
  Creating a content management system (CMS) is an ambitious task, but one that can be immensely rewarding.
