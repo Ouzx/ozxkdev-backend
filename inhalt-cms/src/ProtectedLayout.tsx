@@ -21,12 +21,15 @@ const ProtectedLayout = () => {
 
   const validator = async () => {
     try {
-      const result = await fetch("http://localhost:8000/auth/validate-token", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${user?.accessToken!}`,
-        },
-      })
+      const result = await fetch(
+        import.meta.env.VITE_API + "/auth/validate-token",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${user?.accessToken!}`,
+          },
+        }
+      )
         .then((res) => {
           if (!res.ok) return Promise.reject(res);
           else {
