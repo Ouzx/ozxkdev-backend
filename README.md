@@ -98,3 +98,10 @@
  ### Known-Issues 🛑
  * A logged user can reach login-page. (will be solved via redux-persist)
  * Same-issue with the 404 page. (same solution again)
+ 
+## ART 🎨
+Arts drive link: https://drive.google.com/drive/folders/1pkqWvUdyn6MAzCHrlb2P1kkHaG11G9_F?usp=sharing
+<br>
+![mix](https://user-images.githubusercontent.com/47363718/212567762-52c52f64-f769-47d7-a7dc-5b91b2685b83.png)
+
+
