@@ -14,9 +14,12 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import DarkModeToggle from "../components/DarkModeToggle";
 
 import EyeToggle from "../components/EyeToggle";
+import LoadIngdicator from "../components/LoadIngdicator";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const [isLogging, setIsLogging] = useState(false);
 
   const [user, setUser] = useLocalStorage("user");
   const [isOn, setIsOn] = useState(false);
@@ -43,6 +46,7 @@ const Login = () => {
 
   const onClickLogin = () => {
     if (usernameRef.current && passwordRef.current) {
+      setIsLogging(true);
       login({
         username: usernameRef.current.value,
         password: passwordRef.current.value,
@@ -62,6 +66,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isError) {
+      setIsLogging(false);
       toast.update(toastMsg(), {
         render: "Login Failed",
         type: "error",
@@ -102,8 +107,9 @@ const Login = () => {
         <button
           className=" text-slate-50 text-center dark:bg-purple-700 dark:hover:bg-purple-800 bg-purple-500 hover:bg-purple-600 w-24 h-8 rounded-md "
           onClick={onClickLogin}
+          disabled={isLogging}
         >
-          Login
+          {isLogging ? "Logging..." : "Login"}
         </button>
       </div>
       <ToastContainer
