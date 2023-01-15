@@ -2,4 +2,6 @@ node_modules
 build
 .env
 
-public/uploads/*
+public/uploads/*.jpg
+public/uploads/*.png
+public/uploads/*.jpeg
