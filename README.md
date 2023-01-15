@@ -94,3 +94,7 @@
  * Write Tests for Front-End: Selenium?
  * Write Tests for Back-End: jest?
  * Create API Document for Backend: Postman?
+ 
+ ### Known-Issues 🛑
+ * A logged user can reach login-page. (will be solved via redux-persist)
+ * Same-issue with the 404 page. (same solution again)
