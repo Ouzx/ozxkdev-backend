@@ -8,6 +8,11 @@
   }
 }
 
+.ce-block,
+.cdx-block {
+  @apply dark:text-white;
+}
+
 /* body{
     background-color: #ffffff;
 } */

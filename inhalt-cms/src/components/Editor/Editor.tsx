@@ -154,7 +154,7 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
 
   return (
     <div className="container border dark:bg-dblackOver2 shadow-md pt-10">
-      <div className="dark:text-white dark:fill-white" id="editor"></div>
+      <div className="dark:text-black dark:fill-black" id="editor"></div>
     </div>
   );
 });
