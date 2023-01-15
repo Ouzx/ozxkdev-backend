@@ -23,7 +23,7 @@ const Pagination = ({
       nextLabel=">"
       onPageChange={(selectedItem) => {
         navigate(`${route}?page_num=${selectedItem.selected}`);
-        navigate(0);
+        // navigate(0); //TODO: TEST THIS
       }}
       pageRangeDisplayed={5}
       pageCount={pageCount}

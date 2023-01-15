@@ -9,7 +9,7 @@ const PostBox: React.FC<{ post: Post }> = ({ post }) => {
 
   const onClick = () => {
     navigate(`/post?action=${PostActionTypes.EDIT}&id=${post._id}`);
-    navigate(0);
+    // navigate(0);
   };
 
   return (

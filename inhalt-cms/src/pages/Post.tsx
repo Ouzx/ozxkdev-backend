@@ -90,7 +90,7 @@ const Post = () => {
 
   // For preventing the user from navigating away from the page when the post is being created or updated // bad-state management
   useEffect(() => {
-    if (isSuccess) navigate("/");
+    if (isSuccess) navigate("/home");
   }, [isSuccess]);
 
   const onClick = () => {

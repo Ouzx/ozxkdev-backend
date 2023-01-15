@@ -25,7 +25,7 @@ const SearchButton = () => {
     const searchValue = inputRef.current?.value;
     if (searchValue!.length < 3) return;
     navigate(`/search/${searchValue}`);
-    navigate(0);
+    // navigate(0);
     inputRef.current!.value = "";
   };
 

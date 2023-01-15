@@ -1,11 +1,14 @@
 import React from "react";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { setLogin } from "../../redux/features/authSlice";
+import { AuthLoginResponse } from "../../redux/types";
 
 const Logout = () => {
   const [user, setUser] = useLocalStorage("user");
   const navigate = useNavigate();
-
+  const dispatch = useAppDispatch();
   const icon = (
     <svg
       width="16px"
@@ -20,6 +23,7 @@ const Logout = () => {
 
   const logout = () => {
     setUser(null);
+    dispatch(setLogin({ user: null, accessToken: null } as AuthLoginResponse));
     navigate("/santacruze");
   };
 
