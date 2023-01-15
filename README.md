@@ -89,3 +89,8 @@
  
 ## Contributions 👐
  I'm waiting your contributions for any features 😊
+ ### TO-DO 📝
+ * Integrate Redux-Persist to Redux Tool Kit.
+ * Write Tests for Front-End: Selenium?
+ * Write Tests for Back-End: jest?
+ * Create API Document for Backend: Postman?
