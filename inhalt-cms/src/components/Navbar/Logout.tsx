@@ -24,7 +24,7 @@ const Logout = () => {
   const logout = () => {
     setUser(null);
     dispatch(setLogin({ user: null, accessToken: null } as AuthLoginResponse));
-    navigate("/santacruze");
+    navigate("/");
   };
 
   return (

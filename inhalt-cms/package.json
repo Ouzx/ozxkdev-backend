@@ -39,7 +39,8 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "react-toastify": "^9.1.1",
-    "string-strip-html": "^13.0.6"
+    "string-strip-html": "^13.0.6",
+    "tailwind-typewriter": "^1.0.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

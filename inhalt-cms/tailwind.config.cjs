@@ -18,6 +18,7 @@ module.exports = {
       backgroundImage: {
         "hero-pattern": "url('/topography.svg')",
         "hero-pattern-dark": "url('/topography-dark.svg')",
+        "welcome-img": "url('/Welcome.png')",
       },
     },
   },
@@ -28,5 +29,16 @@ module.exports = {
       addVariant("child", "& > *");
       addVariant("child-hover", "& > *:hover");
     },
+    require("tailwind-typewriter")({
+      wordsets: {
+        welcome: {
+          words: ["This", "is", "INHALT", "CMS"],
+          delay: 1,
+          pauseBetween: 1,
+          writeSpeed: 0.1,
+          eraseSpeed: 0.1,
+        },
+      },
+    }),
   ],
 };

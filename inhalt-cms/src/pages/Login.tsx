@@ -61,7 +61,7 @@ const Login = () => {
       setUser(authData);
     }
     dispatch(setLogin(authData));
-    navigate("/");
+    navigate("/home");
   };
 
   useEffect(() => {
