@@ -1,13 +1,14 @@
 # INHALT - CMS 💻
 ## DEMO 🌍 ![Netlify](https://img.shields.io/netlify/7359500f-a137-4bc3-99e9-d94f3fd0d0b9?logo=netlify) ![Render](https://img.shields.io/badge/Render-passing-brightgreen?logo=render)
- Backend: https://inhalt-cms-backend.onrender.com
- <br>
- Frontend: https://inhalt-cms.netlify.app/
+ https://inhalt-cms.netlify.app/
  <br>
  Registering user to cms disabled by me. But you can use this credentials for testing platform! <br>
  <strong>username: </strong> admin
  <br>
  <strong>password: </strong> admin
+ 
+ ![inhalt](https://user-images.githubusercontent.com/47363718/214531434-89b32f10-0ae5-4c84-beb6-a8e6ca788742.png)
+
  #
 ## Description 📚
  Creating a content management system (CMS) is an ambitious task, but one that can be immensely rewarding.
