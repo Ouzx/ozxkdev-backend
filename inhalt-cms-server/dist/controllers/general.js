@@ -36,6 +36,7 @@ export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function
         }
         posts.forEach((post) => {
             post.content = "";
+            post.raw = "";
         });
         res.status(200).json({ posts, totalItems });
     }
@@ -71,12 +72,15 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
             .limit(3);
         relatedPosts.forEach((post) => {
             post.content = "";
+            post.raw = "";
         });
         previousPost.forEach((post) => {
             post.content = "";
+            post.raw = "";
         });
         nextPost.forEach((post) => {
             post.content = "";
+            post.raw = "";
         });
         res.status(200).json({
             post: post[0],

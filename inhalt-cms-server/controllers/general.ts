@@ -31,6 +31,7 @@ export const getPosts = async (req: Request, res: Response) => {
     }
     posts.forEach((post) => {
       post.content = "";
+      post.raw = "";
     });
 
     res.status(200).json({ posts, totalItems });
@@ -69,14 +70,17 @@ export const getPost = async (req: Request, res: Response) => {
 
     relatedPosts.forEach((post) => {
       post.content = "";
+      post.raw = "";
     });
 
     previousPost.forEach((post) => {
       post.content = "";
+      post.raw = "";
     });
 
     nextPost.forEach((post) => {
       post.content = "";
+      post.raw = "";
     });
 
     res.status(200).json({
