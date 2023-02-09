@@ -138,7 +138,9 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
         editorData.blocks[i].type == "paragraph" &&
         editorData.blocks[i].data.text
       )
-        return editorData.blocks[i].data.text;
+        // return editorData.blocks[i].data.text;
+        // return first 100 characters
+        return editorData.blocks[i].data.text.substring(0, 100);
   };
 
   const urlSuffix = () => {
