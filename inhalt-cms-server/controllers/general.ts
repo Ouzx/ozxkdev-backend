@@ -12,16 +12,18 @@ export const getPosts = async (req: Request, res: Response) => {
     const page: number = +pageIndex + 1;
     const ITEMS_PER_PAGE = 5;
 
-    const totalItems = await Post.find().countDocuments();
+    let totalItems: number = 0;
 
     let posts: iPost[] = [];
     // TODO: Make category case insensitive
     if (category.toLowerCase() === "all") {
+      totalItems = await Post.find().countDocuments();
       posts = await Post.find()
         .sort({ createdAt: -1 })
         .skip((+page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
     } else {
+      totalItems = await Post.find({ category: category }).countDocuments();
       posts = await Post.find({ category: category })
         .sort({ createdAt: -1 })
         .skip((+page - 1) * ITEMS_PER_PAGE)
