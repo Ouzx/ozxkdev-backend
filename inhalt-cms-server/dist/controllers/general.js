@@ -17,16 +17,18 @@ export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function
             throw new Error(`No page with id: ${pageIndex}`);
         const page = +pageIndex + 1;
         const ITEMS_PER_PAGE = 5;
-        const totalItems = yield Post.find().countDocuments();
+        let totalItems = 0;
         let posts = [];
         // TODO: Make category case insensitive
         if (category.toLowerCase() === "all") {
+            totalItems = yield Post.find().countDocuments();
             posts = yield Post.find()
                 .sort({ createdAt: -1 })
                 .skip((+page - 1) * ITEMS_PER_PAGE)
                 .limit(ITEMS_PER_PAGE);
         }
         else {
+            totalItems = yield Post.find({ category: category }).countDocuments();
             posts = yield Post.find({ category: category })
                 .sort({ createdAt: -1 })
                 .skip((+page - 1) * ITEMS_PER_PAGE)
@@ -91,6 +93,7 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(500).json({ message: "Something went wrong" });
     }
 });
+// TODO: Move search term to body
 export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm, pageIndex } = req.params;
     try {
@@ -121,7 +124,7 @@ export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, funct
 export const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const categories = yield Post.find().distinct("category");
-        res.status(200).json({ categories });
+        res.status(200).json(categories);
     }
     catch (e) {
         if (e instanceof Error) {

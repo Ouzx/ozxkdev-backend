@@ -1,3 +1,4 @@
+// TODO: Configure Serverless
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -22,6 +23,7 @@ app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 app.use("/auth", auth);
 app.use("/posts", verifyToken, post);
 app.use("/media/imgs", verifyToken, image);
+// TODO: Add Client Token
 app.use("/general", general);
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);

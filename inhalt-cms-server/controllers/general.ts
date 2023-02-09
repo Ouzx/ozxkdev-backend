@@ -126,7 +126,7 @@ export const getCategories = async (req: Request, res: Response) => {
   try {
     const categories = await Post.find().distinct("category");
 
-    res.status(200).json({ categories });
+    res.status(200).json(categories);
   } catch (e) {
     if (e instanceof Error) {
       res.status(404).json({ message: e.message });

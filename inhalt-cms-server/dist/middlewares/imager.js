@@ -38,6 +38,7 @@ const storage = multer.diskStorage({
 //     next();
 //   });
 // }
+// TODO: Check multer file naming configuration
 const uploadSingle = multer({ fileFilter, storage }).single("image");
 export function multerMiddlewareSingle(req, res, next) {
     uploadSingle(req, res, (err) => {
