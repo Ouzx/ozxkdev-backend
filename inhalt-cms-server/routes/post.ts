@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { multerMiddlewareSingle } from "../middlewares/imager.js";
 
 import {
   getPosts,

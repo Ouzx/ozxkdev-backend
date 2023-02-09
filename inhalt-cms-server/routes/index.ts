@@ -1,5 +1,5 @@
 import auth from "./auth.js";
 import image from "./image.js";
 import post from "./post.js";
-
-export { auth, image, post };
+import general from "./general.js";
+export { auth, image, post, general };

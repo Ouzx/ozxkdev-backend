@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-import { image, post, auth } from "./routes/index.js";
+import { image, post, auth, general } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
 /* Config */
 dotenv.config();
@@ -22,6 +22,7 @@ app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 app.use("/auth", auth);
 app.use("/posts", verifyToken, post);
 app.use("/media/imgs", verifyToken, image);
+app.use("/general", general);
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
 mongoose
