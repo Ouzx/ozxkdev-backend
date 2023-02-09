@@ -92,6 +92,7 @@ export const getPost = async (req: Request, res: Response) => {
   }
 };
 
+// TODO: Move search term to body
 export const searchPosts = async (req: Request, res: Response) => {
   const { searchTerm, pageIndex } = req.params;
 
