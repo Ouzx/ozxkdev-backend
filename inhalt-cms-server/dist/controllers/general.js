@@ -70,6 +70,9 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
         })
             .sort({ createdAt: -1 })
             .limit(3);
+        post.forEach((post) => {
+            post.raw = "";
+        });
         relatedPosts.forEach((post) => {
             post.content = "";
             post.raw = "";

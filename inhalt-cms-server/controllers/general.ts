@@ -68,6 +68,10 @@ export const getPost = async (req: Request, res: Response) => {
       .sort({ createdAt: -1 })
       .limit(3);
 
+    post.forEach((post) => {
+      post.raw = "";
+    });
+
     relatedPosts.forEach((post) => {
       post.content = "";
       post.raw = "";
