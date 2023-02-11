@@ -129,7 +129,15 @@ const Editor = React.forwardRef((prop: props, ref: Ref<any>) => {
 
   const getContent = () => {
     if (!editorData) return "";
-    return parse(editorData);
+    // copy editorData.blocks remove title
+    let blocks = Object.assign(editorData.blocks);
+    for (let i = 0; i < blocks.length; i++) {
+      if (blocks[i].type == "header") {
+        blocks.splice(i, 1);
+        break;
+      }
+    }
+    return parse(blocks);
   };
 
   const shortContent = () => {
