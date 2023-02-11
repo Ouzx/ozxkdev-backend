@@ -54,16 +54,12 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!slug)
             throw new Error(`No post with slug: ${slug}`);
         const post = yield Post.find({ urlSuffix: slug });
-        const previousPost = yield Post.find({
+        const previousPost = yield Post.findOne({
             createdAt: { $lt: post[0].createdAt },
-        })
-            .sort({ createdAt: -1 })
-            .limit(1);
-        const nextPost = yield Post.find({
+        });
+        const nextPost = yield Post.findOne({
             createdAt: { $gt: post[0].createdAt },
-        })
-            .sort({ createdAt: 1 })
-            .limit(1);
+        });
         const relatedPosts = yield Post.find({
             category: post[0].category,
             _id: { $ne: post[0]._id },
@@ -77,19 +73,13 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
             post.content = "";
             post.raw = "";
         });
-        previousPost.forEach((post) => {
-            post.content = "";
-            post.raw = "";
-        });
-        nextPost.forEach((post) => {
-            post.content = "";
-            post.raw = "";
-        });
+        const prevPost = previousPost === null || previousPost === void 0 ? void 0 : previousPost.urlSuffix;
+        const nexPost = nextPost === null || nextPost === void 0 ? void 0 : nextPost.urlSuffix;
         res.status(200).json({
             post: post[0],
             relatedPosts,
-            previousPost,
-            nextPost,
+            prevPost,
+            nexPost,
         });
     }
     catch (e) {

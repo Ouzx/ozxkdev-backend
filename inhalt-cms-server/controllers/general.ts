@@ -49,17 +49,13 @@ export const getPost = async (req: Request, res: Response) => {
     if (!slug) throw new Error(`No post with slug: ${slug}`);
 
     const post = await Post.find({ urlSuffix: slug });
-    const previousPost = await Post.find({
+    const previousPost = await Post.findOne({
       createdAt: { $lt: post[0].createdAt },
-    })
-      .sort({ createdAt: -1 })
-      .limit(1);
+    });
 
-    const nextPost = await Post.find({
+    const nextPost = await Post.findOne({
       createdAt: { $gt: post[0].createdAt },
-    })
-      .sort({ createdAt: 1 })
-      .limit(1);
+    });
 
     const relatedPosts = await Post.find({
       category: post[0].category,
@@ -77,21 +73,13 @@ export const getPost = async (req: Request, res: Response) => {
       post.raw = "";
     });
 
-    previousPost.forEach((post) => {
-      post.content = "";
-      post.raw = "";
-    });
-
-    nextPost.forEach((post) => {
-      post.content = "";
-      post.raw = "";
-    });
-
+    const prevPost = previousPost?.urlSuffix;
+    const nexPost = nextPost?.urlSuffix;
     res.status(200).json({
       post: post[0],
       relatedPosts,
-      previousPost,
-      nextPost,
+      prevPost,
+      nexPost,
     });
   } catch (e) {
     if (e instanceof Error) {
