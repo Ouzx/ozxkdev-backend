@@ -18,8 +18,9 @@ export const getPosts = async (req: Request, res: Response) => {
     let posts: iPost[] = [];
     posts = await (category.toLowerCase() === "all"
       ? Post.find().select(GENERAL_SELECTOR)
-      : Post.find({ category: category }).select(GENERAL_SELECTOR)
+      : Post.find({ category: category })
     )
+      .select(GENERAL_SELECTOR)
       .sort({ createdAt: -1 })
       .skip((+page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
@@ -57,7 +58,7 @@ export const getPost = async (req: Request, res: Response) => {
       .limit(3);
 
     res.status(200).json({
-      post: post[0],
+      post,
       relatedPosts,
       previousPost,
       nextPost,
