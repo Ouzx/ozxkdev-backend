@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 
-const GENERAL_SELECTOR = "-content -_id -__v ";
+const GENERAL_SELECTOR = "-content -_id -__v -user";
 
 export const getPosts = async (req: Request, res: Response) => {
   const { category, pageIndex } = req.params;
@@ -45,7 +45,7 @@ export const getPost = async (req: Request, res: Response) => {
   try {
     if (!slug) throw new Error(`No post with slug: ${slug}`);
 
-    const post = await Post.find({ slug }).select("-__v -_id");
+    const post = await Post.find({ slug }).select("-__v -_id -user");
 
     const previousPost = await Post.findOne({
       createdAt: { $lt: post[0].createdAt },
