@@ -16,6 +16,6 @@ router.get("/:id", getPost);
 router.post("/", createPost);
 router.patch("/:id", updatePost);
 router.delete("/:id", deletePost);
-router.get("/search/:searchTerm/:pageIndex", searchPosts);
+router.get("/search/:pageIndex", searchPosts);
 
 export default router;
