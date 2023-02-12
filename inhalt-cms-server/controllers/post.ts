@@ -3,8 +3,6 @@ import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 
 export const getPosts = async (req: Request, res: Response) => {
-  // wait 2 seconds to simulate a slow connection
-  // await new Promise((resolve) => setTimeout(resolve, 2000));
   const { id } = req.params;
 
   try {
@@ -14,8 +12,6 @@ export const getPosts = async (req: Request, res: Response) => {
     const ITEMS_PER_PAGE = 5;
 
     const totalItems = await Post.find().countDocuments();
-
-    // if (!totalItems) throw new Error("No posts found");
 
     const posts = await Post.find()
       .sort({ createdAt: -1 })
@@ -56,6 +52,10 @@ export const createPost = async (req: Request, res: Response) => {
       !post.thumbnail
     )
       throw new Error("Please fill all fields");
+
+    post.category = encodeURIComponent(post.category);
+    post.tags = post.tags.map((tag) => encodeURIComponent(tag));
+
     const newPost = new Post(post);
     await newPost.save();
     res.status(201).json(newPost);
@@ -81,6 +81,9 @@ export const updatePost = async (req: Request, res: Response) => {
     )
       throw new Error("Please fill all fields");
 
+    post.category = encodeURIComponent(post.category);
+    post.tags = post.tags.map((tag) => encodeURIComponent(tag));
+
     await Post.findByIdAndUpdate(id, post, { new: true });
     res.json(post);
   } catch (e) {
@@ -104,33 +107,20 @@ export const deletePost = async (req: Request, res: Response) => {
 
 // via pagination
 export const searchPosts = async (req: Request, res: Response) => {
-  const { pageIndex } = req.params;
-
-  const { searchTerm } = req.body;
+  const { pageIndex, searchTerm } = req.params;
 
   const page: number = +pageIndex + 1;
   const ITEMS_PER_PAGE = 5;
-  const search = new RegExp(searchTerm, "i");
-
+  // TODO: Handle encoded categories and tags later.
   try {
     if (!searchTerm) throw new Error("Please enter a search term");
 
     const totalItems = await Post.find({
-      $or: [
-        { title: search },
-        { rawContent: search },
-        { tags: search },
-        { category: search },
-      ],
+      $text: { $search: searchTerm },
     }).countDocuments();
 
     const posts = await Post.find({
-      $or: [
-        { title: search },
-        { rawContent: search },
-        { tags: search },
-        { category: search },
-      ],
+      $text: { $search: searchTerm },
     })
       .skip((+page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
