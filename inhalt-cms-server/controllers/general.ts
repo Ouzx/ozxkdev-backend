@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 
-const GENERAL_SELECTOR = "-content -_id -__v";
+const GENERAL_SELECTOR = "-content -_id -__v ";
 
 export const getPosts = async (req: Request, res: Response) => {
   const { category, pageIndex } = req.params;
@@ -14,16 +14,22 @@ export const getPosts = async (req: Request, res: Response) => {
     const ITEMS_PER_PAGE = 5;
 
     let totalItems: number = 0;
-
     let posts: iPost[] = [];
-    posts = await (category.toLowerCase() === "all"
-      ? Post.find().select(GENERAL_SELECTOR)
-      : Post.find({ category: category })
-    )
-      .select(GENERAL_SELECTOR)
-      .sort({ createdAt: -1 })
-      .skip((+page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE);
+    if (category.toLowerCase() === "all") {
+      totalItems = await Post.find().countDocuments();
+      posts = await Post.find()
+        .select(GENERAL_SELECTOR)
+        .sort({ createdAt: -1 })
+        .skip((+page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    } else {
+      totalItems = await Post.find({ category: category }).countDocuments();
+      posts = await Post.find({ category: category })
+        .select(GENERAL_SELECTOR)
+        .sort({ createdAt: -1 })
+        .skip((+page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
+    }
 
     res.status(200).json({ posts, totalItems });
   } catch (e) {
