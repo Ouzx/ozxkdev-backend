@@ -6,22 +6,14 @@ import User, { iUser } from "../models/user.js";
 /* Register */
 export const register = async (req: Request, res: Response) => {
   try {
-    const { username, name, surname, email, password, image } =
-      req.body as iUser;
+    const user = req.body as iUser;
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(user.password, salt);
 
-    const newUser = new User({
-      username,
-      name,
-      surname,
-      email,
-      password: hashedPassword,
-      image,
-    });
+    const newUser = new User(user);
 
-    const user = await newUser.save();
-    res.status(201).json(user);
+    const _user = await newUser.save();
+    res.status(201).json(_user);
   } catch (error) {
     if (error instanceof Error) {
       res.status(409).json({ message: error.message });
@@ -43,13 +35,8 @@ export const login = async (req: Request, res: Response) => {
     const secret = process.env.JWT_SECRET as string;
     if (!secret) throw new Error("Unknown error J.23");
     const accessToken = jwt.sign({ id: user._id }, secret);
-    const tempUser = {
-      username: user.username,
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-    };
-    res.status(200).json({ accessToken, user: tempUser });
+
+    res.status(200).json({ accessToken, user });
   } catch (error) {
     if (error instanceof Error) {
       res.status(409).json({ message: error.message });
