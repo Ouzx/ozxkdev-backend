@@ -7,9 +7,17 @@ import User, { iUser } from "../models/user.js";
 export const register = async (req: Request, res: Response) => {
   try {
     const user = req.body as iUser;
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(user.password, salt);
 
+    // check if user exists
+    const userCount = await User.find({
+      username: user.username,
+    }).countDocuments();
+    if (userCount > 0) throw new Error("User already exists");
+
+    const salt = await bcrypt.genSalt(10);
+
+    const hashedPassword = await bcrypt.hash(user.password, salt);
+    user.password = hashedPassword;
     const newUser = new User(user);
 
     const _user = await newUser.save();
@@ -26,11 +34,12 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body as iUser;
     const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ message: "Invalid Credentials" });
+    if (!user)
+      return res.status(404).json({ message: "Invalid username or password " });
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword)
-      return res.status(400).json({ message: "Invalid Creadentials" });
+      return res.status(400).json({ message: "Invalid username or password " });
 
     const secret = process.env.JWT_SECRET as string;
     if (!secret) throw new Error("Unknown error J.23");
