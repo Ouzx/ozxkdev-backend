@@ -33,27 +33,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// const upload = multer({ fileFilter, storage }).array("images", 12);
-// export default function multerMiddleware(
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) {
-//   upload(req, res, (err: any) => {
-//     if (err instanceof multer.MulterError) return res.send({ status: err });
-//     else if (err) return res.send({ status: err });
-
-//     req.body.contentImages = (req.files as Express.Multer.File[]).map(
-//       (file: any) => `${process.env.SERVER_URL}/uploads/${file.filename}`
-//     );
-
-//     if (req.body.fileUrls && req.body.fileUrls.length > 0)
-//       req.body.coverImage = req.body.fileUrls.shift();
-
-//     next();
-//   });
-// }
-// TODO: Check multer file naming configuration
 const uploadSingle = multer({ fileFilter, storage }).single("image");
 export function multerMiddlewareSingle(
   req: Request,
