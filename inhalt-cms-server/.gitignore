@@ -1,7 +1,0 @@
-node_modules
-build
-.env
-
-public/uploads/*.jpg
-public/uploads/*.png
-public/uploads/*.jpeg
