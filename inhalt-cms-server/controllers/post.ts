@@ -84,6 +84,8 @@ export const updatePost = async (req: Request, res: Response) => {
     post.category = encodeURIComponent(post.category);
     post.tags = post.tags.map((tag) => encodeURIComponent(tag));
 
+    post.updatedAt = new Date();
+
     await Post.findByIdAndUpdate(id, post, { new: true });
     res.json(post);
   } catch (e) {
