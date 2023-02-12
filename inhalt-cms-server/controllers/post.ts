@@ -49,7 +49,8 @@ export const createPost = async (req: Request, res: Response) => {
       !post.content ||
       !post.category ||
       !post.tags ||
-      !post.thumbnail
+      !post.thumbnail ||
+      !post.shortContent
     )
       throw new Error("Please fill all fields");
 
