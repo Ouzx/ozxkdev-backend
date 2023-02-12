@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 
-const GENERAL_SELECTOR = "-rawContent -_id -__v";
+const GENERAL_SELECTOR = "-content -_id -__v";
 
 export const getPosts = async (req: Request, res: Response) => {
   const { category, pageIndex } = req.params;

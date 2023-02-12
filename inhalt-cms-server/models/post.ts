@@ -3,7 +3,7 @@ import User from "./user.js";
 
 export interface iPost extends Document {
   title: string;
-  rawContent: string;
+  content: string;
   category: string;
   tags?: string[] | null;
   thumbnail: string;
@@ -23,7 +23,7 @@ const postSchema = new Schema<iPost>({
     trim: true,
     minlength: 3,
   },
-  rawContent: {
+  content: {
     type: String,
     required: true,
   },

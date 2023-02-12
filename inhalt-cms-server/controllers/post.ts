@@ -46,7 +46,7 @@ export const createPost = async (req: Request, res: Response) => {
     const post: iPost = req.body;
     if (
       !post.title ||
-      !post.rawContent ||
+      !post.content ||
       !post.category ||
       !post.tags ||
       !post.thumbnail
@@ -74,7 +74,7 @@ export const updatePost = async (req: Request, res: Response) => {
     const post: iPost = req.body;
     if (
       !post.title ||
-      !post.rawContent ||
+      !post.content ||
       !post.category ||
       !post.tags ||
       !post.thumbnail
