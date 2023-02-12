@@ -3,13 +3,13 @@ import User from "./user.js";
 
 export interface iPost extends Document {
   title: string;
-  content: string;
+  rawContent: string;
   category: string;
   tags?: string[] | null;
   thumbnail: string;
-  raw: string;
   shared: boolean;
-  urlSuffix: string;
+  slug: string;
+  keyword: string;
   shortContent: string;
   createdAt: Date;
   updatedAt: Date;
@@ -23,7 +23,7 @@ const postSchema = new Schema<iPost>({
     trim: true,
     minlength: 3,
   },
-  content: {
+  rawContent: {
     type: String,
     required: true,
   },
@@ -38,15 +38,15 @@ const postSchema = new Schema<iPost>({
     type: String,
     required: true,
   },
-  raw: {
-    type: String,
-    required: true,
-  },
   shared: {
     type: Boolean,
     required: true,
   },
-  urlSuffix: {
+  slug: {
+    type: String,
+    required: true,
+  },
+  keyword: {
     type: String,
     required: true,
   },

@@ -46,34 +46,17 @@ export const getPost = async (req: Request, res: Response) => {
 };
 
 export const createPost = async (req: Request, res: Response) => {
-  const {
-    title,
-    content,
-    category,
-    tags,
-    thumbnail,
-    raw,
-    shared,
-    urlSuffix,
-    shortContent,
-    user,
-  } = req.body;
-
   try {
-    if (!title || !content || !category || !tags || !thumbnail)
+    const post: iPost = req.body;
+    if (
+      !post.title ||
+      !post.rawContent ||
+      !post.category ||
+      !post.tags ||
+      !post.thumbnail
+    )
       throw new Error("Please fill all fields");
-    const newPost = new Post({
-      title,
-      content,
-      category,
-      tags,
-      thumbnail,
-      raw,
-      shared,
-      urlSuffix,
-      shortContent,
-      user,
-    } as iPost);
+    const newPost = new Post(post);
     await newPost.save();
     res.status(201).json(newPost);
   } catch (e) {
@@ -88,35 +71,18 @@ export const updatePost = async (req: Request, res: Response) => {
   try {
     if (!Types.ObjectId.isValid(id)) throw new Error(`No post with id: ${id}`);
 
-    const {
-      title,
-      content,
-      category,
-      tags,
-      thumbnail,
-      raw,
-      shared,
-      shortContent,
-      user,
-    } = req.body;
-
-    if (!title || !content || !category || !tags || !thumbnail)
+    const post: iPost = req.body;
+    if (
+      !post.title ||
+      !post.rawContent ||
+      !post.category ||
+      !post.tags ||
+      !post.thumbnail
+    )
       throw new Error("Please fill all fields");
 
-    const updatedPost = {
-      title,
-      content,
-      category,
-      tags,
-      thumbnail,
-      raw,
-      shared,
-      shortContent,
-      user,
-    } as iPost;
-
-    await Post.findByIdAndUpdate(id, updatedPost, { new: true });
-    res.json(updatedPost);
+    await Post.findByIdAndUpdate(id, post, { new: true });
+    res.json(post);
   } catch (e) {
     if (e instanceof Error) res.status(404).json({ message: e.message });
     else res.status(500).json({ message: "Something went wrong" });
@@ -138,59 +104,34 @@ export const deletePost = async (req: Request, res: Response) => {
 
 // via pagination
 export const searchPosts = async (req: Request, res: Response) => {
-  // const { searchTerm, pageIndex } = req.params;
-  // const page: number = +pageIndex + 1;
-  // const ITEMS_PER_PAGE = 5;
-  // const title = new RegExp(searchTerm, "i");
-  // try {
-  //   const totalItems = await Post.find({ $or: [{ title }] }).countDocuments();
-  //   const posts = await Post.find({ $or: [{ title }] })
-  //     .sort({ createdAt: -1 })
-  //     .skip((+page - 1) * ITEMS_PER_PAGE)
-  //     .limit(ITEMS_PER_PAGE);
-  //   if (!posts.length) throw new Error("No posts found");
-  //   res.status(200).json({ posts, totalItems });
-  // } catch (e) {
-  //   if (e instanceof Error) {
-  //     res.status(404).json({ message: e.message });
-  //   } else res.status(500).json({ message: "Something went wrong" });
-  // }
+  const { pageIndex } = req.params;
 
-  /**
-   * first search for title
-   * then search for content
-   * then search for tags
-   * then search for category
-   * and then combine all results
-   *
-   */
+  const { searchTerm } = req.body;
 
-  const { searchTerm, pageIndex } = req.params;
   const page: number = +pageIndex + 1;
   const ITEMS_PER_PAGE = 5;
-  const title = new RegExp(searchTerm, "i");
-  const content = new RegExp(searchTerm, "i");
-  const tags = new RegExp(searchTerm, "i");
-  const category = new RegExp(searchTerm, "i");
+  const search = new RegExp(searchTerm, "i");
 
   try {
+    if (!searchTerm) throw new Error("Please enter a search term");
+
     const totalItems = await Post.find({
-      $or: [{ title }, { content }, { tags }, { category }],
+      $or: [
+        { title: search },
+        { rawContent: search },
+        { tags: search },
+        { category: search },
+      ],
     }).countDocuments();
 
     const posts = await Post.find({
       $or: [
-        { title },
-        { content },
-        {
-          tags,
-        },
-        {
-          category,
-        },
+        { title: search },
+        { rawContent: search },
+        { tags: search },
+        { category: search },
       ],
     })
-      // .sort({ createdAt: -1 })
       .skip((+page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
