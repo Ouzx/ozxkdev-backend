@@ -43,7 +43,7 @@ export const getPost = async (req: Request, res: Response) => {
 
 export const createPost = async (req: Request, res: Response) => {
   try {
-    const post: iPost = req.body;
+    const { _id, ...post } = req.body as iPost;
     if (
       !post.title ||
       !post.content ||
