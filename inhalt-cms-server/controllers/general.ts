@@ -46,15 +46,15 @@ export const getPost = async (req: Request, res: Response) => {
     if (!slug) throw new Error(`No post with slug: ${slug}`);
     if (!category) throw new Error(`No category with id: ${category}`);
 
-    const post = await Post.findOne({ slug, category }).select("-__v -_id");
+    const post = await Post.findOne({ slug, category }).select("-__v");
 
     const previousPost = await Post.findOne({
       createdAt: { $lt: post?.createdAt },
-    }).select("slug");
+    }).select("slug category");
 
     const nextPost = await Post.findOne({
       createdAt: { $gt: post?.createdAt },
-    }).select("slug");
+    }).select("slug category");
 
     const relatedPosts = await Post.find({
       category: post?.category,
@@ -70,6 +70,7 @@ export const getPost = async (req: Request, res: Response) => {
     // create deep copy of post
     const postCopy = JSON.parse(JSON.stringify(post));
     postCopy.author = user?.name;
+    delete postCopy._id;
 
     res.status(200).json({
       post: postCopy,
