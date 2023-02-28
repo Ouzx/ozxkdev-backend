@@ -10,7 +10,6 @@ export const getPosts = async (req: Request, res: Response) => {
     if (!category) throw new Error(`No category with id: ${category}`);
     if (!pageIndex) throw new Error(`No page with id: ${pageIndex}`);
 
-    const page: number = +pageIndex + 1;
     const ITEMS_PER_PAGE = 5;
 
     let totalItems: number = 0;
@@ -20,14 +19,14 @@ export const getPosts = async (req: Request, res: Response) => {
       posts = await Post.find()
         .select(GENERAL_SELECTOR)
         .sort({ createdAt: -1 })
-        .skip((+page - 1) * ITEMS_PER_PAGE)
+        .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
     } else {
       totalItems = await Post.find({ category: category }).countDocuments();
       posts = await Post.find({ category: category })
         .select(GENERAL_SELECTOR)
         .sort({ createdAt: -1 })
-        .skip((+page - 1) * ITEMS_PER_PAGE)
+        .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
     }
 
@@ -84,7 +83,6 @@ export const searchPosts = async (req: Request, res: Response) => {
 
     const decodedSearchTerm = decodeURIComponent(searchTerm);
 
-    const page: number = +pageIndex + 1;
     const ITEMS_PER_PAGE = 5;
 
     const totalItems = await Post.find({
@@ -94,7 +92,7 @@ export const searchPosts = async (req: Request, res: Response) => {
     const posts = await Post.find({ $text: { $search: decodedSearchTerm } })
       .select(GENERAL_SELECTOR)
       .sort({ createdAt: -1 })
-      .skip((+page - 1) * ITEMS_PER_PAGE)
+      .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
     res.status(200).json({ posts, totalItems });

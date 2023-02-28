@@ -8,14 +8,13 @@ export const getPosts = async (req: Request, res: Response) => {
   try {
     if (!id) throw `No page with id: ${id}`;
 
-    const page: number = +id + 1;
     const ITEMS_PER_PAGE = 5;
 
     const totalItems = await Post.find().countDocuments();
 
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .skip((+page - 1) * ITEMS_PER_PAGE)
+      .skip((+id - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
     res.status(200).json({ posts, totalItems });
@@ -112,11 +111,11 @@ export const deletePost = async (req: Request, res: Response) => {
 export const searchPosts = async (req: Request, res: Response) => {
   const { pageIndex, searchTerm } = req.params;
 
-  const page: number = +pageIndex + 1;
   const ITEMS_PER_PAGE = 5;
   // TODO: Handle encoded categories and tags later.
   try {
     if (!searchTerm) throw new Error("Please enter a search term");
+    if (!pageIndex) throw new Error("Please enter a page index");
 
     const totalItems = await Post.find({
       $text: { $search: searchTerm },
@@ -125,7 +124,7 @@ export const searchPosts = async (req: Request, res: Response) => {
     const posts = await Post.find({
       $text: { $search: searchTerm },
     })
-      .skip((+page - 1) * ITEMS_PER_PAGE)
+      .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
     if (!posts.length) throw new Error("No posts found");
