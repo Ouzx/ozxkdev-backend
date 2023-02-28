@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
+import User from "../models/user.js";
 
 const GENERAL_SELECTOR = "-content -_id -__v -user";
 
@@ -45,26 +46,33 @@ export const getPost = async (req: Request, res: Response) => {
     if (!slug) throw new Error(`No post with slug: ${slug}`);
     if (!category) throw new Error(`No category with id: ${category}`);
 
-    const post = await Post.find({ slug, category }).select("-__v -_id -user");
+    const post = await Post.findOne({ slug, category }).select("-__v -_id");
 
     const previousPost = await Post.findOne({
-      createdAt: { $lt: post[0].createdAt },
+      createdAt: { $lt: post?.createdAt },
     }).select("slug");
 
     const nextPost = await Post.findOne({
-      createdAt: { $gt: post[0].createdAt },
+      createdAt: { $gt: post?.createdAt },
     }).select("slug");
 
     const relatedPosts = await Post.find({
-      category: post[0].category,
-      _id: { $ne: post[0]._id },
+      category: post?.category,
+      _id: { $ne: post?._id },
     })
       .select(GENERAL_SELECTOR)
       .sort({ createdAt: -1 })
       .limit(3);
 
+    // get user name
+    const user = await User.findById(post?.user).select("name");
+
+    // create deep copy of post
+    const postCopy = JSON.parse(JSON.stringify(post));
+    postCopy.author = user?.name;
+
     res.status(200).json({
-      post,
+      post: postCopy,
       relatedPosts,
       previousPost,
       nextPost,
