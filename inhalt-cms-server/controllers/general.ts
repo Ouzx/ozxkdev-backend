@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 import User from "../models/user.js";
 
-const GENERAL_SELECTOR = "-content -_id -__v -user";
+const GENERAL_SELECTOR = "-content -_id -__v";
 
 export const getPosts = async (req: Request, res: Response) => {
   const { category, pageIndex } = req.params;
@@ -31,7 +31,22 @@ export const getPosts = async (req: Request, res: Response) => {
         .limit(ITEMS_PER_PAGE);
     }
 
-    res.status(200).json({ posts, totalItems });
+    // deep copy posts
+    const postsCopy = JSON.parse(JSON.stringify(posts));
+
+    // get user names
+    const userIds = postsCopy.map((post: iPost) => post.user);
+    const users = await User.find({ _id: { $in: userIds } }).select("name");
+
+    // add user names to posts
+    postsCopy.forEach((_post: any) => {
+      const user = users.find((user) => user._id.toString() === _post.user);
+      _post.author = user?.name;
+      delete _post._id;
+      delete _post.user;
+    });
+
+    res.status(200).json({ posts: postsCopy, totalItems });
   } catch (e) {
     if (e instanceof Error) {
       res.status(404).json({ message: e.message });
