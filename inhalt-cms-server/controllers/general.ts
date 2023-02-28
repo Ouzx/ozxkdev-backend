@@ -38,10 +38,18 @@ export const getPosts = async (req: Request, res: Response) => {
     const userIds = postsCopy.map((post: iPost) => post.user);
     const users = await User.find({ _id: { $in: userIds } }).select("name");
 
+    // create an object where the keys are user ids and the values are user names
+    const userNames: { [key: string]: string } = {};
+    users.forEach((user) => {
+      userNames[user._id.toString()] = user.name;
+    });
+
     // add user names to posts
     postsCopy.forEach((_post: any) => {
-      const user = users.find((user) => user._id.toString() === _post.user);
-      _post.author = user?.name;
+      const authorName = userNames[_post.user];
+      if (authorName) {
+        _post.author = authorName;
+      }
       delete _post._id;
       delete _post.user;
     });
