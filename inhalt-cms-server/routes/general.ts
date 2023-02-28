@@ -10,7 +10,7 @@ import {
 const router = Router();
 
 router.get("/page/:category/:pageIndex", getPosts);
-router.get("/post/:slug", getPost);
+router.get("/post/:category/:slug", getPost);
 router.get("/search/:searchTerm/:pageIndex", searchPosts);
 router.get("/categories", getCategories);
 

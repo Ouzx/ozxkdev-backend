@@ -39,12 +39,13 @@ export const getPosts = async (req: Request, res: Response) => {
 };
 
 export const getPost = async (req: Request, res: Response) => {
-  const { slug } = req.params;
+  const { category, slug } = req.params;
 
   try {
     if (!slug) throw new Error(`No post with slug: ${slug}`);
+    if (!category) throw new Error(`No category with id: ${category}`);
 
-    const post = await Post.find({ slug }).select("-__v -_id -user");
+    const post = await Post.find({ slug, category }).select("-__v -_id -user");
 
     const previousPost = await Post.findOne({
       createdAt: { $lt: post[0].createdAt },
