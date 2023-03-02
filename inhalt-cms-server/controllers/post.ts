@@ -43,6 +43,7 @@ export const getPost = async (req: Request, res: Response) => {
 export const createPost = async (req: Request, res: Response) => {
   try {
     const { _id, ...post } = req.body as iPost;
+
     if (
       !post.title ||
       !post.content ||
@@ -50,18 +51,39 @@ export const createPost = async (req: Request, res: Response) => {
       !post.tags ||
       !post.thumbnail ||
       !post.shortContent
-    )
+    ) {
       throw new Error("Please fill all fields");
+    }
 
-    // post.category = encodeURIComponent(post.category);
-    // post.tags = post.tags.map((tag) => encodeURIComponent(tag));
+    let existingPost = await Post.findOne({ title: post.title });
+
+    if (existingPost) {
+      const title = post.title;
+      let num = 1;
+
+      while (true) {
+        const newTitle = `${title} #${num}`;
+        const checkPost = await Post.findOne({ title: newTitle });
+
+        if (!checkPost) {
+          post.title = newTitle;
+          break;
+        }
+
+        num++;
+      }
+    }
 
     const newPost = new Post(post);
     await newPost.save();
+
     res.status(201).json(newPost);
   } catch (e) {
-    if (e instanceof Error) res.status(409).json({ message: e.message });
-    else res.status(500).json({ message: "Something went wrong" });
+    if (e instanceof Error) {
+      res.status(409).json({ message: e.message });
+    } else {
+      res.status(500).json({ message: "Something went wrong" });
+    }
   }
 };
 
