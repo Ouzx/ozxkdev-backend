@@ -53,7 +53,7 @@ export const createPost = async (req: Request, res: Response) => {
     )
       throw new Error("Please fill all fields");
 
-    post.category = encodeURIComponent(post.category);
+    // post.category = encodeURIComponent(post.category);
     // post.tags = post.tags.map((tag) => encodeURIComponent(tag));
 
     const newPost = new Post(post);
