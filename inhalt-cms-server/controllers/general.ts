@@ -3,6 +3,7 @@ import Post, { iPost } from "../models/post.js";
 import User from "../models/user.js";
 
 const GENERAL_SELECTOR = "-content -_id -__v";
+const ITEMS_PER_PAGE = 5;
 
 export const getPosts = async (req: Request, res: Response) => {
   const { category, pageIndex } = req.params;
@@ -10,8 +11,6 @@ export const getPosts = async (req: Request, res: Response) => {
   try {
     if (!category) throw new Error(`No category with id: ${category}`);
     if (!pageIndex) throw new Error(`No page with id: ${pageIndex}`);
-
-    const ITEMS_PER_PAGE = 5;
 
     let totalItems: number = 0;
     let posts: iPost[] = [];
@@ -132,8 +131,6 @@ export const searchPosts = async (req: Request, res: Response) => {
       throw new Error(
         `Search term must be at least ${minChars} characters long`
       );
-
-    const ITEMS_PER_PAGE = 5;
 
     const totalItems = await Post.countDocuments(searchPostsByTerm(searchTerm));
 

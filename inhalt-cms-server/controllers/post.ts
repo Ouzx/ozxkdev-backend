@@ -2,13 +2,13 @@ import { Types } from "mongoose";
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 
+const ITEMS_PER_PAGE = 5;
+
 export const getPosts = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
     if (!id) throw `No page with id: ${id}`;
-
-    const ITEMS_PER_PAGE = 5;
 
     const totalItems = await Post.find().countDocuments();
 
@@ -145,8 +145,6 @@ const searchPostsByTerm = (searchTerm: string) => {
 const minChars = 3;
 export const searchPosts = async (req: Request, res: Response) => {
   const { pageIndex, searchTerm } = req.params;
-
-  const ITEMS_PER_PAGE = 5;
 
   try {
     if (!searchTerm) throw new Error("Please enter a search term");
