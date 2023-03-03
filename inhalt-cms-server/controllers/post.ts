@@ -147,7 +147,7 @@ export const searchPosts = async (req: Request, res: Response) => {
   const { pageIndex, searchTerm } = req.params;
 
   const ITEMS_PER_PAGE = 5;
-  // TODO: Handle encoded categories and tags later.
+
   try {
     if (!searchTerm) throw new Error("Please enter a search term");
     if (!pageIndex) throw new Error("Please enter a page index");
