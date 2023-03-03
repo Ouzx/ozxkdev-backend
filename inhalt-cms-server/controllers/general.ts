@@ -108,21 +108,36 @@ export const getPost = async (req: Request, res: Response) => {
   }
 };
 
+const searchPostsByTerm = (searchTerm: string) => {
+  const regexSearchTerm = new RegExp(searchTerm, "i");
+
+  return {
+    $or: [
+      { title: regexSearchTerm },
+      { body: regexSearchTerm },
+      { tags: { $in: [regexSearchTerm] } },
+      { category: regexSearchTerm },
+    ],
+  };
+};
+
+const minChars = 3;
 export const searchPosts = async (req: Request, res: Response) => {
   const { pageIndex, searchTerm } = req.params;
   try {
     if (!searchTerm) throw new Error(`No search term: ${searchTerm}`);
     if (!pageIndex) throw new Error(`No page with id: ${pageIndex}`);
 
-    const decodedSearchTerm = decodeURIComponent(searchTerm);
+    if (searchTerm.length < minChars)
+      throw new Error(
+        `Search term must be at least ${minChars} characters long`
+      );
 
     const ITEMS_PER_PAGE = 5;
 
-    const totalItems = await Post.find({
-      $text: { $search: decodedSearchTerm },
-    }).countDocuments();
+    const totalItems = await Post.countDocuments(searchPostsByTerm(searchTerm));
 
-    const posts = await Post.find({ $text: { $search: decodedSearchTerm } })
+    const posts = await Post.find(searchPostsByTerm(searchTerm))
       .select(GENERAL_SELECTOR)
       .sort({ createdAt: -1 })
       .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
@@ -130,6 +145,7 @@ export const searchPosts = async (req: Request, res: Response) => {
 
     res.status(200).json({ posts, totalItems });
   } catch (e) {
+    console.log(e);
     if (e instanceof Error) {
       res.status(404).json({ message: e.message });
     } else res.status(500).json({ message: "Something went wrong" });
