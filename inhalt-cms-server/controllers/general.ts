@@ -145,7 +145,6 @@ export const searchPosts = async (req: Request, res: Response) => {
 
     res.status(200).json({ posts, totalItems });
   } catch (e) {
-    console.log(e);
     if (e instanceof Error) {
       res.status(404).json({ message: e.message });
     } else res.status(500).json({ message: "Something went wrong" });

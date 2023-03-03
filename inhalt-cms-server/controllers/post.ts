@@ -129,7 +129,20 @@ export const deletePost = async (req: Request, res: Response) => {
   }
 };
 
-// via pagination
+const searchPostsByTerm = (searchTerm: string) => {
+  const regexSearchTerm = new RegExp(searchTerm, "i");
+
+  return {
+    $or: [
+      { title: regexSearchTerm },
+      { body: regexSearchTerm },
+      { tags: { $in: [regexSearchTerm] } },
+      { category: regexSearchTerm },
+    ],
+  };
+};
+
+const minChars = 3;
 export const searchPosts = async (req: Request, res: Response) => {
   const { pageIndex, searchTerm } = req.params;
 
@@ -139,13 +152,16 @@ export const searchPosts = async (req: Request, res: Response) => {
     if (!searchTerm) throw new Error("Please enter a search term");
     if (!pageIndex) throw new Error("Please enter a page index");
 
-    const totalItems = await Post.find({
-      $text: { $search: searchTerm },
-    }).countDocuments();
+    if (searchTerm.length < minChars)
+      throw new Error(
+        `Search term must be at least ${minChars} characters long`
+      );
 
-    const posts = await Post.find({
-      $text: { $search: searchTerm },
-    })
+    const totalItems = await Post.find(
+      searchPostsByTerm(searchTerm)
+    ).countDocuments();
+
+    const posts = await Post.find(searchPostsByTerm(searchTerm))
       .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
