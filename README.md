@@ -113,12 +113,6 @@ I'm waiting your contributions for any features 😊
 - Write Tests
 - Create API Endpoints Document for Backend: Postman?
 
-## ART 🎨
-
-Arts drive link: https://drive.google.com/drive/folders/1pkqWvUdyn6MAzCHrlb2P1kkHaG11G9_F?usp=sharing
-<br>
-![mix](https://user-images.githubusercontent.com/47363718/212567762-52c52f64-f769-47d7-a7dc-5b91b2685b83.png)
-
 ## License
 
 This back-end is licensed under the MIT License. See the LICENSE file for more information.
