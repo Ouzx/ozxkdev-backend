@@ -9,9 +9,15 @@ export const register = async (req: Request, res: Response) => {
     const user = req.body as iUser;
 
     // check if user exists
+    // const userCount = await User.find({
+    //   username: user.username,
+    // }).countDocuments();
+
+    // dont check user name directly, use it in the query
     const userCount = await User.find({
-      username: user.username,
+      $eq: { username: user.username },
     }).countDocuments();
+
     if (userCount > 0) throw new Error("User already exists");
 
     const salt = await bcrypt.genSalt(10);
@@ -33,7 +39,10 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body as iUser;
-    const user = await User.findOne({ username });
+    // use username in the query
+    const user = await User.findOne({
+      $eq: { username: username },
+    });
     if (!user)
       return res.status(404).json({ message: "Invalid username or password " });
 
