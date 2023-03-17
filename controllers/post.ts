@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
+var _ = require("lodash");
 
 const ITEMS_PER_PAGE = 5;
 
@@ -130,7 +131,9 @@ export const deletePost = async (req: Request, res: Response) => {
 };
 
 const searchPostsByTerm = (searchTerm: string) => {
-  const regexSearchTerm = new RegExp(searchTerm, "i");
+  var safeSearchTerm = _.escapeRegExp(searchTerm);
+
+  const regexSearchTerm = new RegExp(safeSearchTerm, "i");
 
   return {
     $or: [

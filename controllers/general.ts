@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 import User from "../models/user.js";
+var _ = require("lodash");
 
 const GENERAL_SELECTOR = "-content -_id -__v";
 const ITEMS_PER_PAGE = 5;
@@ -108,7 +109,9 @@ export const getPost = async (req: Request, res: Response) => {
 };
 
 const searchPostsByTerm = (searchTerm: string) => {
-  const regexSearchTerm = new RegExp(searchTerm, "i");
+  var safeSearchTerm = _.escapeRegExp(searchTerm);
+
+  const regexSearchTerm = new RegExp(safeSearchTerm, "i");
 
   return {
     $or: [
