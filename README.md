@@ -2,7 +2,7 @@
 
 This is the back-end of the OZXK.DEV blog, which includes a custom CMS for managing blog posts. It was built using MongoDB, Express.js, Node.js, and TypeScript.
 
-## Features
+## Features 🌟
 
 Some of the features included in the back-end are:
 
@@ -12,7 +12,7 @@ Some of the features included in the back-end are:
 - Search functionality: Users can search for posts using keywords or phrases.
 - Categories and tags: Posts can be organized into categories and tagged with keywords for easier browsing and searching.
 
-## Technologies Used
+## Technologies Used 💫
 
 The back-end of the OZXK.DEV blog was built using the following technologies:
 
@@ -32,11 +32,11 @@ Overall, these technologies were chosen to provide a robust, reliable, and secur
 
 <hr>
 
-### Authentication
+### Authentication 🔐
 
 User authentication is handled using JSON Web Tokens (JWTs). When a user creates an account or logs in, a JWT is generated and sent to the client. The JWT is used to authenticate requests to the CMS API.
 
-### API Endpoints
+### API Endpoints ✈️
 
 There 4 main API endpoints:
 
@@ -46,13 +46,13 @@ There 4 main API endpoints:
 - `/media/imgs`: For media files - requires authentication
 - `/general`: For general/public API requests - doesn't require authentication
 
-#### Authentication
+#### Authentication 🔐
 
 - `POST /auth/register`: Register a new user - disabled for now
 - `POST /auth/login`: Login a user
 - `GET /auth/validate-token`: Validate a user's token
 
-#### CMS
+#### CMS 📖
 
 - `GET /posts/page/:id`: Get a page of posts
 - `GET /posts/:id`: Get a single post
@@ -61,12 +61,12 @@ There 4 main API endpoints:
 - `DELETE /posts/:id`: Delete a post
 - `GET /posts/search/:searchTem/:pageIndex`: Search for posts using a search term and page index
 
-#### Media
+#### Media 🖼️
 
 - `POST /media/imgs/by-file`: Upload an image file
 
-#### General
-
+#### General 🏘️
+ 
 - `GET /general/page/:category/:pageIndex`: Get a page of posts for a specific category
 - `GET /general/post/:slug`: Get a single post
 - `GET /general/search/:searchTem/:pageIndex`: Search for posts using a search term and page index
@@ -74,7 +74,7 @@ There 4 main API endpoints:
 
 <hr>
 
-## How to Use
+## How to Use 📝
 
 To run this back-end locally, you will need to have Node.js and MongoDB installed on your machine.
 
@@ -112,6 +112,6 @@ I'm waiting your contributions for any features 😊
 - Write Tests
 - Create API Endpoints Document for Backend: Postman?
 
-## License
+## License 📜
 
 This back-end is licensed under the MIT License. See the LICENSE file for more information.
