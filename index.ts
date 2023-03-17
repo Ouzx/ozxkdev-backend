@@ -11,6 +11,7 @@ import { image, post, auth, general } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
 
 import RateLimit from "express-rate-limit";
+import mongoSanitize from "express-mongo-sanitize";
 
 /* Config */
 dotenv.config();
@@ -33,6 +34,9 @@ var limiter = RateLimit({
   max: 15,
 });
 app.use(limiter);
+
+/* Sanitize data */
+app.use(mongoSanitize());
 
 app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 
