@@ -10,6 +10,8 @@ import morgan from "morgan";
 import { image, post, auth, general } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
 
+import RateLimit from "express-rate-limit";
+
 /* Config */
 dotenv.config();
 const CONNECTION_URL: string = process.env.CONNECTION_URL || "";
@@ -24,6 +26,13 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 app.use(morgan("common"));
 app.use(cors());
+
+/* Set up rate limiter */
+var limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 15,
+});
+app.use(limiter);
 
 app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 
