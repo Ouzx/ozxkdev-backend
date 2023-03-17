@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
-var _ = require("lodash");
+import _ from "lodash";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -109,7 +109,7 @@ export const updatePost = async (req: Request, res: Response) => {
 
     post.updatedAt = new Date();
 
-    await Post.findByIdAndUpdate(id, post, { new: true });
+    await Post.findByIdAndUpdate(id, post, { new: true }).lean();
     res.json(post);
   } catch (e) {
     if (e instanceof Error) res.status(404).json({ message: e.message });
