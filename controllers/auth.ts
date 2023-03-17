@@ -8,14 +8,8 @@ export const register = async (req: Request, res: Response) => {
   try {
     const user = req.body as iUser;
 
-    // check if user exists
-    // const userCount = await User.find({
-    //   username: user.username,
-    // }).countDocuments();
-
-    // dont check user name directly, use it in the query
     const userCount = await User.find({
-      $eq: { username: user.username },
+      username: user.username,
     }).countDocuments();
 
     if (userCount > 0) throw new Error("User already exists");
@@ -40,9 +34,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body as iUser;
     // use username in the query
-    const user = await User.findOne({
-      $eq: { username: username },
-    });
+    const user = await User.findOne({ username: username });
     if (!user)
       return res.status(404).json({ message: "Invalid username or password " });
 
