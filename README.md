@@ -109,8 +109,8 @@ I'm waiting your contributions for any features 😊
 
 ### TO-DO 📝
 
-- Write Tests
-- Create API Endpoints Document for Backend: Postman?
+- [ ] Write Tests
+- [ ] Create API Endpoints Document for Backend: Postman?
 
 ## License 📜
 
