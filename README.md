@@ -87,6 +87,8 @@ To run this back-end locally, you will need to have Node.js and MongoDB installe
 ```.env
 CONNECTION_URL:YOUR_MONGO_DB_CONNECTION_URL
 JWT_SECRET:YOUR_JWT_SECRET_KEY
+PORT:OPTIONAL
+SERVER_URL=http://localhost:8000 - CHANGE THIS AFTER PUBLISH
 ```
 
 You don't need any additional things at the backend. It's regular node.js .env file. Also, you can use these keys with `process.env.PORT` code. <br>
