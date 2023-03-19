@@ -12,6 +12,7 @@ import { verifyToken } from "./middlewares/auth.js";
 
 import RateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
+import path from "path";
 
 /* Config */
 dotenv.config();
@@ -27,6 +28,8 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 app.use(morgan("common"));
 app.use(cors());
+
+app.use(express.static("public"));
 
 /* Set up rate limiter */
 var limiter = RateLimit({
@@ -48,6 +51,10 @@ app.use("/media/imgs", verifyToken, image);
 // TODO: Add Client Token
 app.use("/general", general);
 
+app.get("/", (req, res) => {
+  res.sendFile("index.html", { root: path.join(__dirname, "public") });
+});
+
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
 mongoose
@@ -61,3 +68,5 @@ mongoose
     )
   )
   .catch((error) => console.log(`${error} did not connect`));
+
+export default app;
