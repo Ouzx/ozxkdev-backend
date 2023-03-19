@@ -19,6 +19,8 @@ export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function
             throw new Error(`No category with id: ${category}`);
         if (!pageIndex)
             throw new Error(`No page with id: ${pageIndex}`);
+        if (isNaN(+pageIndex) || +pageIndex < 1)
+            throw new Error(`Invalid page index: ${pageIndex}`);
         let totalItems = 0;
         let posts = [];
         if (category.toLowerCase() === "all") {
@@ -128,6 +130,8 @@ export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, funct
             throw new Error(`No search term: ${searchTerm}`);
         if (!pageIndex)
             throw new Error(`No page with id: ${pageIndex}`);
+        if (isNaN(+pageIndex) || +pageIndex < 1)
+            throw new Error(`Invalid page index: ${pageIndex}`);
         if (searchTerm.length < minChars)
             throw new Error(`Search term must be at least ${minChars} characters long`);
         const totalItems = yield Post.countDocuments(searchPostsByTerm(searchTerm));

@@ -6,16 +6,19 @@ import _ from "lodash";
 const ITEMS_PER_PAGE = 5;
 
 export const getPosts = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { id: pageIndex } = req.params;
 
   try {
-    if (!id) throw `No page with id: ${id}`;
+    if (!pageIndex) throw `No page with id: ${pageIndex}`;
+
+    if (isNaN(+pageIndex) || +pageIndex < 1)
+      throw new Error(`Invalid page index: ${pageIndex}`);
 
     const totalItems = await Post.find().countDocuments();
 
     const posts = await Post.find()
       .sort({ createdAt: -1 })
-      .skip((+id - 1) * ITEMS_PER_PAGE)
+      .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
     res.status(200).json({ posts, totalItems });
@@ -152,6 +155,9 @@ export const searchPosts = async (req: Request, res: Response) => {
   try {
     if (!searchTerm) throw new Error("Please enter a search term");
     if (!pageIndex) throw new Error("Please enter a page index");
+
+    if (isNaN(+pageIndex) || +pageIndex < 1)
+      throw new Error(`Invalid page index: ${pageIndex}`);
 
     if (searchTerm.length < minChars)
       throw new Error(

@@ -13,6 +13,9 @@ export const getPosts = async (req: Request, res: Response) => {
     if (!category) throw new Error(`No category with id: ${category}`);
     if (!pageIndex) throw new Error(`No page with id: ${pageIndex}`);
 
+    if (isNaN(+pageIndex) || +pageIndex < 1)
+      throw new Error(`Invalid page index: ${pageIndex}`);
+
     let totalItems: number = 0;
     let posts: iPost[] = [];
     if (category.toLowerCase() === "all") {
@@ -129,6 +132,9 @@ export const searchPosts = async (req: Request, res: Response) => {
   try {
     if (!searchTerm) throw new Error(`No search term: ${searchTerm}`);
     if (!pageIndex) throw new Error(`No page with id: ${pageIndex}`);
+
+    if (isNaN(+pageIndex) || +pageIndex < 1)
+      throw new Error(`Invalid page index: ${pageIndex}`);
 
     if (searchTerm.length < minChars)
       throw new Error(
