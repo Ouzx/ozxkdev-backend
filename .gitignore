@@ -5,5 +5,3 @@ build
 public/uploads/*.jpg
 public/uploads/*.png
 public/uploads/*.jpeg
-
-dist/
