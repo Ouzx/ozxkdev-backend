@@ -1,5 +1,5 @@
 // TODO: Configure Serverless
-import express, { Express } from "express";
+import express, { Express, Request, Response } from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -12,7 +12,6 @@ import { verifyToken } from "./middlewares/auth.js";
 
 import RateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
-import path from "path";
 
 /* Config */
 dotenv.config();
@@ -28,8 +27,6 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 app.use(morgan("common"));
 app.use(cors());
-
-app.use(express.static("public"));
 
 /* Set up rate limiter */
 var limiter = RateLimit({
@@ -51,8 +48,16 @@ app.use("/media/imgs", verifyToken, image);
 // TODO: Add Client Token
 app.use("/general", general);
 
-app.get("/", (req, res) => {
-  res.sendFile("index.html", { root: path.join(__dirname, "public") });
+app.get("/", (_req: Request, res: Response) => {
+  return res.send("ozxk blog api 🚀");
+});
+
+app.get("/ping", (_req: Request, res: Response) => {
+  return res.send("pong 🏓");
+});
+
+app.listen(PORT, () => {
+  return console.log(`Server is listening on ${PORT}`);
 });
 
 /* MongoDB Connection */

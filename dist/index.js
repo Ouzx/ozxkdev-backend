@@ -9,7 +9,6 @@ import { image, post, auth, general } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
 import RateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
-import path from "path";
 /* Config */
 dotenv.config();
 const CONNECTION_URL = process.env.CONNECTION_URL || "";
@@ -21,7 +20,6 @@ app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(cors());
-app.use(express.static("public"));
 /* Set up rate limiter */
 var limiter = RateLimit({
     windowMs: 1 * 60 * 1000,
@@ -37,8 +35,14 @@ app.use("/posts", verifyToken, post);
 app.use("/media/imgs", verifyToken, image);
 // TODO: Add Client Token
 app.use("/general", general);
-app.get("/", (req, res) => {
-    res.sendFile("index.html", { root: path.join(__dirname, "public") });
+app.get("/", (_req, res) => {
+    return res.send("ozxk blog api 🚀");
+});
+app.get("/ping", (_req, res) => {
+    return res.send("pong 🏓");
+});
+app.listen(PORT, () => {
+    return console.log(`Server is listening on ${PORT}`);
 });
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
