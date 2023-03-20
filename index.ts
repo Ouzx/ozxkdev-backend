@@ -48,18 +48,6 @@ app.use("/media/imgs", verifyToken, image);
 // TODO: Add Client Token
 app.use("/general", general);
 
-app.get("/", (_req: Request, res: Response) => {
-  return res.send("ozxk blog api 🚀");
-});
-
-app.get("/ping", (_req: Request, res: Response) => {
-  return res.send("pong 🏓");
-});
-
-app.listen(PORT, () => {
-  return console.log(`Server is listening on ${PORT}`);
-});
-
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
 mongoose
