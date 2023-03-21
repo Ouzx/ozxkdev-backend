@@ -35,6 +35,12 @@ app.use("/posts", verifyToken, post);
 app.use("/media/imgs", verifyToken, image);
 // TODO: Add Client Token
 app.use("/general", general);
+app.get("/", (_req, res) => {
+    return res.send("ozxk blog api 🚀");
+});
+app.get("/ping", (_req, res) => {
+    return res.send("pong 🏓");
+});
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
 mongoose
