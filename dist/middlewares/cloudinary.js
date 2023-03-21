@@ -44,10 +44,10 @@ export default function cloudImageMiddleWare(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const file = req.file;
+            console.log(file);
             if (!file) {
                 return next();
             }
-            // console.log(file);
             const result = yield cloudinary.uploader.upload(file.path);
             req.body.image = result.secure_url;
         }

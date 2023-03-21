@@ -48,10 +48,11 @@ export default async function cloudImageMiddleWare(
 ) {
   try {
     const file = req.file;
+    console.log(file);
     if (!file) {
       return next();
     }
-    // console.log(file);
+
     const result = await cloudinary.uploader.upload(file.path);
     req.body.image = result.secure_url;
   } catch (err) {
