@@ -66,7 +66,7 @@ There 4 main API endpoints:
 - `POST /media/imgs/by-file`: Upload an image file
 
 #### General 🏘️
- 
+
 - `GET /general/page/:category/:pageIndex`: Get a page of posts for a specific category
 - `GET /general/post/:slug`: Get a single post
 - `GET /general/search/:searchTem/:pageIndex`: Search for posts using a search term and page index
@@ -89,6 +89,10 @@ CONNECTION_URL:YOUR_MONGO_DB_CONNECTION_URL
 JWT_SECRET:YOUR_JWT_SECRET_KEY
 PORT:OPTIONAL
 SERVER_URL=http://localhost:8000 - CHANGE THIS AFTER PUBLISH
+IMAGE_MIDDLEWARE=CLOUDINARY - OR MULTER
+CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
 ```
 
 You don't need any additional things at the backend. It's regular node.js .env file. Also, you can use these keys with `process.env.PORT` code. <br>
