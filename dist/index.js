@@ -5,7 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
-import { image, post, auth, general } from "./routes/index.js";
+import { image, post, auth, general, mail } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
 import RateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
@@ -35,6 +35,7 @@ app.use("/posts", verifyToken, post);
 app.use("/media/imgs", verifyToken, image);
 // TODO: Add Client Token
 app.use("/general", general);
+app.use("/contact", mail);
 app.get("/", (_req, res) => {
     return res.send("ozxk blog api 🚀");
 });

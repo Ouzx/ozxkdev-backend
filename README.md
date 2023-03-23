@@ -87,12 +87,16 @@ To run this back-end locally, you will need to have Node.js and MongoDB installe
 ```.env
 CONNECTION_URL:YOUR_MONGO_DB_CONNECTION_URL
 JWT_SECRET:YOUR_JWT_SECRET_KEY
-PORT:OPTIONAL
-SERVER_URL=http://localhost:8000 - CHANGE THIS AFTER PUBLISH
+PORT:SERVER_PORT - OPTIONAL
+SERVER_URL=http://localhost:8000 - CHANGE THIS AFTER PUBLISH - FOR MULTER
+
 IMAGE_MIDDLEWARE=CLOUDINARY - OR MULTER
 CLOUDINARY_CLOUD_NAME=YOUR_CLOUDINARY_CLOUD_NAME
 CLOUDINARY_API_KEY=YOUR_CLOUDINARY_API_KEY
 CLOUDINARY_API_SECRET=YOUR_CLOUDINARY_API_SECRET
+
+EMAIL_USERNAME=your-email@gmail.com - FOR EMAIL
+EMAIL_APP_PASSWORD=your-gmail-app-password
 ```
 
 You don't need any additional things at the backend. It's regular node.js .env file. Also, you can use these keys with `process.env.PORT` code. <br>
