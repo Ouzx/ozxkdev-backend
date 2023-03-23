@@ -41,7 +41,7 @@ export const sendMail = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Error sending email." });
+        res.status(500).json({ message: error });
     }
 });
 //# sourceMappingURL=mail.js.map
