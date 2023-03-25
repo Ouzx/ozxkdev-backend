@@ -107,8 +107,8 @@ export const updatePost = async (req: Request, res: Response) => {
     )
       throw new Error("Please fill all fields");
 
-    post.category = encodeURIComponent(post.category);
-    post.tags = post.tags.map((tag) => encodeURIComponent(tag));
+    // post.category = encodeURIComponent(post.category);
+    // post.tags = post.tags.map((tag) => encodeURIComponent(tag));
 
     post.updatedAt = new Date();
 

@@ -110,8 +110,8 @@ export const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, functi
             !post.tags ||
             !post.thumbnail)
             throw new Error("Please fill all fields");
-        post.category = encodeURIComponent(post.category);
-        post.tags = post.tags.map((tag) => encodeURIComponent(tag));
+        // post.category = encodeURIComponent(post.category);
+        // post.tags = post.tags.map((tag) => encodeURIComponent(tag));
         post.updatedAt = new Date();
         yield Post.findByIdAndUpdate(id, post, { new: true }).lean();
         res.json(post);
