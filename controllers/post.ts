@@ -107,13 +107,12 @@ export const updatePost = async (req: Request, res: Response) => {
     )
       throw new Error("Please fill all fields");
 
-    // post.category = encodeURIComponent(post.category);
-    // post.tags = post.tags.map((tag) => encodeURIComponent(tag));
-
     post.updatedAt = new Date();
 
-    await Post.findByIdAndUpdate(id, post, { new: true }).lean();
-    res.json(post);
+    const updatedPost = await Post.findByIdAndUpdate(id, post, {
+      new: true,
+    }).lean();
+    res.json(updatedPost);
   } catch (e) {
     if (e instanceof Error) res.status(404).json({ message: e.message });
     else res.status(500).json({ message: "Something went wrong" });
@@ -125,8 +124,8 @@ export const deletePost = async (req: Request, res: Response) => {
 
   try {
     if (!Types.ObjectId.isValid(id)) throw `No post with id: ${id}`;
-    await Post.findByIdAndRemove(id);
-    res.json({ message: "Post deleted successfully." });
+    const removedPost = await Post.findByIdAndRemove(id);
+    res.json(removedPost);
   } catch (e) {
     if (e instanceof Error) res.status(404).json({ message: e.message });
     else res.status(500).json({ message: "Something went wrong" });

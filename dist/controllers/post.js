@@ -110,11 +110,11 @@ export const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, functi
             !post.tags ||
             !post.thumbnail)
             throw new Error("Please fill all fields");
-        // post.category = encodeURIComponent(post.category);
-        // post.tags = post.tags.map((tag) => encodeURIComponent(tag));
         post.updatedAt = new Date();
-        yield Post.findByIdAndUpdate(id, post, { new: true }).lean();
-        res.json(post);
+        const updatedPost = yield Post.findByIdAndUpdate(id, post, {
+            new: true,
+        }).lean();
+        res.json(updatedPost);
     }
     catch (e) {
         if (e instanceof Error)
@@ -128,8 +128,8 @@ export const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         if (!Types.ObjectId.isValid(id))
             throw `No post with id: ${id}`;
-        yield Post.findByIdAndRemove(id);
-        res.json({ message: "Post deleted successfully." });
+        const removedPost = yield Post.findByIdAndRemove(id);
+        res.json(removedPost);
     }
     catch (e) {
         if (e instanceof Error)
