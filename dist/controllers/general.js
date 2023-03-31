@@ -76,14 +76,22 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!category)
             throw new Error(`No category with id: ${category}`);
         const post = yield Post.findOne({ slug, category }).select("-__v");
-        const previousPost = yield Post.findOne({
+        const _previousPost = yield Post.find({
             createdAt: { $lte: post === null || post === void 0 ? void 0 : post.createdAt },
             _id: { $ne: post === null || post === void 0 ? void 0 : post._id },
-        }).select("slug category");
-        const nextPost = yield Post.findOne({
-            createdAt: { $gt: post === null || post === void 0 ? void 0 : post.createdAt },
+        })
+            .select("slug category")
+            .sort({ createdAt: -1 })
+            .limit(1);
+        const previousPost = _previousPost[0];
+        const _nextPost = yield Post.find({
+            createdAt: { $gte: post === null || post === void 0 ? void 0 : post.createdAt },
             _id: { $ne: post === null || post === void 0 ? void 0 : post._id },
-        }).select("slug category");
+        })
+            .select("slug category")
+            .sort({ createdAt: -1 })
+            .limit(1);
+        const nextPost = _nextPost[0];
         const relatedPosts = yield Post.find({
             category: post === null || post === void 0 ? void 0 : post.category,
             _id: { $ne: post === null || post === void 0 ? void 0 : post._id },

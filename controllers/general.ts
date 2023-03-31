@@ -74,15 +74,23 @@ export const getPost = async (req: Request, res: Response) => {
 
     const post = await Post.findOne({ slug, category }).select("-__v");
 
-    const previousPost = await Post.findOne({
+    const _previousPost = await Post.find({
       createdAt: { $lte: post?.createdAt },
       _id: { $ne: post?._id },
-    }).select("slug category");
+    })
+      .select("slug category")
+      .sort({ createdAt: -1 })
+      .limit(1);
+    const previousPost = _previousPost[0];
 
-    const nextPost = await Post.findOne({
-      createdAt: { $gt: post?.createdAt },
+    const _nextPost = await Post.find({
+      createdAt: { $gte: post?.createdAt },
       _id: { $ne: post?._id },
-    }).select("slug category");
+    })
+      .select("slug category")
+      .sort({ createdAt: -1 })
+      .limit(1);
+    const nextPost = _nextPost[0];
 
     const relatedPosts = await Post.find({
       category: post?.category,
