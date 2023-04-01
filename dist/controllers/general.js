@@ -150,7 +150,26 @@ export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, funct
             .sort({ createdAt: -1 })
             .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
             .limit(ITEMS_PER_PAGE);
-        res.status(200).json({ posts, totalItems });
+        // deep copy posts
+        const postsCopy = JSON.parse(JSON.stringify(posts));
+        // get user names
+        const userIds = postsCopy.map((post) => post.user);
+        const users = yield User.find({ _id: { $in: userIds } }).select("name");
+        // create an object where the keys are user ids and the values are user names
+        const userNames = {};
+        users.forEach((user) => {
+            userNames[user._id.toString()] = user.name;
+        });
+        // add user names to posts
+        postsCopy.forEach((_post) => {
+            const authorName = userNames[_post.user];
+            if (authorName) {
+                _post.author = authorName;
+            }
+            delete _post._id;
+            delete _post.user;
+        });
+        res.status(200).json({ posts: postsCopy, totalItems });
     }
     catch (e) {
         if (e instanceof Error) {
