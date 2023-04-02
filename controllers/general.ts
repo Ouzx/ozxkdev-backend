@@ -18,16 +18,22 @@ export const getPosts = async (req: Request, res: Response) => {
 
     let totalItems: number = 0;
     let posts: iPost[] = [];
+    // exclude the non shared posts
     if (category.toLowerCase() === "all") {
       totalItems = await Post.find().countDocuments();
-      posts = await Post.find()
+      posts = await Post.find({
+        shared: true,
+      })
         .select(GENERAL_SELECTOR)
         .sort({ createdAt: -1 })
         .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
     } else {
-      totalItems = await Post.find({ category: category }).countDocuments();
-      posts = await Post.find({ category: category })
+      totalItems = await Post.find({
+        category: category,
+        shared: true,
+      }).countDocuments();
+      posts = await Post.find({ category: category, shared: true })
         .select(GENERAL_SELECTOR)
         .sort({ createdAt: -1 })
         .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
@@ -72,11 +78,17 @@ export const getPost = async (req: Request, res: Response) => {
     if (!slug) throw new Error(`No post with slug: ${slug}`);
     if (!category) throw new Error(`No category with id: ${category}`);
 
-    const post = await Post.findOne({ slug, category }).select("-__v");
+    const post = await Post.findOne({
+      slug,
+      category,
+
+      shared: true,
+    }).select("-__v");
 
     const _previousPost = await Post.find({
       createdAt: { $lte: post?.createdAt },
       _id: { $ne: post?._id },
+      shared: true,
     })
       .select("slug category")
       .sort({ createdAt: -1 })
@@ -86,6 +98,7 @@ export const getPost = async (req: Request, res: Response) => {
     const _nextPost = await Post.find({
       createdAt: { $gte: post?.createdAt },
       _id: { $ne: post?._id },
+      shared: true,
     })
       .select("slug category")
       .sort({ createdAt: -1 })
@@ -95,6 +108,7 @@ export const getPost = async (req: Request, res: Response) => {
     const relatedPosts = await Post.find({
       category: post?.category,
       _id: { $ne: post?._id },
+      shared: true,
     })
       .select(GENERAL_SELECTOR)
       .sort({ createdAt: -1 })
@@ -132,6 +146,7 @@ const searchPostsByTerm = (searchTerm: string) => {
       { body: regexSearchTerm },
       { tags: { $in: [regexSearchTerm] } },
       { category: regexSearchTerm },
+      { shared: true },
     ],
   };
 };
@@ -192,7 +207,7 @@ export const searchPosts = async (req: Request, res: Response) => {
 
 export const getCategories = async (req: Request, res: Response) => {
   try {
-    const categories = await Post.find().distinct("category");
+    const categories = await Post.find({ shared: true }).distinct("category");
 
     res.status(200).json(categories);
   } catch (e) {

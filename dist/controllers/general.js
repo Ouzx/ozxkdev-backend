@@ -23,17 +23,23 @@ export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function
             throw new Error(`Invalid page index: ${pageIndex}`);
         let totalItems = 0;
         let posts = [];
+        // exclude the non shared posts
         if (category.toLowerCase() === "all") {
             totalItems = yield Post.find().countDocuments();
-            posts = yield Post.find()
+            posts = yield Post.find({
+                shared: true,
+            })
                 .select(GENERAL_SELECTOR)
                 .sort({ createdAt: -1 })
                 .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
                 .limit(ITEMS_PER_PAGE);
         }
         else {
-            totalItems = yield Post.find({ category: category }).countDocuments();
-            posts = yield Post.find({ category: category })
+            totalItems = yield Post.find({
+                category: category,
+                shared: true,
+            }).countDocuments();
+            posts = yield Post.find({ category: category, shared: true })
                 .select(GENERAL_SELECTOR)
                 .sort({ createdAt: -1 })
                 .skip((+pageIndex - 1) * ITEMS_PER_PAGE)
@@ -75,10 +81,15 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
             throw new Error(`No post with slug: ${slug}`);
         if (!category)
             throw new Error(`No category with id: ${category}`);
-        const post = yield Post.findOne({ slug, category }).select("-__v");
+        const post = yield Post.findOne({
+            slug,
+            category,
+            shared: true,
+        }).select("-__v");
         const _previousPost = yield Post.find({
             createdAt: { $lte: post === null || post === void 0 ? void 0 : post.createdAt },
             _id: { $ne: post === null || post === void 0 ? void 0 : post._id },
+            shared: true,
         })
             .select("slug category")
             .sort({ createdAt: -1 })
@@ -87,6 +98,7 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const _nextPost = yield Post.find({
             createdAt: { $gte: post === null || post === void 0 ? void 0 : post.createdAt },
             _id: { $ne: post === null || post === void 0 ? void 0 : post._id },
+            shared: true,
         })
             .select("slug category")
             .sort({ createdAt: -1 })
@@ -95,6 +107,7 @@ export const getPost = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const relatedPosts = yield Post.find({
             category: post === null || post === void 0 ? void 0 : post.category,
             _id: { $ne: post === null || post === void 0 ? void 0 : post._id },
+            shared: true,
         })
             .select(GENERAL_SELECTOR)
             .sort({ createdAt: -1 })
@@ -129,6 +142,7 @@ const searchPostsByTerm = (searchTerm) => {
             { body: regexSearchTerm },
             { tags: { $in: [regexSearchTerm] } },
             { category: regexSearchTerm },
+            { shared: true },
         ],
     };
 };
@@ -181,7 +195,7 @@ export const searchPosts = (req, res) => __awaiter(void 0, void 0, void 0, funct
 });
 export const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const categories = yield Post.find().distinct("category");
+        const categories = yield Post.find({ shared: true }).distinct("category");
         res.status(200).json(categories);
     }
     catch (e) {
