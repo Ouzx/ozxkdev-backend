@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import Post, { iPost } from "../models/post.js";
 import _ from "lodash";
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 export const getPosts = async (req: Request, res: Response) => {
   const { id: pageIndex } = req.params;

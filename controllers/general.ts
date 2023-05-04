@@ -4,7 +4,7 @@ import User from "../models/user.js";
 import _ from "lodash";
 
 const GENERAL_SELECTOR = "-content -_id -__v";
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 export const getPosts = async (req: Request, res: Response) => {
   const { category, pageIndex } = req.params;

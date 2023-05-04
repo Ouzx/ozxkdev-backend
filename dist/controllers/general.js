@@ -11,7 +11,7 @@ import Post from "../models/post.js";
 import User from "../models/user.js";
 import _ from "lodash";
 const GENERAL_SELECTOR = "-content -_id -__v";
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { category, pageIndex } = req.params;
     try {

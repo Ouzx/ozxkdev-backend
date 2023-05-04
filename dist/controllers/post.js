@@ -21,7 +21,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 import { Types } from "mongoose";
 import Post from "../models/post.js";
 import _ from "lodash";
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 export const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id: pageIndex } = req.params;
     try {
