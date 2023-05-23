@@ -140,7 +140,7 @@ const searchPostsByTerm = (searchTerm: string) => {
   return {
     $or: [
       { title: regexSearchTerm },
-      { body: regexSearchTerm },
+      { content: regexSearchTerm },
       { tags: { $in: [regexSearchTerm] } },
       { category: regexSearchTerm },
     ],
