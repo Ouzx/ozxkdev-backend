@@ -8,6 +8,7 @@
     "bcrypt": "^5.1.0",
     "cloudinary": "^1.35.0",
     "cors": "^2.8.5",
+    "dicer": "^0.3.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-mongo-sanitize": "^2.2.0",
