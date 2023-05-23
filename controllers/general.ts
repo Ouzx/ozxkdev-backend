@@ -146,8 +146,8 @@ const searchPostsByTerm = (searchTerm: string) => {
       { body: regexSearchTerm },
       { tags: { $in: [regexSearchTerm] } },
       { category: regexSearchTerm },
-      { shared: true },
     ],
+    $and: [{ shared: true }],
   };
 };
 
