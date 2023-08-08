@@ -7,6 +7,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { image, post, auth, general, mail } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
+import { corsSettings } from "./middlewares/cors.js";
 import RateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
 /* Config */
@@ -28,6 +29,8 @@ var limiter = RateLimit({
 app.use(limiter);
 /* Sanitize data */
 app.use(mongoSanitize());
+/* Cors Extra Settings */
+app.use(corsSettings);
 app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 /* Routes */
 app.use("/auth", auth);

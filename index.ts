@@ -9,6 +9,7 @@ import morgan from "morgan";
 
 import { image, post, auth, general, mail } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
+import { corsSettings } from "./middlewares/cors.js";
 
 import RateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
@@ -30,13 +31,16 @@ app.use(cors());
 
 /* Set up rate limiter */
 var limiter = RateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 15,
+	windowMs: 1 * 60 * 1000, // 1 minute
+	max: 15,
 });
 app.use(limiter);
 
 /* Sanitize data */
 app.use(mongoSanitize());
+
+/* Cors Extra Settings */
+app.use(corsSettings);
 
 app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 
@@ -51,25 +55,25 @@ app.use("/general", general);
 app.use("/contact", mail);
 
 app.get("/", (_req: Request, res: Response) => {
-  return res.send("ozxk blog api 🚀");
+	return res.send("ozxk blog api 🚀");
 });
 
 app.get("/ping", (_req: Request, res: Response) => {
-  return res.send("pong 🏓");
+	return res.send("pong 🏓");
 });
 
 /* MongoDB Connection */
 mongoose.set("strictQuery", false);
 mongoose
-  .connect(CONNECTION_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as ConnectOptions)
-  .then(() =>
-    app.listen(PORT, () =>
-      console.log(`Server Running on Port: http://localhost:${PORT}`)
-    )
-  )
-  .catch((error) => console.log(`${error} did not connect`));
+	.connect(CONNECTION_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	} as ConnectOptions)
+	.then(() =>
+		app.listen(PORT, () =>
+			console.log(`Server Running on Port: http://localhost:${PORT}`)
+		)
+	)
+	.catch((error) => console.log(`${error} did not connect`));
 
 export default app;
