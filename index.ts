@@ -9,7 +9,6 @@ import morgan from "morgan";
 
 import { image, post, auth, general, mail } from "./routes/index.js";
 import { verifyToken } from "./middlewares/auth.js";
-import { corsSettings } from "./middlewares/cors.js";
 
 import RateLimit from "express-rate-limit";
 import mongoSanitize from "express-mongo-sanitize";
@@ -27,7 +26,15 @@ app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 app.use(morgan("common"));
-app.use(cors());
+app.use(
+	cors({
+		origin: [
+			"http://localhost:3000",
+			"http://127.0.0.1:3000",
+			"https://ozxk.dev",
+		],
+	})
+);
 
 /* Set up rate limiter */
 var limiter = RateLimit({
@@ -38,9 +45,6 @@ app.use(limiter);
 
 /* Sanitize data */
 app.use(mongoSanitize());
-
-/* Cors Extra Settings */
-app.use(corsSettings);
 
 app.use("/media", express.static(process.cwd() + "/public/uploads/"));
 
